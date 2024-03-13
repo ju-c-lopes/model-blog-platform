@@ -1,40 +1,44 @@
-<header class="header-mobile">
-    <div class="button-menu-mobile" width="90" height="90">
-        <span></span>
-        <span></span>
-        <span></span>
-        <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
+{% block head-css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}" media="all" />
+{% endblock %}
+
+<button class="button-menu-mobile" width="90" height="90">
+    <span></span>
+    <span></span>
+    <span></span>
+    <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
+</button>
+
+<nav class="nav nav-pills flex-column flex-sm-row" id="nav">
+    {% load static %}
+    <!-- Tentará verificar a url -->
+    {% if request.path == "" %}
+    <div>
+        <a href=""><h1 class="logo-text">Juclops' TechXperience</h1>
+            <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
     </div>
+    {% else %}
+    <a href=""><span class="logo-text">Juclops' TechXperience</span>
+        <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
+</div>
+{% endif %}
 
-    <nav class="nav nav-pills flex-column flex-sm-row" id="nav">
-        <!-- Tentará verificar a url -->
-        {% if request.path == "" %}
-        <div>
-            <a href=""><h1 class="logo-text">Juclops' TechXperience</h1>
-            <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo%}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
-        </div>
-        {% else %}
-            <a href=""><span class="logo-text">Juclops' TechXperience</span>
-            <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo%}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
-        </div>
-        {% endif %}
+<!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
+{% if user.is_authenticated %}
+<div class="">
 
-        <!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
-        {% if user.is_authenticated %}
-        <div class="">
-            
-        </div>
-        {% else %}
-        <div class="">
-            
-        </div>
-        {% endif %}
-        <!-- ========================================== -->
+</div>
+{% else %}
+<div class="">
 
-        <a class="ancor-nav text-sm-center nav-link" href="#">Home</a>
-        <a class="ancor-nav text-sm-center nav-link" href="#">Sobre</a>
-        <a class="ancor-nav text-sm-center nav-link" href="#">Trabalhos</a>
-        <a class="ancor-nav text-sm-center nav-link" href="#">Blog</a>
-        <a class="ancor-nav text-sm-center nav-link" href="#">Contato</a>
-    </nav>
-</header>
+</div>
+{% endif %}
+<!-- ========================================== -->
+
+<a class="ancor-nav text-sm-center nav-link" href="#">Home</a>
+<a class="ancor-nav text-sm-center nav-link" href="#">Sobre</a>
+<a class="ancor-nav text-sm-center nav-link" href="#">Trabalhos</a>
+<a class="ancor-nav text-sm-center nav-link" href="#">Blog</a>
+<a class="ancor-nav text-sm-center nav-link" href="#">Contato</a>
+</nav>
