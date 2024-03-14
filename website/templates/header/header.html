@@ -1,8 +1,3 @@
-{% block head-css %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}" media="all" />
-{% endblock %}
-
 <button class="button-menu-mobile" width="90" height="90">
     <span></span>
     <span></span>
@@ -10,35 +5,39 @@
     <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
 </button>
 
-<nav class="nav nav-pills flex-column flex-sm-row" id="nav">
-    {% load static %}
-    <!-- Tentará verificar a url -->
-    {% if request.path == "" %}
-    <div>
-        <a href=""><h1 class="logo-text">Juclops' TechXperience</h1>
-            <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
-    </div>
+{% load static %}
+<!-- Tentará verificar a url -->
+<div>
+    {% if request.path is None or request.path == "/" %}
+    <a href="">
+        <img class="logo" id="himg" width="100" height="100" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+        <h1 class="logo-text">Juclops' TechXperience</h1>
+    </a>
     {% else %}
-    <a href=""><span class="logo-text">Juclops' TechXperience</span>
-        <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" /></a>
+    <a href="">
+        <span class="logo-text">Juclops' TechXperience</span>
+        <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}"
+        alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+    </a>
+    {% endif %}
 </div>
-{% endif %}
 
 <!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
 {% if user.is_authenticated %}
 <div class="">
-
+    
 </div>
 {% else %}
 <div class="">
-
+    
 </div>
 {% endif %}
 <!-- ========================================== -->
 
-<a class="ancor-nav text-sm-center nav-link" href="#">Home</a>
-<a class="ancor-nav text-sm-center nav-link" href="#">Sobre</a>
-<a class="ancor-nav text-sm-center nav-link" href="#">Trabalhos</a>
-<a class="ancor-nav text-sm-center nav-link" href="#">Blog</a>
-<a class="ancor-nav text-sm-center nav-link" href="#">Contato</a>
+<nav class="nav nav-pills flex-column flex-sm-row" id="nav">
+    <a class="ancor-nav text-sm-center nav-link" href="#">Home</a>
+    <a class="ancor-nav text-sm-center nav-link" href="#">Sobre</a>
+    <a class="ancor-nav text-sm-center nav-link" href="#">Trabalhos</a>
+    <a class="ancor-nav text-sm-center nav-link" href="#">Blog</a>
+    <a class="ancor-nav text-sm-center nav-link" href="#">Contato</a>
 </nav>
