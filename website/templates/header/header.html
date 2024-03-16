@@ -1,43 +1,92 @@
-<button class="button-menu-mobile" width="90" height="90">
-    <span></span>
-    <span></span>
-    <span></span>
-    <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
-</button>
-
 {% load static %}
-<!-- Tentará verificar a url -->
-<div>
-    {% if request.path is None or request.path == "/" %}
-    <a href="">
-        <img class="logo" id="himg" width="100" height="100" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
-        <h1 class="logo-text">Juclops' TechXperience</h1>
-    </a>
+<div class="header-container">
+    <button class="button-menu-mobile" width="90" height="90">
+        <span></span>
+        <span></span>
+        <span></span>
+        <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
+    </button>
+    {% block scripts %}
+    <script src="{% static './scripts/buttonMobile.js' %}"></script>
+    {% endblock %}
+    
+    <!-- Tentará verificar a url -->
+    <div class="logo-container">
+        {% if request.path is None or request.path == "/" %}
+        <a href="#">
+            <img class="logo" id="himg" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+            <h1 class="logo-text">Juclops' TechXperience</h1>
+        </a>
+        {% else %}
+        <a href="#">
+            <span class="logo-text">Juclops' TechXperience</span>
+            <img class="logo" id="himg" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
+            alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+        </a>
+        {% endif %}
+    </div>
+    
+    <!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
+    {% if user.is_authenticated %}
+    <div class="">
+        
+    </div>
     {% else %}
-    <a href="">
-        <span class="logo-text">Juclops' TechXperience</span>
-        <img class="logo" id="himg" width="248" height="64" src="{% static 'img/juclops-techxperience-logo.webp' %}"
-        alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
-    </a>
+    <div class="">
+        
+    </div>
     {% endif %}
 </div>
 
-<!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
-{% if user.is_authenticated %}
-<div class="">
+<nav class="" id="menu-nav">
+    <!-- SEARCH -->
+    <form method="POST" accept-charset="utf-8">{% csrf_token %}
+        <div class="search">
+            <input type="text" name="search" id="search" />
+            <button class="search-btn" type="submit">
+                <img src="{% static './img/lupa.png' %}"
+            </button>
+        </div>
+    </form>
     
-</div>
-{% else %}
-<div class="">
-    
-</div>
-{% endif %}
-<!-- ========================================== -->
-
-<nav class="nav nav-pills flex-column flex-sm-row" id="nav">
-    <a class="ancor-nav text-sm-center nav-link" href="#">Home</a>
-    <a class="ancor-nav text-sm-center nav-link" href="#">Sobre</a>
-    <a class="ancor-nav text-sm-center nav-link" href="#">Trabalhos</a>
-    <a class="ancor-nav text-sm-center nav-link" href="#">Blog</a>
-    <a class="ancor-nav text-sm-center nav-link" href="#">Contato</a>
+    <!-- LOGIN -->
+    {% if not request.user.is_authenticated %}
+    <div class="header-login">
+    {% else %}
+    <div class="header-login logged">
+    {% endif %}
+    {% if not request.user.is_authenticated %}
+        <div>
+            <img class="header-login--img" width="40" height="40" src="{% static './img/user.jpg' %}" alt="user not connected" />
+            <a class="login-link" href="#">
+                Login
+            </a>
+        </div>
+    {% else %}
+        <div class="user-logged">
+            <a href="{% url 'usuario-view' request.user.id %}">
+                {% if not request.user.usuario.image %}
+                    <img class="header-login--img" src="{% static './img/user.jpg' %}" alt="user {{ request.user.usuario.name }} doesn't not have an image" />
+                {% else %}
+                    <img class="header-login--img" src="/media/{{ request.user.usuario.image }}" alt="usuário {{ request.user.usuario.nome }}  connected" />
+                {% endif %}
+            </a>
+        </div>
+        <div class="user-logged">
+            {{ request.user.usuario.nome }}
+        </div>
+        <a href="{% url 'logout' %}"><div class="logout"></div>
+        </a>
+        {% endif %}
+    </div>
+    <a class="menu-link"
+    href="#">Home</a>
+    <a class="menu-link"
+    href="#">Sobre</a>
+    <a class="menu-link"
+    href="#">Trabalhos</a>
+    <a class="menu-link"
+    href="#">Blog</a>
+    <a class="menu-link"
+    href="#">Contato</a>
 </nav>

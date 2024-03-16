@@ -1,18 +1,9 @@
-class ButtonMobile {
-    constructor() {
-        this.button = buttonElement();
-    }
+const btn = document.querySelector(".button-menu-mobile");
+const menuNavigation = document.querySelector("#menu-nav");
+
+btn.addEventListener("click", function() {
+    //e.preventDefault();
+    btn.classList.toggle('active');
     
-    openButton() {
-        this.button.classList.add("active");
-    }
-    
-    closeButton() {
-        this.button.classlist.remove("active")
-    }
-    
-    // Getter
-    get buttonElement() {
-        return document.querySelector(".button-menu-mobile");
-    }
-}
+    menuNavigation.classList.toggle('menu-visible');
+});
