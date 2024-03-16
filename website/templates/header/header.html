@@ -4,36 +4,23 @@
         <span></span>
         <span></span>
         <span></span>
-        <!--<img width="90" height="90" id="button" src="images/icons/menu.png" alt="Controle Menu" onclick="listarMenu()">-->
     </button>
-    
     
     <!-- Tentará verificar a url -->
     <div class="logo-container">
         {% if request.path is None or request.path == "/" %}
         <a href="#">
-            <img class="logo" id="himg" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+            <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
             <h1 class="logo-text">Juclops' TechXperience</h1>
         </a>
         {% else %}
         <a href="#">
             <span class="logo-text">Juclops' TechXperience</span>
-            <img class="logo" id="himg" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
+            <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
             alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
         </a>
         {% endif %}
     </div>
-    
-    <!-- ADD LOGIN FUNCTION OR CONNECTED PROFILE -->
-    {% if user.is_authenticated %}
-    <div class="">
-        
-    </div>
-    {% else %}
-    <div class="">
-        
-    </div>
-    {% endif %}
 </div>
 
 <nav class="menu-navigation">
@@ -75,8 +62,9 @@
         </div>
         <a href="{% url 'logout' %}"><div class="logout"></div>
         </a>
-        {% endif %}
+    {% endif %}
     </div>
+
     <a class="menu-link"
     href="#">Home</a>
     <a class="menu-link"

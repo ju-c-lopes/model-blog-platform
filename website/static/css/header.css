@@ -54,7 +54,26 @@
     }
     
     .button-menu-mobile.active span:nth-child(3) {
-        transform: translateX(60px);
+        transform: translateX(-60px);
+        transition: 0.35s ease-out;
+        overflow-x: hidden;
+    }
+    
+    .button-menu-mobile span:nth-child(1) {
+        width: 40px;
+        transform: translateY(0px) rotate(0deg);
+        transition-delay: 0.125s;
+    }
+    
+    .button-menu-mobile span:nth-child(2) {
+        width: 40px;
+        transform: translateY(0) rotate(0deg);
+        transition-delay: 0.25s;
+    }
+    
+    .button-menu-mobile span:nth-child(3) {
+        transform: translateX(0px);
+        transition: 0.35s ease-in;
         overflow-x: hidden;
     }
     
