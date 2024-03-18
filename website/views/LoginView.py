@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-#from gerenciaAula.models import Usuario
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
-#from .forms import LoginForm
-#from gerenciaAula.views import *
+
 
 def login_user(request):
     context = None

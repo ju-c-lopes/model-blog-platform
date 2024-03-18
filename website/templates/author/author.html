@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main>
+    {% load static %}
+        <!-- Card do Autor  -->
+    <div class="author-presentation-card">
+        <!-- Imagem do autor -->
+        {% if not author.image %}
+        
+        {% else %}
+        <img src="/media/{{ author.image }}" width="100" height="100" />
+        {% endif %}
+        
+        <!-- nome do autor H1 -->
+        <h1 class="author-name-h1">{{ author.author_name }}</h1>
+        
+        <!-- Resumo da formaçao do autor -->
+        {% if author.graduations|length > 1 %}
+            {% for graduation in author.graduations %}
+                {% if not graduation__concluded %}
+                    {% for i, level in graduations_level %}
+                        {% if graduation__graduation_level == i %}
+                        <p>{{ level|replace_word  }} em {{ graduation__course }} na {{ graduation__school }}</p>
+                        {% endif %}
+                    {% endfor %}
+                {% elif forloop.counter == author.graduations|length %}
+                    <p>
+                    {% for i, level in graduations_level %}
+                        {% if graduation__graduation_level == i %}
+                        {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }}.
+                        {% endif %}
+                    {% endfor %}
+                    </p>
+                {% else %}
+                    <p>
+                    {% for i, level in graduations_level %}
+                        {% if graduation__graduation_level == i %}
+                        {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }},&nbsp;
+                        {% endif %}
+                    {% endfor %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% if not graduation__concluded %}
+                {% for i, level in graduations_level %}
+                    {% if graduation__graduation_level == i %}
+                        <p>{{ level|replace_word  }} em {{ graduation__course }} na {{ graduation__school }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>
+                    {% for i, level in graduations_level %}
+                        {% if graduation__graduation_level == i %}
+                        {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }},&nbsp;
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endif %}
+        
+        <div class="author-social-media">
+            {% if author.social_media|length > 1 %}
+                {% for social_media in author.social_media %}
+                    {% for i, social in social_media_index %}
+                        {% if social_media == i %}
+                            <a class="{{ social|lower }}" href="{{ social_media__social_media_profile }}"><img scr="../static/{{ social|lower }}.png" /></a>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+    </div>
+    
+    <div class="biography">
+        <div class="author-history">
+            
+        </div>
+        
+        <div class="author-graduation">
+            
+        </div>
+        
+        <div class="author-professional-tragetory">
+            
+        </div>
+    </div>
+</main>
+
+{% endblock %}

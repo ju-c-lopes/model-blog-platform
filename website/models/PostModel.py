@@ -1,15 +1,15 @@
-from django.conf import settings
 from django.db import models
-from django.utils import timezone
+from website.models import *
+from website.models.AuthorModel import Author
+import uuid
 
-# Create your models here.
-
-class PostModel(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class Post(models.Model):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    url_slug = models.TextField(max_length=70, blank=False, null=False, unique=True, default=uuid.uuid4)
     text = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+    published_date = models.DateField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -17,3 +17,6 @@ class PostModel(models.Model):
 
     def __str__(self):
         return self.title
+        
+    class Meta:
+        db_table = 'Post'

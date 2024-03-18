@@ -42,7 +42,7 @@
     {% endif %}
     {% if not request.user.is_authenticated %}
         <div>
-            <img class="header-login--img" width="40" height="40" src="{% static './img/user.jpg' %}" alt="user not connected" />
+            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" alt="user not connected" />
             <a class="login-link" href="#">
                 Login
             </a>
@@ -51,7 +51,7 @@
         <div class="user-logged">
             <a href="{% url 'usuario-view' request.user.id %}">
                 {% if not request.user.usuario.image %}
-                    <img class="header-login--img" src="{% static './img/user.jpg' %}" alt="user {{ request.user.usuario.name }} doesn't not have an image" />
+                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="user {{ request.user.usuario.name }} doesn't not have an image" />
                 {% else %}
                     <img class="header-login--img" src="/media/{{ request.user.usuario.image }}" alt="usuário {{ request.user.usuario.nome }}  connected" />
                 {% endif %}
