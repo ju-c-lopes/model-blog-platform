@@ -15,7 +15,8 @@
         
         <!-- nome do autor H1 -->
         <h1 class="author-name-h1">{{ author.author_name }}</h1>
-        {% if author.user.is_authenticated %}
+        <p>algo {{ author }}</p>
+        {% if author_connected %}
             <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
         {% endif %}
         
