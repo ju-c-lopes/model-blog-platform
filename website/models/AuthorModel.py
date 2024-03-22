@@ -28,7 +28,7 @@ class Author(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         try:
             if created:
-                Author.objects.create(user=instance)
+                Author.objects.create(user=instance).save()
         except:
             pass
     

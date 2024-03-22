@@ -8,28 +8,31 @@
     <div class="author-presentation-card">
         <!-- Imagem do autor -->
         {% if not author.image %}
-        
+        <img src="{% static './img/no-user.jpg' %}" width="100" height="100" />
         {% else %}
         <img src="/media/{{ author.image }}" width="100" height="100" />
         {% endif %}
         
         <!-- nome do autor H1 -->
         <h1 class="author-name-h1">{{ author.author_name }}</h1>
+        {% if author.user.is_authenticated %}
+            <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
+        {% endif %}
         
         <!-- Resumo da formaçao do autor -->
-        {% if author.graduations|length > 1 %}
-            {% for graduation in author.graduations %}
-                {% if not graduation__concluded %}
+        {% load replace_word %}
+            {% for graduation in author.graduations.all %}
+                {% if not graduation.concluded %}
                     {% for i, level in graduations_level %}
-                        {% if graduation__graduation_level == i %}
-                        <p>{{ level|replace_word  }} em {{ graduation__course }} na {{ graduation__school }}</p>
+                        {% if graduation.graduation_level == i %}
+                        <p>{{ level|replace_word  }} em {{ graduation.course }} na {{ graduation.school }}</p>
                         {% endif %}
                     {% endfor %}
-                {% elif forloop.counter == author.graduations|length %}
+                {% elif forloop.counter == author.graduations.all|length %}
                     <p>
                     {% for i, level in graduations_level %}
-                        {% if graduation__graduation_level == i %}
-                        {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }}.
+                        {% if graduation.graduation_level == i %}
+                        {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
                         {% endif %}
                     {% endfor %}
                     </p>
@@ -43,34 +46,18 @@
                     </p>
                 {% endif %}
             {% endfor %}
-        {% else %}
-            {% if not graduation__concluded %}
-                {% for i, level in graduations_level %}
-                    {% if graduation__graduation_level == i %}
-                        <p>{{ level|replace_word  }} em {{ graduation__course }} na {{ graduation__school }}</p>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <p>
-                    {% for i, level in graduations_level %}
-                        {% if graduation__graduation_level == i %}
-                        {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }},&nbsp;
-                        {% endif %}
-                    {% endfor %}
-                </p>
-            {% endif %}
-        {% endif %}
         
         <div class="author-social-media">
-            {% if author.social_media|length > 1 %}
-                {% for social_media in author.social_media %}
+            
+                {% for social_media in author.social_media.all %}
                     {% for i, social in social_media_index %}
-                        {% if social_media == i %}
-                            <a class="{{ social|lower }}" href="{{ social_media__social_media_profile }}"><img scr="../static/{{ social|lower }}.png" /></a>
+                        {% if social_media.social_media == i %}
+                            <a class="{{ social|lower }}" href="{{ social_media.social_media_profile }}"><img src="{% static './img/'|add:social|lower|add:'.png' %}" width="20" height="20"/></a>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-            {% endif %}
+                
+            
         </div>
         
     </div>

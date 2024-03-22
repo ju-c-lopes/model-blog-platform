@@ -49,8 +49,8 @@
         </div>
     {% else %}
         <div class="user-logged">
-            <a href="{% url 'usuario-view' request.user.id %}">
-                {% if not request.user.usuario.image %}
+            <a href="{% url 'author' request.user.id %}">
+                {% if not request.user.author.image %}
                     <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="user {{ request.user.usuario.name }} doesn't not have an image" />
                 {% else %}
                     <img class="header-login--img" src="/media/{{ request.user.usuario.image }}" alt="usuário {{ request.user.usuario.nome }}  connected" />
@@ -58,7 +58,7 @@
             </a>
         </div>
         <div class="user-logged">
-            {{ request.user.usuario.nome }}
+            {{ request.user.author.nome }}
         </div>
         <a href="{% url 'logout' %}"><div class="logout"></div>
         </a>

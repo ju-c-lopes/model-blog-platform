@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row text-center">
+    <h1 class="display-8">Editando o usuário <span>{{ request.user.usuario.nome }}</span>.</h1>
+</div>
+<div>
+    <div class="row text-center">
+        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <fieldset class="author-form">
+                <table class="form-table">
+
+                    {% for form in userForm %}
+                    <tr>
+                        <td><label for="username">Author username</label></td>
+                        <td>{{ form }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for form in authorForm %}
+                    <tr>
+                        <td><label for="{{ form.label.lower }}">{{ form.label }}</label></td>
+                        <td>{{ form }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary w-100">
+                            Salvar
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% if message is not None and message.type == 'erro' %}
+                            <div class="form-message--erro">{{ message.text }}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
