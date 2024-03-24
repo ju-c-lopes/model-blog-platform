@@ -1,24 +1,37 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
+{% endblock %}
+
 {% block content %}
 
 <main>
-    {% load static %}
+    <div class="display-message-success">
+        {% if messages %}
+            {% for message in messages %}
+            <span class="text-success-message">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
         <!-- Card do Autor  -->
     <div class="author-presentation-card">
-        <!-- Imagem do autor -->
-        {% if not author.image %}
-        <img src="{% static './img/no-user.jpg' %}" width="100" height="100" />
-        {% else %}
-        <img src="/media/{{ author.image }}" width="100" height="100" />
-        {% endif %}
-        
-        <!-- nome do autor H1 -->
-        <h1 class="author-name-h1">{{ author.author_name }}</h1>
-        <p>algo {{ author }}</p>
-        {% if author_connected %}
-            <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
-        {% endif %}
+        <div class="author-card-top">
+            <!-- Imagem do autor -->
+            {% if not author.image %}
+            <img src="{% static './img/no-user.jpg' %}" width="100" height="100" />
+            {% else %}
+            <img src="/media/{{ author.image }}" width="100" height="100" />
+            {% endif %}
+            <div class="card-top-right">
+                <!-- nome do autor H1 -->
+                <h1 class="author-name-h1">{{ author.author_name }}</h1>
+                {% if author_connected %}
+                    <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
+                {% endif %}
+            </div>
+        </div>
         
         <!-- Resumo da formaçao do autor -->
         {% load replace_word %}
@@ -49,7 +62,6 @@
             {% endfor %}
         
         <div class="author-social-media">
-            
                 {% for social_media in author.social_media.all %}
                     {% for i, social in social_media_index %}
                         {% if social_media.social_media == i %}
@@ -57,8 +69,6 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                
-            
         </div>
         
     </div>

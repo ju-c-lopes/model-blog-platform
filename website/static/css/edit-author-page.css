@@ -1,0 +1,59 @@
+@media screen and (max-width: 768px) {
+    .edit-user-display {
+        display: flex;
+        justify-content: center;
+        margin-top: 2vh;
+    }
+    .edit-user {
+        font-size: 1.5em;
+        color: #8c8c8c;
+        /* width: 60vw; */
+    }
+    .display-message-error {
+        text-align: center;
+        height: 2vh;
+    }
+    .text-error-message {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+    }
+    form {
+        width: 100%;
+    }
+    .author-form {
+        margin-left: 2vw;
+        margin-right: 2vw;
+        width: 100%;
+    }
+    .form-table tbody tr {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 90vw;
+    }
+    .form-table tbody tr:last-child td{
+        width: 90vw;
+    }
+    .form-table tbody tr td:nth-child(1) {
+        width: 20vw;
+    }
+    .form-table tbody tr td:nth-child(1) label {
+        margin: 2vh 0 2vh 0;
+    }
+    .form-table tbody tr td:nth-child(2) {
+        width: 60vw;
+    }
+    .plus-field {
+        display: none !important;
+    }
+    .form-table-social tbody tr:nth-child(3), .plus-field-last {
+        border-bottom: 1px rgba(0, 0, 0, .1) solid !important;
+    }
+    .plus-button-field {
+        margin: 3vh 0 3vh 0 !important;
+    }
+    .social-button-plus {
+        font-size: 1.3em;
+    }
+}
