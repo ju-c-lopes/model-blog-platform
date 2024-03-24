@@ -15,9 +15,9 @@
         </a>
         {% else %}
         <a href="#">
-            <span class="logo-text">Juclops' TechXperience</span>
             <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
             alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+            <span class="logo-text">Juclops' TechXperience</span>
         </a>
         {% endif %}
     </div>
@@ -42,18 +42,18 @@
     {% endif %}
     {% if not request.user.is_authenticated %}
         <div>
-            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" alt="user not connected" />
+            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
             <a class="login-link" href="#">
                 Login
             </a>
         </div>
     {% else %}
         <div class="user-logged">
-            <a href="{% url 'author' request.user.id %}">
+            <a href="{% url 'author' request.user.author.author_url_slug %}">
                 {% if not request.user.author.image %}
-                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="user {{ request.user.usuario.name }} doesn't not have an image" />
+                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.user.author.author_name }} não tem imagem." />
                 {% else %}
-                    <img class="header-login--img" src="/media/{{ request.user.usuario.image }}" alt="usuário {{ request.user.usuario.nome }}  connected" />
+                    <img class="header-login--img" src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." />
                 {% endif %}
             </a>
         </div>

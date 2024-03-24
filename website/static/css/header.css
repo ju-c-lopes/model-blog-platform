@@ -1,5 +1,10 @@
 @media screen and (max-width: 768px){
+    .row {
+        margin: 0;
+        padding: 0;
+    }
     header, .header-container {
+        position: fixed;
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .7);
         width: 100vw;
@@ -33,7 +38,7 @@
     }
     
     .button-menu-mobile span {
-        width: 40px;
+        width: 35px;
         height: 2px;
         background: #06516b;
         border-radius: 2px;
@@ -42,13 +47,11 @@
     }
     
     .button-menu-mobile.active span:nth-child(1) {
-        width: 40px;
         transform: translateY(15px) rotate(45deg);
         transition-delay: 0.125s;
     }
     
     .button-menu-mobile.active span:nth-child(2) {
-        width: 40px;
         transform: translateY(0) rotate(315deg);
         transition-delay: 0.25s;
     }
@@ -60,13 +63,11 @@
     }
     
     .button-menu-mobile span:nth-child(1) {
-        width: 40px;
         transform: translateY(0px) rotate(0deg);
         transition-delay: 0.125s;
     }
     
     .button-menu-mobile span:nth-child(2) {
-        width: 40px;
         transform: translateY(0) rotate(0deg);
         transition-delay: 0.25s;
     }

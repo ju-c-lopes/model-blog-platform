@@ -20,13 +20,13 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body class="container-fluid vh-100">
+        <!-- Page's header with menu and login options -->
+        <header class="row">
+            {% include "header/header.html" %}
+        </header>
+        
         <div class="d-flex flex-column">
 
-            <!-- Page's header with menu and login options -->
-            <header class="row">
-                {% include "header/header.html" %}
-            </header>
-            
             {% block content %}{% endblock %}
 
             <footer>

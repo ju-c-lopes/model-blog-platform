@@ -1,0 +1,44 @@
+@media screen and (max-width: 768px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+    }
+    .display-message-success {
+        padding-top: 1vh;
+        height: 5vh;
+        color: olivedrab;
+    }
+    .text-success-message {
+        height: 100%;
+    }
+    .author-presentation-card {
+        margin-top: 0;
+        border: 1px #6b6b6b solid;
+        border-radius: 10px;
+        padding: 1em;
+    }
+    .author-card-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 2vh;
+    }
+    .author-card-top img {
+        border-radius: 4vw;
+        margin-right: 3vw;
+    }
+    .card-top-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: end;
+    }
+    .card-top-right a {
+        padding: 5px;
+    }
+    .author-name-h1 {
+        font-size: 1.5em;
+    }
+}
