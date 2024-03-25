@@ -22,9 +22,7 @@ def view_author_page(request, slug):
     return render(request, template_name='author/author.html', context=context, status=200)
 
 def edit_author_profile(request, slug):
-    message = None
     author = get_object_or_404(Author, author_url_slug=slug)
-    user_author = get_object_or_404(User, id=author.user.id)
     author_social_media = author.social_media.all()
     form = EditAuthorForm(instance=author)
     user_form = UserForm(instance=request.user)
@@ -35,25 +33,21 @@ def edit_author_profile(request, slug):
     username_free = True
     
     if request.POST:
-        form = EditAuthorForm(request.POST, request.FILES, instance=author)
-        user_form = UserForm(request.POST, instance=request.user)
         social_forms = []
         for social in author_social_media:
             social_forms.append(SocialMediaForm(request.POST, instance=social))
         author_request_post = check_request_post(request)
-        username_free = author_request_post['check_username_request'] is None
 
         if author_request_post is not None:
             if author.image != '' and author_request_post['image'] is not None:
-                print(author.image, "authooor image")
                 author.image.delete(save=True)
-            author_request_post['image']
-        if form.is_valid() and user_form.is_valid():
-            author.image = author_request_post['image']
-            if author_request_post['username'] != author.user.username and username_free:
-                author.user.username = author_request_post['username']
-                user_author.save()
-            author.save()
+                author.image = author_request_post['image']
+        username_free = check_user_form(request, author)
+        if check_author_form(request, author) and username_free:
+            create_social_media(request, author)
+            
+            author_social_media = author.social_media.all()
+            update_social_media(request, author_social_media)
             messages.success(request, 'Dados atualizados com sucesso.')
             return redirect('author', slug=author.author_url_slug)
         elif not username_free:
@@ -77,3 +71,50 @@ def check_request_post(request):
         }
     return author_post_request_data
 
+def check_user_form(request, author):
+    user_form = UserForm(request.POST, instance=request.user)
+    author_user = check_request_post(request)
+    username_free = author_user['check_username_request'] is None
+    if user_form.is_valid() and author_user['username'] != author.user.username and username_free:
+        user_author = get_object_or_404(User, id=author.user.id)
+        user_author.username = author_user['username']
+        user_author.save()
+    return username_free
+
+def check_author_form(request, author):
+    author_form = EditAuthorForm(request.POST, request.FILES, instance=author)
+    check_post = check_request_post(request)
+    if author_form.is_valid():
+        author.author_name = check_post['name']
+        author.save()
+        return True
+    return False
+
+def update_social_media(request, author_social_media):
+    social_media_request_post = list(zip(request.POST.getlist('social_media'), request.POST.getlist('social_media_profile')))
+    print("AUTHOR SOCIAL MEDIAS: ", author_social_media, " requesf ", social_media_request_post)
+    for i in range(len(SOCIAL_MEDIA)):
+        if i == len(author_social_media):
+            break        
+        if (author_social_media[i].social_media != social_media_request_post[i][0]) or (author_social_media[i].social_media_profile != social_media_request_post[i][1]):
+            author_social_media[i].social_media = social_media_request_post[i][0]
+            author_social_media[i].social_media_profile = social_media_request_post[i][1]
+            author_social_media[i].save()
+
+def create_social_media(request, author):
+    social_media_request_post = list(zip(request.POST.getlist('social_media'), request.POST.getlist('social_media_profile')))
+    social = author.social_media.all()
+    if social_media_request_post[len(social)][1] == '':
+        print("SKIPPING...")
+        return
+    print(social)
+    for i in range(len(social), len(SOCIAL_MEDIA)):
+        if social_media_request_post[i][1] != '':
+            new_social = SocialMedia.objects.create(
+                user_social_media=author,
+                social_media=social_media_request_post[i][0],
+                social_media_profile=social_media_request_post[i][1],
+            )
+            new_social.save()
+            author.social_media.add(new_social)
+            

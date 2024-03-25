@@ -45,11 +45,13 @@
                         <td>
                             <select name="{{ social.social_media.html_name }}" id="{{ social.social_media.id_for_label }}">
                                 {% for value, media in social.social_media.field.choices %}
-                                {% if social.social_media.value == value %}
-                                <option value="{{ value }}" selected>{{ media }}</option>
-                                {% else %}
-                                <option value="{{ value }}">{{ media }}</option>
-                                {% endif %}
+                                    {% if social.social_media.value == value %}
+                                    <option value="{{ value }}" selected>{{ media }}</option>
+                                    {% elif forloop.counter <= socialForms|length and value != social.social_media.value %}
+                                    <option value="{{ value }}" disabled>{{ media }}</option>
+                                    {% else %}
+                                    <option value="{{ value }}">{{ media }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </td>
@@ -60,6 +62,7 @@
                         </td> 
                         <td>{{ social.social_media_profile }}</td>
                     </tr>
+                    {% endfor %}
                     {% if socialForms|length < 4 %}
                         {% for i in socialEmptyForm.social_media.field.choices %}
                         {% if forloop.counter > socialForms|length %}
@@ -70,11 +73,14 @@
                                 <td>
                                     <select name="{{ socialEmptyForm.social_media.html_name }}" id="{{ socialEmptyForm.social_media.id_for_label }}">
                                         {% for value, media in socialEmptyForm.social_media.field.choices %}
-                                        {% if social.social_media.value == value %}
-                                        <option value="{{ value }}" disabled>{{ media }}</option>
-                                        {% else %}
-                                        <option value="{{ value }}">{{ media }}</option>
-                                        {% endif %}
+                                            {% for social in socialForms %}
+                                                {% if social.social_media.value == value %}
+                                                <option value="{{ value }}" disabled>{{ media }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if forloop.counter > socialForms|length %}
+                                                <option value="{{ value }}">{{ media }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </td>
@@ -85,13 +91,12 @@
                                 </td> 
                                 <td>{{ socialEmptyForm.social_media_profile }}</td>
                             </tr>
-                            {% endif %}
-                            {% endfor %}
-                            <tr class="plus-button-field">
-                                <td colspan="2"><button type="button" class="btn btn-primary w-100 social-button-plus">+</button></td>
-                            </tr>
+                        {% endif %}
+                        {% endfor %}
                     {% endif %}
-                    {% endfor %}
+                    <tr class="plus-button-field">
+                        <td colspan="2"><button type="button" class="btn btn-primary w-100 social-button-plus">+</button></td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <button type="submit" class="btn btn-primary w-100 save-button">

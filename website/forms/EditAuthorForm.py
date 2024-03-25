@@ -13,11 +13,6 @@ class EditAuthorForm(ModelForm):
         model = Author
         fields = ['author_name', 'image']
 
-        # widgets = {
-        #     'author_name': forms.TextInput(label='Nome completo'),
-        #     'image': forms.FileInput(label='Foto do author'),
-        # }
-
 class UserForm(ModelForm):
 
     class Meta:
@@ -31,8 +26,9 @@ class SocialMediaForm(ModelForm):
     social_media = forms.ChoiceField(
         choices=SOCIAL_MEDIA,
         widget=forms.Select,
+        required=False,
     )
-    social_media_profile = forms.CharField(label='Perfil', widget=forms.TextInput)
+    social_media_profile = forms.CharField(label='Perfil', widget=forms.TextInput, required=False)
 
     class Meta:
         model = SocialMedia

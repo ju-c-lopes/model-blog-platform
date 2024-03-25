@@ -14,7 +14,7 @@
         height: 100%;
     }
     .author-presentation-card {
-        margin-top: 0;
+        margin: 0 1vh 0 1vh;
         border: 1px #6b6b6b solid;
         border-radius: 10px;
         padding: 1em;
@@ -40,5 +40,8 @@
     }
     .author-name-h1 {
         font-size: 1.5em;
+    }
+    .facebook, .instagram, .linkedin, .x {
+        margin-right: 0.8em;
     }
 }
