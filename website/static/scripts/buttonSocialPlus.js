@@ -1,7 +1,8 @@
-const socialPlus = document.querySelector(".plus-button-field");
+const socialPlus = document.querySelector(".social-button-plus");
 var newSocialFields = document.querySelectorAll(".plus-field");
 console.log(newSocialFields)
 
+checkMaxNodes()
 socialPlus.addEventListener('click', function() {
     for (let i = 0; i < 1; i++) {
         newSocialFields[i].style.display = 'flex';
