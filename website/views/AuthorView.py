@@ -45,9 +45,9 @@ def edit_author_profile(request, slug):
         username_free = check_user_form(request, author)
         if check_author_form(request, author) and username_free:
             create_social_media(request, author)
-            
             author_social_media = author.social_media.all()
             update_social_media(request, author_social_media)
+            exclude_social_media(request, author)
             messages.success(request, 'Dados atualizados com sucesso.')
             return redirect('author', slug=author.author_url_slug)
         elif not username_free:
@@ -68,6 +68,7 @@ def check_request_post(request):
             "name": request.POST['author_name'],
             "check_username_request": Author.objects.filter(user__username=request.POST['username']).exclude(user__id=request.user.id).first(),
             "image": request.FILES.get('image', None),
+            "exclude_social_media": request.POST.getlist('exclude-social'),
         }
     return author_post_request_data
 
@@ -92,7 +93,6 @@ def check_author_form(request, author):
 
 def update_social_media(request, author_social_media):
     social_media_request_post = list(zip(request.POST.getlist('social_media'), request.POST.getlist('social_media_profile')))
-    print("AUTHOR SOCIAL MEDIAS: ", author_social_media, " requesf ", social_media_request_post)
     for i in range(len(SOCIAL_MEDIA)):
         if i == len(author_social_media):
             break        
@@ -104,10 +104,9 @@ def update_social_media(request, author_social_media):
 def create_social_media(request, author):
     social_media_request_post = list(zip(request.POST.getlist('social_media'), request.POST.getlist('social_media_profile')))
     social = author.social_media.all()
-    if social_media_request_post[len(social)][1] == '':
+    if social_media_request_post[len(social) - 1][1] == '':
         print("SKIPPING...")
         return
-    print(social)
     for i in range(len(social), len(SOCIAL_MEDIA)):
         if social_media_request_post[i][1] != '':
             new_social = SocialMedia.objects.create(
@@ -118,3 +117,9 @@ def create_social_media(request, author):
             new_social.save()
             author.social_media.add(new_social)
             
+def exclude_social_media(request, author):
+    exclusions = check_request_post(request)['exclude_social_media']
+    all_media = author.social_media.all()
+    for exclude_request in exclusions:
+        if exclude_request != '':
+            social_media = author.social_media.get(social_media=exclude_request).delete()

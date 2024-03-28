@@ -46,7 +46,7 @@
                             <select name="{{ social.social_media.html_name }}" id="{{ social.social_media.id_for_label }}">
                                 {% for value, media in social.social_media.field.choices %}
                                     {% if social.social_media.value == value %}
-                                    <option value="{{ value }}" selected>{{ media }}</option>
+                                    <option class="op-selected" value="{{ value }}" selected>{{ media }}</option>
                                     {% elif forloop.counter <= socialForms|length and value != social.social_media.value %}
                                     <option value="{{ value }}" disabled>{{ media }}</option>
                                     {% else %}
@@ -54,9 +54,15 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
+                            {% for value, media in social.social_media.field.choices %}
+                            {% if social.social_media.value == value %}
+                                <button type="submit" class="btn-exclude-social" id="{{ value }}">X</button>
+                                <input type="hidden" name="exclude-social" id="{{ media.lower }}">
+                            {% endif %}
+                            {% endfor %}
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="plus-field-last">
                         <td>
                             <label for="{{ social.social_media_profile.label.lower }}">{{ social.social_media_profile.label }}</label>
                         </td> 
@@ -65,7 +71,7 @@
                     {% endfor %}
                     {% if socialForms|length < 4 %}
                         {% for i in socialEmptyForm.social_media.field.choices %}
-                        {% if forloop.counter > socialForms|length %}
+                            {% if forloop.counter > socialForms|length %}
                             <tr class="plus-field">
                                 <td>
                                     <label for="{{ socialEmptyForm.social_media.label.lower }}">{{ socialEmptyForm.social_media.label }}</label>
@@ -73,14 +79,7 @@
                                 <td>
                                     <select name="{{ socialEmptyForm.social_media.html_name }}" id="{{ socialEmptyForm.social_media.id_for_label }}">
                                         {% for value, media in socialEmptyForm.social_media.field.choices %}
-                                            {% for social in socialForms %}
-                                                {% if social.social_media.value == value %}
-                                                <option value="{{ value }}" disabled>{{ media }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                            {% if forloop.counter > socialForms|length %}
-                                                <option value="{{ value }}">{{ media }}</option>
-                                            {% endif %}
+                                            <option class="plus-options" value="{{ value }}">{{ media }}</option>
                                         {% endfor %}
                                     </select>
                                 </td>
@@ -91,7 +90,7 @@
                                 </td> 
                                 <td>{{ socialEmptyForm.social_media_profile }}</td>
                             </tr>
-                        {% endif %}
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                     <tr class="plus-button-field">
@@ -107,9 +106,10 @@
                 </table>
             </fieldset>
         </form>
-        {% block scripts %}
-        <script src="{% static './scripts/buttonSocialPlus.js' %}"></script>
-        {% endblock %}
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static './scripts/buttonSocialPlus.js' %}"></script>
+<script src="{% static './scripts/buttonSocialExclude.js' %}"></script>
 {% endblock %}
