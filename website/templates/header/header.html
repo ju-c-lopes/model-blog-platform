@@ -56,23 +56,23 @@
                     <img class="header-login--img" src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." />
                 {% endif %}
             </a>
+            <div class="user-logged">
+                {{ request.user.author.author_name }}
+            </div>
+            <a href="{% url 'logout' %}"><div class="logout">Sair</div>
+            </a>
         </div>
-        <div class="user-logged">
-            {{ request.user.author.nome }}
-        </div>
-        <a href="{% url 'logout' %}"><div class="logout"></div>
-        </a>
     {% endif %}
     </div>
 
     <a class="menu-link"
-    href="#">Home</a>
+    href="/">Home</a>
     <a class="menu-link"
     href="#">Sobre</a>
     <a class="menu-link"
     href="#">Trabalhos</a>
     <a class="menu-link"
-    href="#">Blog</a>
+    href="{% url 'team' %}">Nossa Equipe</a>
     <a class="menu-link"
     href="#">Contato</a>
 </nav>
