@@ -1,23 +1,6 @@
-{% extends 'base.html' %}
-
 {% load static %}
-{% block head-css %}
-<link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
-{% endblock %}
-
-{% block content %}
-
-<main>
-    <div class="display-message-success">
-        {% if messages %}
-            {% for message in messages %}
-            <span class="text-success-message">{{ message }}</span>
-            {% endfor %}
-        {% endif %}
-    </div>
-        <!-- Card do Autor  -->
-
-    <div class="author-presentation-card">
+{% for author in authors %}
+    <div class="author-presentation-card our-team">
         <div class="author-card-top">
             <!-- Imagem do autor -->
             {% if not author.image %}
@@ -27,9 +10,10 @@
             {% endif %}
             <div class="card-top-right">
                 <!-- nome do autor H1 -->
-                <h1 class="author-name-h1">{{ author.author_name }}</h1>
-                {% if author_connected %}
-                    <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
+                {% if request.path == "/nossa-equipe/" %}
+                <a class="author-url" href="{% url 'author' request.user.author.author_url_slug %}"><h2 class="author-name-h2">{{ author.author_name }}</h2></a>
+                {% else %}
+                    <h1 class="author-name-h1">{{ author.author_name }}</h1>
                 {% endif %}
             </div>
         </div>
@@ -50,18 +34,17 @@
                         {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
                         {% endif %}
                     {% endfor %}
-                    </p>
                 {% else %}
-                    <p>
                     {% for i, level in graduations_level %}
                         {% if graduation__graduation_level == i %}
                         {{ level  }} em {{ graduation__course }} na {{ graduation__school }} em {{ graduation__year_graduation }},&nbsp;
                         {% endif %}
                     {% endfor %}
-                    </p>
                 {% endif %}
+                </p>
             {% endfor %}
-        
+
+        {% if request.path != "/nossa-equipe/" %}
         <div class="author-social-media">
                 {% for social_media in author.social_media.all %}
                     {% for i, social in social_media_index %}
@@ -71,22 +54,9 @@
                     {% endfor %}
                 {% endfor %}
         </div>
-        
+        {% endif %}
     </div>
-    
-    <div class="biography">
-        <div class="author-history">
-            
-        </div>
-        
-        <div class="author-graduation">
-            
-        </div>
-        
-        <div class="author-professional-tragetory">
-            
-        </div>
-    </div>
-</main>
-
-{% endblock %}
+    {% if author.user.id == user.id and user.is_authenticated %}
+        {{ author.user.username }}
+    {% endif %}
+{% endfor %}

@@ -12,7 +12,7 @@ for (let i = 1; i < buttonFieldExclude.length - 2; i += 4) {
 }
 
 var buttonExclude = document.querySelectorAll(".btn-exclude-social");
-// console.log(buttonExclude)
+
 // var inputExclude = document.querySelectorAll("")
 
 for (let bt of buttonExclude) {

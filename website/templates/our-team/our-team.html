@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
+{% endblock %}
 
 {% block content %}
+    {% if request.path == "/nossa-equipe/" %}
+        <div>
+            {% include "card-author/card-author.html" %}
+        </div>
+    {% endif %}
 {% endblock %}
