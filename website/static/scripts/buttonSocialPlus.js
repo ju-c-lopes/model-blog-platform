@@ -4,9 +4,11 @@ var newSocialFields = document.querySelectorAll(".plus-field");
 checkMaxNodes()
 socialPlus.addEventListener('click', () => {
     for (let i = 0; i < 1; i++) {
-        newSocialFields[i].style.display = 'flex';
+        newSocialFields[i].style.visibility = 'visible';
+        newSocialFields[i].style.height = 'auto';
         newSocialFields[i].classList.remove('plus-field');
-        newSocialFields[i + 1].style.display = 'flex';
+        newSocialFields[i + 1].style.visibility = 'visible';
+        newSocialFields[i + 1].style.height = 'auto';
         newSocialFields[i + 1].classList.remove('plus-field');
         newSocialFields = document.querySelectorAll(".plus-field");
     }

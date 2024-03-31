@@ -41,7 +41,12 @@
     .author-name-h1 {
         font-size: 1.5em;
     }
+    .author-social-media {
+        height: 24px;
+    }
     .facebook, .instagram, .linkedin, .x {
         margin-right: 0.8em;
+        height: 24px;
+
     }
 }

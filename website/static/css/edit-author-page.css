@@ -45,7 +45,9 @@
         width: 60vw;
     }
     .plus-field {
-        display: none !important;
+        display: flex;
+        visibility: hidden;
+        height: 0;
     }
     .td-for-button {
         position: relative;
