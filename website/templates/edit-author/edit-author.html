@@ -16,7 +16,7 @@
     {% endif %}
 </div>
 <div>
-    <div class="row text-center">
+    <div class="row text-center" id="main-form-div">
         <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
             <fieldset class="author-form">
                 <table class="form-table">
@@ -112,4 +112,5 @@
 {% block scripts %}
 <script src="{% static './scripts/buttonSocialPlus.js' %}"></script>
 <script src="{% static './scripts/buttonSocialExclude.js' %}"></script>
+<script src="{% static './scripts/buttonSave.js' %}"></script>
 {% endblock %}

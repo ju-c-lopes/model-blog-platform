@@ -23,6 +23,6 @@ from django.conf.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('website.urls.HomeUrl')),
-    path('our-team/', include('website.urls.TeamUrl')),
+    path('nossa-equipe/', include('website.urls.TeamUrl')),
     path('logout/', include('website.urls.LogoutUrl')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
