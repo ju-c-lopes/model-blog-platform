@@ -47,7 +47,7 @@
                 Login
             </a>
         </div>
-    {% else %}
+    {% elif request.user.author %}
         <div class="user-logged">
             <a href="{% url 'author' request.user.author.author_url_slug %}">
                 {% if not request.user.author.image %}

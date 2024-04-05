@@ -124,12 +124,12 @@
         justify-content: start;
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
         width: 100%;
-        height: calc(45px + 70px + (37px * 5) + 20px);
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .7);
+        padding-bottom: 20px;
     }
     
     .menu-navigation {
-        top: -250px;
+        top: -275px;
     }
     
     .menu-visible {
@@ -175,6 +175,9 @@
     .search-btn {
         background: none;
         border: none;
+        cursor: pointer;
+        outline: none;
+        overflow: hidden;
     }
     
     .search-btn img {
