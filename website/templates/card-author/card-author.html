@@ -11,7 +11,7 @@
             <div class="card-top-right">
                 <!-- nome do autor H1 -->
                 {% if request.path == "/nossa-equipe/" %}
-                <a class="author-url" href="{% url 'author' request.user.author.author_url_slug %}"><h2 class="author-name-h2">{{ author.author_name }}</h2></a>
+                <a class="author-url" href="{% url 'author' author.author_url_slug %}"><h2 class="author-name-h2">{{ author.author_name }}</h2></a>
                 {% else %}
                     <h1 class="author-name-h1">{{ author.author_name }}</h1>
                 {% endif %}
@@ -56,7 +56,4 @@
         </div>
         {% endif %}
     </div>
-    {% if author.user.id == user.id and user.is_authenticated %}
-        {{ author.user.username }}
-    {% endif %}
 {% endfor %}
