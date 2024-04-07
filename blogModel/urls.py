@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('website.urls.HomeUrl')),
     path('nossa-equipe/', include('website.urls.TeamUrl')),
+    path('login/', include('website.urls.LoginUrl')),
     path('logout/', include('website.urls.LogoutUrl')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

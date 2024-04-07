@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="">
+    <form action="" method="POST">{% csrf_token %}
+        <fieldset>
+            {% for f in form %}
+            <div>
+                {{ f }}
+            </div>
+            <div>
+                {{ f }}
+            </div>
+            {% endfor %}
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

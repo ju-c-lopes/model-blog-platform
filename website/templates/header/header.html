@@ -44,7 +44,7 @@
         <div>
             <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
             <a class="login-link" href="#">
-                Login
+                <a href="{% url 'login' %}">Login</a>
             </a>
         </div>
     {% elif request.user.author %}
