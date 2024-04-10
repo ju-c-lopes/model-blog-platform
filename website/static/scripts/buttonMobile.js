@@ -14,12 +14,13 @@ const openMenu = () => {
 }
 
 function clickButton() {
+    console.log("aqui")
     btn.classList.toggle("active");
     menuNavigation.classList.toggle("menu-visible");
     menuNavigation.classList.contains("menu-visible") ? openMenu() : closeMenu();
 };
 
-btn.onclick = clickButton;//!btn.classList.contains("active");
+btn.onclick = clickButton;
 
 menuNavigation.addEventListener('touchstart' || 'click' || 'scroll', (e) => {
     e.stopPropagation();
@@ -28,7 +29,7 @@ menuNavigation.addEventListener('touchstart' || 'click' || 'scroll', (e) => {
 window.addEventListener('touchstart' || 'click' || 'scroll', (e) => {
     if ((e.target !== menuNavigation) && menuNavigation.classList.contains("menu-visible")) {
         if (e.target === btn) {
-            btn.onclick;
+            return;
         } else {
             childElements = menuNavigation.children;
             for (let child of childElements) {
