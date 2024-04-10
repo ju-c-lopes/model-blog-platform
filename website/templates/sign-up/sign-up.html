@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/sign-up.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+
+<div class="row text-center">
+    <p>Tipo de cadastro</p>
+</div>
+<div class="row main-div">
+    <div class="sign-up-wrapper">
+        <form action="" method="post" accept-charset="utf-8">
+            {% csrf_token %}
+            
+            <fieldset>
+                {% for message in messages %}
+                {% if message %}
+                    <div class="message-erro">{{ message.text }}</div>
+                {% endif %}
+                {% endfor %}
+
+                {% if aprovar %}
+                <div class="aux-screen">
+                    <!-- Aprovação -->
+                    
+                    <div class="approval" id="approval">
+                        <form action="" method="POST" accept-charset="utf-8">{% csrf_token %}
+                            <input type="hidden" name="approval" value="1">
+                            <div>
+                                <label for="super">Administrador</label>
+                                <input type="text" id="super" name="super" required>
+                            </div>
+                            <div>
+                                <label for="pass-super">Senha</label>
+                                <input type="password"  id="pass-super" name="pass-super" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4">Aprovar</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Tipo de Usuario -->
+                
+                <div class="form-field">
+                    <label for="tipo-user">Tipo de Usuário</label>
+                    <select name="tipo-user" id="tipo-user">
+                        <option value="reader" selected>Leitor</option>
+                        <option value="author">Autor</option>
+                    </select>
+                </div>
+
+                <!-- Nome -->
+
+                <div class="form-field">
+                    {% if aprovar %}
+                    <label for="nome" class="label">Usuario</label>
+                    <input type="text" name="nome" id="nome" value="{{ nome }}" />
+                    {% else %}
+                    <label for="{{ form.nome.id_for_label }}" class="label">Usuário</label>
+                    <input type="text" id="{{ form.nome.id_for_label }}" name="nome" class="cadastro-usuario--nome"
+                        placeholder="Digite seu nome" />
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                
+                <div class="form-field">
+
+                    {% if aprovar %}
+                    <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+                    <input type="email" name="email" id="email" value="{{ email }}" />
+                    {% else %}
+                    <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Digite seu email: " />
+                    {% endif %}
+                </div>
+
+                <!-- SENHA 1 -->
+
+                {% if aprovar %}
+                <div class="form-field">
+                    <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
+                    <input type="password" name="password1" value="{{ password }}" />
+                </div>
+                {% else %}
+                <div class="form-field">
+                    <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
+                    <input type="password" name="password1" placeholder="Digite sua Senha" />
+                </div>
+                {% endif %}
+
+                <!-- SENHA 2 -->
+
+                {% if aprovar %}
+                <div class="form-field">
+                    <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
+                    <input type="password" name="password2" value="{{ password }}" />
+                </div>
+                {% else %}
+                <div class="form-field">
+                    <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
+                    <input type="password" name="password2" placeholder="Confirme a senha" />
+                </div>
+                {% endif %}
+
+                <div class="form-field pt-4">
+                    <button type="submit" class="btn btn-primary mt-4" id="finalizar-cadastro">
+                        Finalizar Cadastro
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -35,29 +35,29 @@
     </form>
     
     <!-- LOGIN -->
-    {% if not request.user.is_authenticated %}
+    {% if not request.author.user.is_authenticated %}
     <div class="header-login">
+        <div class="not-logged">
+            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
+            <div class="register">
+                {% if request.path != "/sign-up/" %}
+                <a class="login-link" href="{% url 'sign_up' %}">Cadastre-se</a>
+                {% endif %}
+                <a class="login-link" href="{% url 'login' %}">Login</a>
+            </div>
+        </div>
     {% else %}
     <div class="header-login logged">
-    {% endif %}
-    {% if not request.user.is_authenticated %}
-        <div>
-            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
-            <a class="login-link" href="#">
-                <a href="{% url 'login' %}">Login</a>
-            </a>
-        </div>
-    {% elif request.user.author %}
         <div class="user-logged">
-            <a href="{% url 'author' request.user.author.author_url_slug %}">
-                {% if not request.user.author.image %}
-                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.user.author.author_name }} não tem imagem." />
+            <a href="{% url 'author' request.author.author_url_slug %}">
+                {% if not request.author.image %}
+                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.author.author_name }} não tem imagem." />
                 {% else %}
-                    <img class="header-login--img" src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." />
+                    <img class="header-login--img" src="/media/{{ request.author.image }}" alt="usuário {{ request.author.author_name }} conectado." />
                 {% endif %}
             </a>
             <div class="user-logged">
-                {{ request.user.author.author_name }}
+                {{ request.author.author_name }}
             </div>
             <a href="{% url 'logout' %}"><div class="logout">Sair</div>
             </a>

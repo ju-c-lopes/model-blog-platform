@@ -1,7 +1,7 @@
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
-from django.contrib.auth.models import User
-from website.forms.EditAuthorForm import EditAuthorForm, UserForm, SocialMediaForm
+from website.models import User
+from website.forms.EditAuthorForm import EditAuthorForm, UserChangeForm, SocialMediaForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from website.models.__init__ import ROLE_CHOICE, SOCIAL_MEDIA, ACADEMIC_LEVEL
@@ -25,7 +25,7 @@ def edit_author_profile(request, slug):
     author = get_object_or_404(Author, author_url_slug=slug)
     author_social_media = author.social_media.all()
     form = EditAuthorForm(instance=author)
-    user_form = UserForm(instance=request.user)
+    user_form = UserChangeForm(instance=request.user)
     social_forms = []
     for social in author_social_media:
         social_forms.append(SocialMediaForm(instance=social))
@@ -78,7 +78,7 @@ def check_request_post(request):
     return author_post_request_data
 
 def check_user_form(request, author):
-    user_form = UserForm(request.POST, instance=request.user)
+    user_form = UserChangeForm(request.POST, instance=request.user)
     author_user = check_request_post(request)
     username_free = author_user['check_username_request'] != author.user.username
     if user_form.is_valid() and author_user['username'] != author.user.username and username_free:

@@ -13,8 +13,34 @@ const openMenu = () => {
     menuNavigation.style.transition = "";
 }
 
-btn.onclick = () => {
+function clickButton() {
     btn.classList.toggle("active");
     menuNavigation.classList.toggle("menu-visible");
     menuNavigation.classList.contains("menu-visible") ? openMenu() : closeMenu();
 };
+
+btn.onclick = clickButton;//!btn.classList.contains("active");
+
+menuNavigation.addEventListener('touchstart' || 'click' || 'scroll', (e) => {
+    e.stopPropagation();
+})
+
+window.addEventListener('touchstart' || 'click' || 'scroll', (e) => {
+    if ((e.target !== menuNavigation) && menuNavigation.classList.contains("menu-visible")) {
+        if (e.target === btn) {
+            btn.onclick;
+        } else {
+            childElements = menuNavigation.children;
+            for (let child of childElements) {
+                () => {
+                    if (e.target !== child) {
+                        child.style.display = 'none';
+                    }
+                }
+            }
+            btn.classList.remove("active");
+            menuNavigation.classList.remove("menu-visible");
+            closeMenu();
+        }
+    }
+})

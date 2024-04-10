@@ -23,7 +23,7 @@
 
                     {% for form in userForm %}
                         <tr>
-                            <td><label for="username">Nome do Usuário</label></td>
+                            <td><label for="username">{{ form.label }}</label></td>
                             <td>{{ form }}</td>
                         </tr>
                     {% endfor %}

@@ -1,0 +1,47 @@
+@media screen and (max-width: 768px) {
+    .login-div {
+        margin-top: 7vh;
+        justify-content: center;
+    }
+    .login-div form fieldset,
+    .login-div form fieldset.remember {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90vw;
+    }
+     
+    .login-div form fieldset div {
+        color: #6c6c6c;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 70vw;
+        margin-bottom: 2em;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type= "email"] {
+        padding: 0.5em;
+        border-radius: 1em;
+        outline: none;
+        border: none;
+    }
+    .bt-remember {
+        margin-top: 2em;
+        background: none;
+        border: none;
+        color: blue;
+    }
+    .bt-remember:hover {
+        margin-top: 2em;
+        background: none;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+    .message-error {
+        color: #9f0000;
+        margin-bottom: 2vh;
+    }
+}

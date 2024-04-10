@@ -18,12 +18,12 @@
     .button-menu-mobile {
         background: none;
         margin: 5px;
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-evenly;
         border: none;
         cursor: pointer;
         overflow-x: hidden;
@@ -130,6 +130,7 @@
     
     .menu-navigation {
         top: -275px;
+        transition: 0.4s ease-out;
     }
     
     .menu-visible {
@@ -193,13 +194,28 @@
         width: 100vw;
     }
     
-    .header-login div {
+    .user-logged {
         width: 80%;
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
         margin: 15px 0 15px 0;
+        border: 1px red solid;
+    }
+    .not-logged {
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        margin: 15px 0 15px 0;
+    }
+    .register {
+        width: 40%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
     
     .header-login--img {

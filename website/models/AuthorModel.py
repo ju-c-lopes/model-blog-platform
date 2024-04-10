@@ -1,4 +1,6 @@
 from website.models import *
+from website.models.UserModel import User
+from django.dispatch import receiver
 import uuid
 
 class Author(models.Model):
