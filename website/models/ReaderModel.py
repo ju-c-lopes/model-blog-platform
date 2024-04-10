@@ -1,5 +1,6 @@
 from django.db import models
-from website.models import *
+from website.models import User, post_save
+from django.dispatch import receiver
 
 class Reader(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -23,7 +24,7 @@ class Reader(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         try:
             if created:
-                Usuario.objects.create(user=instance)
+                Reader.objects.create(user=instance)
         except:
             pass
     

@@ -2,19 +2,58 @@
 
 {% load static %}
 
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/login.css' %}" media="all" />
+{% endblock %}
+
 {% block content %}
-<div class="">
-    <form action="" method="POST">{% csrf_token %}
+<div class="row login-div">
+    <div class="message-error">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor%}
+    </div>
+    
+    {% if not remember %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="message-error">
+            {% for message in messages %}
+            {{ message.error }}
+            {% endfor%}
+        </div>
         <fieldset>
             {% for f in form %}
             <div>
-                {{ f }}
-            </div>
-            <div>
+                <label for="{{ f.label.lower }}">{{ f.label }}</label>
                 {{ f }}
             </div>
             {% endfor %}
+
+            {% for message in messages %}
+            {% if message is not None and email_not_found %}
+            <div>
+                <input type="hidden" name="remember" value="1">
+                <button type="submit" class="bt-remember">Não lembro meu email.</button>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            <button class="btn btn-primary mt-4" type="submit">Entrar</button>
         </fieldset>
     </form>
+    {% else %}
+    <form action="" method="POST">{% csrf_token %}
+        <fieldset class="remember">
+            <input type="hidden" name="remember" value="1">
+            <div>
+                <label for="nome">Usuário: </label>
+                <input type="text" name="nome" id="nome" placeholder="Digite o usuário cadastrado.">
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Lembrar</button>
+        </fieldset>
+        
+    </form>
+    {% endif %}
 </div>
 {% endblock %}

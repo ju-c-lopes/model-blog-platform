@@ -1,4 +1,4 @@
-from website.models import *
+from website.models import SOCIAL_MEDIA
 from django.db import models
 from website.models.AuthorModel import Author
 

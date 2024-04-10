@@ -4,55 +4,59 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
 from website.forms.LoginForm import LoginForm
 from website.models import Author
+from django.contrib import messages
+from django.contrib.messages import get_messages
 
 def login_user(request):
     context = None
+    email_not_found = False
 
-    lembrar = request.POST.get('lembrar', False)
-    nome_a_recordar = request.POST.get('nome', False)
+    remember = request.POST.get('remember', False)
+    user_to_remember = request.POST.get('nome', False)
     nome = None
+    print("remember: ", remember, "\n\n")
 
-    # Caso o usuário indique um nome para lembrar
-    if lembrar and nome_a_recordar:
+    # Caso o usuário indique um nome para remember
+    if remember and user_to_remember:
         try:
             # Tentará encontrar o usuário pelo nome
-            nome_a_recordar = nome_a_recordar.strip()
-            nome = Author.objects.filter(nome__contains=nome_a_recordar)
-            lembrar = False
-            # message['type'] = 'success'
+            user_to_remember = user_to_remember.strip()
+            nome = Author.objects.filter(nome__contains=user_to_remember)
+            remember = False
         except:
-            # se não houver usuário com este nome enviará mensagem de não encontrado
-            nome = nome_a_recordar
-            # message['text'] = f"Nome {nome} não encontrado."
-            # message['type'] = 'erro'
-            # message['usuario_inv'] = True
+            nome = user_to_remember
 
-    #el
-    if request.method == 'POST':
+    if request.POST:
+        print(request.POST)
         form = LoginForm(request.POST)
+        print(form.is_valid())
         if form.is_valid():
-            username = request.POST['username']
+            email = request.POST['email']
             password = request.POST['password']
             try:
-                usuario = Author.objects.get(user__username=username)
+                usuario = Author.objects.get(user__email=email)
                 pass_user = check_password(password, usuario.user.password)
-                user = authenticate(username=username, password=password)
+                user = authenticate(email=email, password=password)
+                print("\nUser e Passuser: ===>  ", user is not None and pass_user)
                 if user is not None and pass_user:
                     login(request, user)
                     return redirect('/')
                 else:
-                    pass
-                    # message['text'] = f"Senha inválida."
-                    # message['type'] = 'erro'
+                    messages.error(request, 'Senha inválida.')
+                    
             except:
-                # message['text'] = f"Usuário {username} não existe."
-                # message['type'] = 'erro'
-                # message['usuario_inv'] = True
-                pass
+                print("email except ==> ", email,"\n\n")
+                cut_at_email = email.index('@')
+                print("\nINDEX EMAIL ==> ", cut_at_email)
+                email_cutted = email[cut_at_email:cut_at_email+2]
+                print("\nCUTTED EMAIL ==> ", email_cutted, "\n")
+                masked_email = f'email {email[:3]}___{email_cutted}__.com.br' if email[-2:] == 'br' else f'email {email[:3]}___{email_cutted}__.com'
+                masked_email += " não encontrado."
+                messages.error(request, masked_email)
+                email_not_found = True
+                
         else:
-            pass
-            # message['text'] = "Preencha o formulário corretamente."
-            # message['type'] = 'erro'
+            messages.error(request, "Preencha o formulário corretamente.")
     else:
         form = LoginForm()
     
@@ -60,11 +64,12 @@ def login_user(request):
         'form': form,
         'usuario': request.GET.get('usuario', None) if nome is None else nome,
         # 'message': message,
-        'lembrar': lembrar,
+        'remember': remember,
         'nome': nome,
     }
 
-    # if message['usuario_inv'] and lembrar:
-    #     url = reverse('login') + f"?usuario={context['nome']}&message={context['message']['text']}&type={context['message']['type']}"
-    #     return redirect(url)
+    if email_not_found:
+        context['email_not_found'] = email_not_found
+    print("\nContext ===> ", context, "\n\n")
+    
     return render(request, 'login/login.html', context=context, status=200)

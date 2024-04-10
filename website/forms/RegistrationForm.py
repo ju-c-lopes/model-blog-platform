@@ -1,6 +1,7 @@
 from website.forms import *
 from website.models import Author
-from django.contrib.auth.models import User
+from website.models import User
+from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 
 
 class RegistrationForm(forms.ModelForm):
@@ -22,3 +23,10 @@ class RegistrationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError('Passwords do not match.')
         return password2
+
+
+class UserCreationForm(BaseUserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ("username", "email")

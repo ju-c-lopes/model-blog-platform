@@ -2,7 +2,8 @@ from django import forms
 from django.forms import ModelForm
 from website.models import Author, SocialMedia
 from website.models.__init__ import SOCIAL_MEDIA
-from django.contrib.auth.models import User
+from website.models import User
+from django.contrib.auth.forms import UserChangeForm as BaseUserChangeForm
 
 class EditAuthorForm(ModelForm):
 
@@ -13,13 +14,14 @@ class EditAuthorForm(ModelForm):
         model = Author
         fields = ['author_name', 'image']
 
-class UserForm(ModelForm):
+class UserChangeForm(BaseUserChangeForm):
+    username = forms.CharField(label='Nome do Usuário', widget=forms.TextInput)
+    email = forms.EmailField(label="Email", widget=forms.EmailInput)
 
     class Meta:
         model = User
-        fields = ['username']
+        fields = ("username", "email",)
     
-        username = forms.CharField(label='Nome do Usuário', widget=forms.TextInput)
 
 class SocialMediaForm(ModelForm):
 
