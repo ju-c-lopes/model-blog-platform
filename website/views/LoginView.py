@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
 from website.forms.LoginForm import LoginForm
-from website.models import Author
+from website.models import User, Author, Reader
 from django.contrib import messages
 from django.contrib.messages import get_messages
 
@@ -31,13 +31,15 @@ def login_user(request):
         form = LoginForm(request.POST)
         print(form.is_valid())
         if form.is_valid():
-            email = request.POST['email']
-            password = request.POST['password']
+            email = request.POST.get('email')
+            password = request.POST.get('password')
             try:
-                usuario = Author.objects.get(user__email=email)
-                pass_user = check_password(password, usuario.user.password)
+                user_login = User.objects.get(email=email)
+                print("\n\nUser ==> ", user_login, "\n\nUser_Password ==> ", user_login.password, "\n\nRequest Password ==> ", password)
+                pass_user = check_password(password, user_login.password)
+                print("\nPass_User ==> ", pass_user,  "\n\nUser_Login_Password ==> ", user_login.password)
                 user = authenticate(email=email, password=password)
-                print("\nUser e Passuser: ===>  ", user is not None and pass_user)
+                print("\nUser e Passuser: ===>  ", user_login is not None and pass_user)
                 if user is not None and pass_user:
                     login(request, user)
                     return redirect('/')

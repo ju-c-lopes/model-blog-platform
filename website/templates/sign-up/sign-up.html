@@ -23,14 +23,6 @@
             {% csrf_token %}
             
             <fieldset>
-                {% for message in messages %}
-                {% if messages.error %}
-                    <div class="message-erro">{{ message.text }}</div>
-                {% else %}
-                    <div class="message-success">{{ message.text }}</div>
-                {% endif %}
-                {% endfor %}
-
                 {% if aprovar %}
                 <div class="aux-screen">
                     <!-- Aprovação -->
@@ -74,17 +66,30 @@
                         placeholder="Digite seu nome" />
                     {% endif %}
                 </div>
-
+                
                 <!-- Email -->
                 
                 <div class="form-field">
 
                     {% if aprovar %}
                     <label for="{{ form.email.id_for_label }}" class="label">Email</label>
-                    <input type="email" name="email" id="email" value="{{ email }}" />
+                    <input type="email" name="email" id="email" value="{{ form.email }}" />
                     {% else %}
                     <label for="{{ form.email.id_for_label }}" class="label">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Digite seu email: " />
+                    <input type="email" name="email" id="{{ form.email.id_for_label }}" placeholder="Digite seu email: " />
+                    {% endif %}
+                </div>
+                
+                <!-- Telefone -->
+                
+                <div class="form-field">
+
+                    {% if aprovar %}
+                    <label for="{{ form.phone.id_for_label }}" class="label">Celular:</label>
+                    <input type="tel" name="phone" id="{{ form.phone.id_for_label }}" value="{{ form.phone }}" />
+                    {% else %}
+                    <label for="{{ form.phone.id_for_label }}" class="label">Celular:</label>
+                    <input type="tel" name="phone" id="{{ form.phone.id_for_label }}" placeholder="Digite seu celular: " />
                     {% endif %}
                 </div>
 
@@ -93,12 +98,12 @@
                 {% if aprovar %}
                 <div class="form-field">
                     <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
-                    <input type="password" name="password1" value="{{ password }}" />
+                    <input type="password" name="password1" id="{{ form.password1.id_for_label }}" value="{{ form.password1 }}" />
                 </div>
                 {% else %}
                 <div class="form-field">
                     <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
-                    <input type="password" name="password1" placeholder="Digite sua Senha" />
+                    <input type="password" name="password1" id="{{ form.password1.id_for_label }}" placeholder="Digite sua Senha" />
                 </div>
                 {% endif %}
 
@@ -107,12 +112,12 @@
                 {% if aprovar %}
                 <div class="form-field">
                     <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
-                    <input type="password" name="password2" value="{{ password }}" />
+                    <input type="password" name="password2" id="{{ form.password2.id_for_label }}" value="{{ password }}" />
                 </div>
                 {% else %}
                 <div class="form-field">
                     <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
-                    <input type="password" name="password2" placeholder="Confirme a senha" />
+                    <input type="password" name="password2" id="{{ form.password2.id_for_label }}" placeholder="Confirme a senha" />
                 </div>
                 {% endif %}
 
