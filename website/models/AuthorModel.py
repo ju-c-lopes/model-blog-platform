@@ -1,6 +1,6 @@
 from website.models import *
 from website.models.UserModel import User
-from django.dispatch import receiver
+#from django.dispatch import receiver
 import uuid
 
 class Author(models.Model):
@@ -26,20 +26,20 @@ class Author(models.Model):
     # Ao criar este método, já foi criado o superuser, por isso o uso do try
     # para não quebrar o app ao fazer login com admin
     
-    @receiver(post_save, sender=User)
+    """@receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         try:
             if created:
                 Author.objects.create(user=instance)
         except:
-            pass
+            raise "Não foi possível criar o usuário."
     
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         try:
             instance.author.save()
         except:
-            pass
+            pass"""
 
     class Meta:
         db_table = 'Author'

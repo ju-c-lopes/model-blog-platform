@@ -1,7 +1,32 @@
 @media screen and (max-width: 768px) {
+    p {
+        position: relative;
+        /*top: calc(4em + 30px);*/
+        margin: 20px auto 0 auto;
+        /*color: #9c9c9c;*/
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-align: center;
+        font-weight: 600;
+        font-size: 36px;
+    }
     .main-div {
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
         width: 100%;
+    }
+    .messages {
+        position: relative;
+        margin: 0 auto 2vh auto;
+        height: 20px;
+    }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
     }
     .sign-up-wrapper {
         width: 100%;
