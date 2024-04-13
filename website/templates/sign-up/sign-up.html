@@ -8,9 +8,9 @@
 {% block content %}
 
 <div class="row text-center">
-    <p>Cadastro</p>
+    <h1>Cadastro</h1>
 </div>
-<div width="100%" height="20" class="messages">
+<div height="40" class="messages">
 {% for message in messages %}
     <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
         {{ message }}
