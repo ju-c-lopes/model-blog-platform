@@ -8,20 +8,17 @@
 
 {% block content %}
 <div class="row login-div">
-    <div class="message-error">
-        {% for message in messages %}
-        {{ message }}
-        {% endfor%}
+    <div width="100%" height="20" class="messages">
+    {% for message in messages %}
+        <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </div> 
+    {% endfor %}
     </div>
     
     {% if not remember %}
     <form action="" method="POST">
         {% csrf_token %}
-        <div class="message-error">
-            {% for message in messages %}
-            {{ message.error }}
-            {% endfor%}
-        </div>
         <fieldset>
             {% for f in form %}
             <div>

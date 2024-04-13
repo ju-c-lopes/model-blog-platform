@@ -19,6 +19,9 @@
         width: 90%;
         margin-bottom: 2em;
     }
+    label {
+        text-shadow: rgba(255, 255, 255, .5);
+    }
     input[type="text"],
     input[type="password"],
     input[type= "email"] {
@@ -39,8 +42,19 @@
         font-weight: 600;
         text-decoration: underline;
     }
-    .message-error {
-        color: #9f0000;
-        margin-bottom: 2vh;
+    .messages {
+        position: relative;
+        margin: 0 auto 2vh auto;
+        height: 20px;
     }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
+    }    
 }
