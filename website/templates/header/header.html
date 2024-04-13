@@ -35,27 +35,16 @@
     </form>
     
     <!-- LOGIN -->
-    {% if not request.user.is_authenticated and not request.user.author or not request.user.reader %}
-    <div class="header-login">
-        <div class="not-logged">
-            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
-            <div class="register">
-                {% if request.path != "/sign-up/" %}
-                <a class="login-link" href="{% url 'sign_up' %}">Cadastre-se</a>
-                {% endif %}
-                <a class="login-link" href="{% url 'login' %}">Login</a>
-            </div>
-        </div>
-    {% else %}
+    {% if request.user.author or request.user.reader %}
     <div class="header-login logged">
         <div class="user-logged">
             {% if request.user.author %}
             <a href="{% url 'author' request.user.author.author_url_slug %}">
             {% endif %}
-                {% if not request.user.author.image or not request.user.reader.image %}
-                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.author.author_name }} não tem imagem." />
+                {% if request.user.author.image or request.user.reader.image %}
+                <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." {% else %} src="/media/{{ request.user.reader.image }}" alt="usuário {{ request.user.reader.reader_name }} conectado." {% endif %}/>
                 {% else %}
-                    <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." {% else %} src="/media/{{ request.user.reader.image }}" alt="usuário {{ request.user.reader.reader_name }} conectado." {% endif %}/>
+                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.author.author_name }} não tem imagem." />
                 {% endif %}
             </a>
             <div class="user-logged">
@@ -67,6 +56,17 @@
             </div>
             <a href="{% url 'logout' %}"><div class="logout">Sair</div>
             </a>
+        </div>
+    {% else %}
+    <div class="header-login">
+        <div class="not-logged">
+            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
+            <div class="register">
+                {% if request.path != "/sign-up/" %}
+                <a class="login-link" href="{% url 'sign_up' %}">Cadastre-se</a>
+                {% endif %}
+                <a class="login-link sign-up-login-link" href="{% url 'login' %}">Login</a>
+            </div>
         </div>
     {% endif %}
     </div>

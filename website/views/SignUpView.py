@@ -5,6 +5,7 @@ from website.models import User, Author, Reader
 from website.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.messages import get_messages
+import unicodedata
 
 def sign_up_user(request):
     user_form = UserCreationForm()
@@ -46,18 +47,23 @@ def sign_up_user(request):
 
 def create_author(request, user):
     author_name = request.POST.get("nome", None)
+
+    replace_accentuation = unicodedata.normalize("NFD", author_name)
+    replace_accentuation = replace_accentuation.encode("ascii", "ignore")
+    author_name_replaced = replace_accentuation.decode("utf-8")
+
     slug = str()
-    for n in author_name.split(" "):
-        if n == author_name.split(" ")[-1]:
+    for n in author_name_replaced.split(" "):
+        if n == author_name_replaced.split(" ")[-1]:
             slug += n.lower()
         else:
             slug += f"{n.lower()}-"
     
     author = Author(
-       user = user,
-       author_name = author_name,
-       author_url_slug = slug,
-       access_level = 1,
+        user = user,
+        author_name = author_name,
+        author_url_slug = slug,
+        access_level = 1,
     )
     author.save()
     return author

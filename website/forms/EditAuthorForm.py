@@ -17,10 +17,12 @@ class EditAuthorForm(ModelForm):
 class UserChangeForm(BaseUserChangeForm):
     username = forms.CharField(label='Nome do Usuário', widget=forms.TextInput)
     email = forms.EmailField(label="Email", widget=forms.EmailInput)
+    password = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={'placeholder': 'Digite a nova senha'}), required=False)
+    confirm_pass = forms.CharField(label="Confirme a senha", widget=forms.PasswordInput(attrs={'placeholder': 'Repita a nova senha'}), required=False)
 
     class Meta:
         model = User
-        fields = ("username", "email",)
+        fields = ("username", "email", "password", "confirm_pass")
     
 
 class SocialMediaForm(ModelForm):
