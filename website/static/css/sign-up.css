@@ -1,4 +1,11 @@
 @media screen and (max-width: 768px) {
+    .register {
+        position: relative;
+    }
+    .sign-up-login-link {
+        position: absolute;
+        right: 0;
+    }
     h1 {
         position: relative;
         margin: 20px auto 0 auto;

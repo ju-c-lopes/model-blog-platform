@@ -11,7 +11,7 @@
         font-weight: 600;
         font-size: 36px;
     }
-    form {
+    .login-div form {
         padding-top: 2vh;
     }
     .login-div form fieldset,

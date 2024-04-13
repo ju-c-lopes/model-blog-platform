@@ -27,7 +27,6 @@ def login_user(request):
             nome = user_to_remember
 
     if request.POST:
-        print(request.POST)
         form = LoginForm(request.POST)
         print(form.is_valid())
         if form.is_valid():

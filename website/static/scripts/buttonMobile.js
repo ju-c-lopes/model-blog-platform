@@ -14,7 +14,6 @@ const openMenu = () => {
 }
 
 function clickButton() {
-    console.log("aqui")
     btn.classList.toggle("active");
     menuNavigation.classList.toggle("menu-visible");
     menuNavigation.classList.contains("menu-visible") ? openMenu() : closeMenu();
