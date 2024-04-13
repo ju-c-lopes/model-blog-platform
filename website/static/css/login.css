@@ -1,26 +1,39 @@
 @media screen and (max-width: 768px) {
     .login-div {
-        margin-top: 7vh;
+        margin-top: 3vh;
         justify-content: center;
+    }
+    h1 {
+        position: relative;
+        margin: 20px auto 0 auto;
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-align: center;
+        font-weight: 600;
+        font-size: 36px;
+    }
+    form {
+        padding-top: 2vh;
     }
     .login-div form fieldset,
     .login-div form fieldset.remember {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 90vw;
+        width: 100vw;
+        margin-top: 2vh;
     }
     .login-div form fieldset div {
-        color: #6c6c6c;
+        color: #b9b9b9;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         width: 90%;
         margin-bottom: 2em;
     }
     label {
-        text-shadow: rgba(255, 255, 255, .5);
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+        margin-bottom: 0;
     }
     input[type="text"],
     input[type="password"],
@@ -45,7 +58,8 @@
     .messages {
         position: relative;
         margin: 0 auto 2vh auto;
-        height: 20px;
+        width: 80vw;
+        height: 40px;
     }
     .message-error {
         color: #ff4f4f;

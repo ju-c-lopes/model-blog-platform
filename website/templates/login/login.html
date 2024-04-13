@@ -7,8 +7,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="row login-div">
-    <div width="100%" height="20" class="messages">
+<div class="column login-div">
+    <h1>Entre com sua conta</h1>
+    <div height="40" class="messages">
     {% for message in messages %}
         <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
             {{ message }}
