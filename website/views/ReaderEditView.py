@@ -9,10 +9,8 @@ def reader_edit(request):
     reader = get_object_or_404(Reader, user__email=request.user.email)
     form = EditReaderForm(instance=reader)
     user_form = UserChangeForm(instance=request.user)
-    send_message = False
 
     if request.POST:
-        print(request.POST)
         username_free = check_user_form(request, reader)
         reader_request_post = check_request_post(request)
         if reader_request_post is not None:
@@ -46,7 +44,6 @@ def check_user_form(request, reader):
     user_form = UserChangeForm(request.POST, instance=request.user)
     reader_user = check_request_post(request)
     username_free = reader_user['check_username_request'] != reader.user.username
-    print("\n\nUserChangeForm IS VALID ==> ", user_form.is_valid())
     if user_form.is_valid() and reader_user['username'] != reader.user.username and username_free:
         user_reader = get_object_or_404(User, id=reader.user.id)
         user_reader.username = reader_user['username']

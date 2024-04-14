@@ -13,5 +13,12 @@
 
 * Project Initiated
 * Made Header and Menu funtionality
-* Made card profile
+* Made Our Team Page
+* Made card profile which is userd in Author Page and Our Team Page
+* Made author edit profile (needs more functionality later)
 * Made edit social media profile functionality with messages return
+* Rewrite the user custom model which has been used to create author and reader profiles
+* Made Sign Up page with reader and author type register
+* Made Reader edit profile (more simple than author)
+* Made login page
+* Made Password validation with JavaScript
