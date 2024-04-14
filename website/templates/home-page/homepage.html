@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" type="text/css" media="all" />
+{% endblock %}
 
 {% block content %}
+<div height="40" class="messages">
+{% for message in messages %}
+    <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
+        {{ message }}
+    </div> 
+{% endfor %}
+</div>
 <div class="screen-size">
     
 </div>
 {% endblock %}
-{% load static %}
 {% block scripts %}
 <script src="{% static 'scripts/tela.js' %}"></script>
 {% endblock %}
