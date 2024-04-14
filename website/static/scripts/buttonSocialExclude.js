@@ -13,8 +13,6 @@ for (let i = 1; i < buttonFieldExclude.length - 2; i += 4) {
 
 var buttonExclude = document.querySelectorAll(".btn-exclude-social");
 
-// var inputExclude = document.querySelectorAll("")
-
 for (let bt of buttonExclude) {
     for (let social of socialMedia) {
         bt.addEventListener('click', () => {

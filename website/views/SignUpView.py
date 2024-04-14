@@ -9,7 +9,6 @@ import unicodedata
 
 def sign_up_user(request):
     user_form = UserCreationForm()
-    print(request.POST)
     if request.POST:
         user_form = UserCreationForm(request.POST)
         cont = len(User.objects.all()) + 1
@@ -19,8 +18,6 @@ def sign_up_user(request):
         password1 = request.POST.get("password1", None)
         password2 = request.POST.get("password2", None)
         is_staff = True if request.POST.get("tipo-user") == "author" else False
-        
-        print(request.POST.get("phone"))
         
         if password1 == password2:
             user = User.objects.create_user(
@@ -36,7 +33,6 @@ def sign_up_user(request):
             print("\nDefinido messages \n")
             return redirect("login")
         else:
-            #print(messages.get_messages(request))
             messages.error(request, "A senha digitada não confere.")
             
     context ={
