@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/edit-author-page.css' %}" media="all" />
+{% endblock %}
+
+{% block content %}
+<div class="row text-center edit-user-display">
+    <p class="edit-user">Editando o usuário<br><span>{{ request.user.reader.reader_name }}</span>.</p>
+</div>
+<div class="display-message-error">
+    {% if messages %}
+        {% for message in messages %}
+        <span class="text-error-message">{{ message }}</span>
+        {% endfor %}
+    {% endif %}
+</div>
+<div>
+    <div class="row text-center" id="main-form-div">
+        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <fieldset class="reader-form">
+                <table class="form-table">
+                    {% for form in userForm %}
+                        <tr>
+                            <td><label for="username">{{ form.label }}</label></td>
+                            <td>{{ form }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% for form in readerForm %}
+                    <tr>
+                        <td><label for="{{ form.label.lower }}">{{ form.label }}</label></td>
+                        <td>{{ form }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary w-100 save-button">
+                            Salvar
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static './scripts/buttonSave.js' %}"></script>
+{% endblock %}

@@ -40,6 +40,8 @@
         <div class="user-logged">
             {% if request.user.author %}
             <a href="{% url 'author' request.user.author.author_url_slug %}">
+            {% else %}
+            <a href="{% url 'reader-edit' %}">
             {% endif %}
                 {% if request.user.author.image or request.user.reader.image %}
                 <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." {% else %} src="/media/{{ request.user.reader.image }}" alt="usuário {{ request.user.reader.reader_name }} conectado." {% endif %}/>
