@@ -30,7 +30,7 @@
 <figure>
 <img src="./website/static/img/pass-valid.gif" style="width: 200px;" alt="Password Validation using JavaScript" title ="Password Validation using Javascript">
 <figcaption>Password Validation using Javascript</figcaption>
-</figure>
+</figure><br><br>
 
-<p><span style="margin-left:20px;">This</span> functionality checks if the password contain Upper character, Number, Special character, and length between 10 and 16 characters.</p>
-<p><span style="margin-left:20px;">Beyond</span> that, finish register button is activated only if this requirements are accomplished and the first password and the confirmation are the same.</p>
+<p>This functionality checks if the password contain Upper character, Number, Special character, and length between 10 and 16 characters.</p>
+<p>Beyond that, finish register button is activated only if this requirements are accomplished and the first password and the confirmation are the same.</p>
