@@ -1,6 +1,7 @@
 var buttonShowHide = document.querySelectorAll(".show-hide-btn");
 var inputTypePass = document.querySelectorAll(".input-type-pass");
 var inputLoginPass = document.querySelector("#id_password");
+var buttonShowLoginPass = document.querySelector(".show-hide-btn");
 
 for (let i = 0; i < buttonShowHide.length; i++) {
     buttonShowHide[i].addEventListener('click' || 'touchstart', () => {
@@ -13,3 +14,13 @@ for (let i = 0; i < buttonShowHide.length; i++) {
         }
     })
 }
+
+buttonShowLoginPass.addEventListener("click" || "touchstart", () => {
+    if (inputLoginPass.getAttribute("type") == "password") {
+        inputLoginPass.setAttribute("type", "text");
+        buttonShowLoginPass.innerHTML = "<img src='/website/static/img/view.png' />";
+    } else {
+        inputLoginPass.setAttribute("type", "password");
+        buttonShowLoginPass.innerHTML = "<img src='/website/static/img/hide.png' />";
+    }
+})
