@@ -30,7 +30,6 @@ def sign_up_user(request):
             
             type_user_created = create_author(request, user) if request.POST.get("tipo-user") == "author" else create_reader(request, user)
             messages.success(request, f"O usuário {user.username} foi registrado com sucesso.")
-            print("\nDefinido messages \n")
             return redirect("login")
         else:
             messages.error(request, "A senha digitada não confere.")
