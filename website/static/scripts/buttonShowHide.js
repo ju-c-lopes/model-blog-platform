@@ -1,5 +1,6 @@
 var buttonShowHide = document.querySelectorAll(".show-hide-btn");
 var inputTypePass = document.querySelectorAll(".input-type-pass");
+var inputLoginPass = document.querySelector("#id_password");
 
 for (let i = 0; i < buttonShowHide.length; i++) {
     buttonShowHide[i].addEventListener('click' || 'touchstart', () => {
