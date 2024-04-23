@@ -22,6 +22,7 @@
 * Made Reader edit profile (more simple than author)
 * Made login page
 * Made Password validation with JavaScript
+* Setting show hide password on Login Page
 
 <hr>
 

@@ -21,12 +21,22 @@
     <form action="" method="POST">
         {% csrf_token %}
         <fieldset>
-            {% for f in form %}
-            <div>
-                <label for="{{ f.label.lower }}">{{ f.label }}</label>
-                {{ f }}
+            <div class="form-fieldset">
+                {% for f in form %}
+                <div class="form-field">
+                    {% if forloop.counter == 2 %}
+                    <label for="{{ f.label.lower }}">{{ f.label }}</label>
+                    {{ f }}
+                    <button class="show-hide-btn" type="button">
+                        <img src="/website/static/img/hide.png" />
+                    </button>
+                    {% else %}
+                    <label for="{{ f.label.lower }}">{{ f.label }}</label>
+                    {{ f }}
+                {% endif %}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
 
             {% for message in messages %}
             {% if message is not None and email_not_found %}
@@ -54,4 +64,7 @@
     </form>
     {% endif %}
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'scripts/buttonShowHide.js' %}"></script>
 {% endblock %}
