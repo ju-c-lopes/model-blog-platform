@@ -13,7 +13,9 @@ def sign_up_user(request):
         user_form = UserCreationForm(request.POST)
         cont = len(User.objects.all()) + 1
         
-        treated_username = request.POST.get("nome", None).split(" ")[0].lower() + f"-user{cont}"
+        request_name = treat_accentuation(request.POST.get("nome", None))
+        
+        treated_username = request_name.split(" ")[0].lower() + f"-user{cont}"
         
         password1 = request.POST.get("password1", None)
         password2 = request.POST.get("password2", None)
@@ -28,9 +30,11 @@ def sign_up_user(request):
                 is_staff = is_staff,
             )
             
-            type_user_created = create_author(request, user) if request.POST.get("tipo-user") == "author" else create_reader(request, user)
+            if user.is_staff:
+                create_author(request, user)
+            else:
+                create_reader(request, user)
             messages.success(request, f"O usuário {user.username} foi registrado com sucesso.")
-            print("\nDefinido messages \n")
             return redirect("login")
         else:
             messages.error(request, "A senha digitada não confere.")
@@ -43,10 +47,7 @@ def sign_up_user(request):
 
 def create_author(request, user):
     author_name = request.POST.get("nome", None)
-
-    replace_accentuation = unicodedata.normalize("NFD", author_name)
-    replace_accentuation = replace_accentuation.encode("ascii", "ignore")
-    author_name_replaced = replace_accentuation.decode("utf-8")
+    author_name_replaced = treat_accentuation(author_name)
 
     slug = str()
     for n in author_name_replaced.split(" "):
@@ -74,3 +75,9 @@ def create_reader(request, user):
     )
     reader.save()
     return reader
+
+def treat_accentuation(request_name):
+    replace_accentuation = unicodedata.normalize("NFD", request_name)
+    replace_accentuation = replace_accentuation.encode("ascii", "ignore")
+    author_name_replaced = replace_accentuation.decode("utf-8")
+    return author_name_replaced
