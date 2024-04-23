@@ -22,14 +22,15 @@
         width: 100vw;
         margin-top: 2vh;
     }
-    .login-div form fieldset div {
+    .form-fieldset {
         color: #b9b9b9;
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
-        width: 90%;
-        margin-bottom: 2em;
+        width: 100%;
+        height: 20vh;
+        /* margin-bottom: 2em; */
     }
     label {
         text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
@@ -70,5 +71,26 @@
         color: olive;
         background-color: #BBB157;
         text-align: center;
-    }    
+    }
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-field:nth-child(2) {
+        position: relative;
+    }
+    .show-hide-btn, .show-hide-btn:focus {
+        position: absolute;
+        background: none;
+        width: 30;
+        outline: none;
+        border: none;
+        right: 5px;
+        bottom: 5px;
+    }
+    .show-hide-btn img {
+        background: none;
+        width: 30px;
+    }
 }
