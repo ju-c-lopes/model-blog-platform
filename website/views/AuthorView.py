@@ -60,6 +60,7 @@ def edit_author_profile(request, slug):
         'userForm': user_form,
         'authorForm': form,
         'socialForms': social_forms,
+        'academic_levels': ACADEMIC_LEVEL,
     }
     return render(request, template_name='edit-author/edit-author.html', context=context)
 
@@ -106,6 +107,7 @@ def update_social_media(request, author_social_media):
             author_social_media[i].save()
             updated = True
     return updated
+
 def create_social_media(request, author_request_post):
     social_media_request_post = list(zip(request.POST.getlist('social_media'), request.POST.getlist('social_media_profile')))
     author = Author.objects.get(user__username=author_request_post['username'])
@@ -125,3 +127,6 @@ def exclude_social_media(request, author):
     for exclude_request in exclusions:
         if exclude_request != '':
             social_media = author.social_media.get(social_media=exclude_request).delete()
+
+def set_graduation():
+    pass

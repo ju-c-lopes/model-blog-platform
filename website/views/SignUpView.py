@@ -5,7 +5,7 @@ from website.models import User, Author, Reader
 from website.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.messages import get_messages
-import unicodedata
+import unicodedata, re
 
 def sign_up_user(request):
     user_form = UserCreationForm()
@@ -21,7 +21,7 @@ def sign_up_user(request):
         password2 = request.POST.get("password2", None)
         is_staff = True if request.POST.get("tipo-user") == "author" else False
         
-        if password1 == password2:
+        if check_password_request(password1, password2):
             user = User.objects.create_user(
                 username = treated_username,
                 email = request.POST.get("email", None),
@@ -81,3 +81,14 @@ def treat_accentuation(request_name):
     replace_accentuation = replace_accentuation.encode("ascii", "ignore")
     author_name_replaced = replace_accentuation.decode("utf-8")
     return author_name_replaced
+
+def check_password_request(pass1, pass2):
+    validations = [pass1 == pass2]
+    validations.append(len(pass2) >= 10 and len(pass2) <= 16)
+    upper_regex = re.compile(r"[A-Z]").search(pass2)
+    validations.append(upper_regex)
+    number_regex = re.compile(r"\d").search(pass2)
+    validations.append(number_regex)
+    special_regex = re.compile(r"[\W_]").search(pass2)
+    validations.append(special_regex)
+    return all(validations)
