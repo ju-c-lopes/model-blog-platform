@@ -2,3 +2,4 @@
 .idea
 run_manage_py_with_test.py
 .vscode
+blog-model.code-workspace
