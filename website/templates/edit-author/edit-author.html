@@ -105,6 +105,19 @@
                     </tr>
                 </table>
             </fieldset>
+            
+            <fieldset class="graduations">
+                <h2>Tipo de Formação</h2>
+                <div class="academic-level">
+                    <label for="level">Formação: </label>
+                    <select name="level" id="level">
+                        <option value="" disabled>Selecione</option>
+                        {% for level in academic_levels %}
+                        <option value="{{ level.0 }}">{{ level.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
         </form>
     </div>
 </div>

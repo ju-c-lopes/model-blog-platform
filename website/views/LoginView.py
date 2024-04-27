@@ -13,7 +13,6 @@ def login_user(request):
     remember = request.POST.get('remember', False)
     user_to_remember = request.POST.get('nome', False)
     nome = None
-    print("remember: ", remember, "\n\n")
 
     # Caso o usuário indique um nome para remember
     if remember and user_to_remember:
