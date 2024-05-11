@@ -1,3 +1,6 @@
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ju-c-lopes/model-blog-platform/test.yml?branch=platform&event=push&style=flat&label=Actions-Push-Tests)
+---
+
 # Starting the Model Blog Website
 <hr>
 
