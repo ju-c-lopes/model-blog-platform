@@ -1,4 +1,6 @@
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ju-c-lopes/model-blog-platform/test.yml?branch=platform&event=push&style=flat&label=Actions-Push-Tests)
+| TEST |![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ju-c-lopes/model-blog-platform/test.yml?branch=platform&event=push&style=flat&label=Actions-Push-Tests) |
+| COVERAGE | https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/ju-c-lopes/gistblogmodel/raw/covbadge.json |
+
 ---
 
 # Starting the Model Blog Website
