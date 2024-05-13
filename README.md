@@ -28,10 +28,8 @@
 * Made login page
 * Made Password validation with JavaScript
 * Setting show hide password on Login Page
-* Made Password validation in a view Django
-* Made test to check if view password validation works
 
----
+<hr>
 
 ## Screenshot
 
@@ -40,19 +38,5 @@
 <figcaption>Password Validation using Javascript</figcaption>
 </figure><br><br>
 
----
-
-## Front-end password check
-
 <p>This functionality checks if the password contain Upper character, Number, Special character, and length between 10 and 16 characters.</p>
-<p>Beyond that, finish register button is activated only if this requirements are accomplished and the first password and confirmation are the same.</p>
-<p>However, this doesn't prevent malicious user modify the function through DevTools and submit an unsafe password, therefore we worked to prevent bad requests</p>
-
----
-
-## Backend password check
-
-<p>To prevent these possible bad requests, we validate passwords submited into a view, checking the requirements, registring only if requirements were accomplished</p>
-<p>The view were tested, checking if it works appropriately</p>
-
----
+<p>Beyond that, finish register button is activated only if this requirements are accomplished and the first password and the confirmation are the same.</p>
