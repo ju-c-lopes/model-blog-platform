@@ -3,6 +3,7 @@
 | COVERAGE | [![Coverage Status](./coverage-badge.svg)](./reports/coverage/index.html) |
 
 ---
+* _Project paused at this moment..._
 
 # Starting the Model Blog Website
 ---
