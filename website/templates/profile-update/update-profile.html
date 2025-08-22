@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head-css %}
+<link rel="stylesheet" type="text/css" href="{% static './css/sign-up.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+<div class="row text-center">
+    {% if is_creating %}
+        <h1>Complete seu Perfil</h1>
+        <p>Para continuar, você precisa escolher o tipo de perfil.</p>
+    {% else %}
+        <h1>Atualizar Perfil</h1>
+        <p>Você pode alterar o tipo de perfil e suas informações.</p>
+    {% endif %}
+</div>
+
+<div class="messages">
+{% for message in messages %}
+    <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
+        {{ message }}
+    </div> 
+{% endfor %}
+</div>
+
+<div class="row main-div">
+    <div class="sign-up-wrapper">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <fieldset>
+                <!-- Profile Type Selection -->
+                <div class="form-field">
+                    <label>{{ form.profile_type.label }}</label>
+                    {% for choice in form.profile_type %}
+                        <div class="radio-option">
+                            {{ choice.tag }}
+                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                    {% if not is_creating %}
+                        <small class="form-text text-muted">
+                            Alterar o tipo de perfil removerá os dados do perfil anterior.
+                        </small>
+                    {% endif %}
+                </div>
+
+                <!-- Name Field -->
+                <div class="form-field">
+                    <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+
+                <!-- Image Field -->
+                <div class="form-field">
+                    <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+                    {{ form.image }}
+                    {% if not is_creating %}
+                        <small class="form-text text-muted">
+                            Deixe em branco para manter a imagem atual.
+                        </small>
+                    {% endif %}
+                </div>
+
+                <div class="form-field pt-4">
+                    <button type="submit" class="btn btn-primary mt-4">
+                        {% if is_creating %}
+                            Completar Perfil
+                        {% else %}
+                            Atualizar Perfil
+                        {% endif %}
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

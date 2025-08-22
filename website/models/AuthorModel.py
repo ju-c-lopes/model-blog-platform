@@ -3,6 +3,7 @@ from website.models.UserModel import User
 #from django.dispatch import receiver
 import uuid
 
+
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     author_name = models.CharField(max_length=45, blank=True, null=True)

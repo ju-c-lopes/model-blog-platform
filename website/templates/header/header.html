@@ -24,43 +24,183 @@
 </div>
 
 <nav class="menu-navigation">
+    <!-- MOBILE PROFILE SECTION -->
+    {% if request.user.is_authenticated %}
+        {% if request.user.author or request.user.reader %}
+        <div class="mobile-profile-section">
+            <div class="mobile-profile-header">
+                <div class="mobile-profile-image">
+                    {% if request.user.author %}
+                        {% if request.user.author.image %}
+                            <img src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" />
+                        {% else %}
+                            <img src="{% static './img/no-user.jpg' %}" alt="{{ request.user.author.author_name }}" />
+                        {% endif %}
+                    {% else %}
+                        {% if request.user.reader.image %}
+                            <img src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" />
+                        {% else %}
+                            <img src="{% static './img/no-user.jpg' %}" alt="{{ request.user.reader.reader_name }}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="mobile-profile-info">
+                    <div class="mobile-profile-name">
+                        {% if request.user.author %}
+                            <a href="{% url 'edit_author' request.user.author.author_url_slug %}">{{ request.user.author.author_name }}</a>
+                        {% else %}
+                            <a href="{% url 'reader-edit' %}">{{ request.user.reader.reader_name }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="mobile-profile-type">
+                        {% if request.user.author %}
+                            Author
+                        {% else %}
+                            Reader
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mobile-profile-actions">
+                {% if request.user.author %}
+                    <a href="{% url 'author' request.user.author.author_url_slug %}" class="mobile-profile-btn">View Profile</a>
+                    <a href="{% url 'author' request.user.author.author_url_slug %}" class="mobile-profile-btn">Edit Profile</a>
+                    <a href="{% url 'create_post' %}" class="mobile-profile-btn mobile-profile-btn-primary">Create Post</a>
+                {% else %}
+                    <a href="{% url 'reader-edit' %}" class="mobile-profile-btn">Edit Profile</a>
+                    <a href="#" class="mobile-profile-btn">Saved Posts</a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
+            </div>
+        </div>
+        {% else %}
+        <!-- AUTHENTICATED USER WITHOUT PROFILE -->
+        <div class="mobile-profile-section">
+            <div class="mobile-profile-header">
+                <div class="mobile-profile-image">
+                    <img src="{% static './img/no-user.jpg' %}" alt="{{ request.user.username }}" />
+                </div>
+                <div class="mobile-profile-info">
+                    <div class="mobile-profile-name">
+                        {{ request.user.username }}
+                    </div>
+                    <div class="mobile-profile-type">
+                        User (No Profile)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mobile-profile-actions">
+                <a href="{% url 'update-profile' %}" class="mobile-profile-btn mobile-profile-btn-primary">Complete Profile</a>
+                <a href="{% url 'logout' %}" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+    <!-- GUEST SECTION -->
+    <div class="mobile-guest-section">
+        <div class="mobile-guest-header">
+            <img src="{% static './img/no-user.jpg' %}" alt="Guest User" class="mobile-guest-image" />
+            <div class="mobile-guest-info">
+                <div class="mobile-guest-name">Welcome, Guest!</div>
+                <div class="mobile-guest-subtitle">Join our community</div>
+            </div>
+        </div>
+        <div class="mobile-guest-actions">
+            {% if request.path != "/sign-up/" %}
+                <a href="{% url 'sign_up' %}" class="mobile-profile-btn mobile-profile-btn-primary">Sign Up</a>
+            {% endif %}
+            <a href="{% url 'login' %}" class="mobile-profile-btn">Login</a>
+        </div>
+    </div>
+    {% endif %}
+    
     <!-- SEARCH -->
     <form method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="search">
-            <input type="text" name="search" id="search" />
+            <input type="text" name="search" id="search" placeholder="Buscar postagem..." />
             <button class="search-btn" type="submit">
                 <img src="{% static './img/lupa.png' %}" />
             </button>
         </div>
     </form>
     
-    <!-- LOGIN -->
+    <!-- Create Post Button (for authors only) -->
+    {% if request.user.author %}
+    <div class="create-post-button">
+        <a href="{% url 'create_post' %}" class="btn-create-post">Create Post</a>
+    </div>
+    {% endif %}
+    
+    <!-- LOGIN (Desktop only) -->
     {% if request.user.author or request.user.reader %}
-    <div class="header-login logged">
-        <div class="user-logged">
-            {% if request.user.author %}
-            <a href="{% url 'author' request.user.author.author_url_slug %}">
-            {% else %}
-            <a href="{% url 'reader-edit' %}">
-            {% endif %}
+    <div class="header-login logged desktop-only">
+        <div class="profile-container">
+            <div class="profile-trigger">
                 {% if request.user.author.image or request.user.reader.image %}
-                <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="usuário {{ request.user.author.author_name }} conectado." {% else %} src="/media/{{ request.user.reader.image }}" alt="usuário {{ request.user.reader.reader_name }} conectado." {% endif %}/>
-                {% else %}
-                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="usuário {{ request.author.author_name }} não tem imagem." />
+                <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" {% else %} src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" {% endif %}/>            {% else %}
+                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="User profile" />
                 {% endif %}
-            </a>
-            <div class="user-logged">
-                {% if request.user.author %}
-                {{ request.user.author.author_name }}
-                {% else %}
-                {{ request.user.reader.reader_name }}
-                {% endif %}
+                <span class="profile-name">
+                    {% if request.user.author %}
+                    {{ request.user.author.author_name }}
+                    {% else %}
+                    {{ request.user.reader.reader_name }}
+                    {% endif %}
+                </span>
+                <span class="dropdown-arrow">▼</span>
             </div>
-            <a href="{% url 'logout' %}"><div class="logout">Sair</div>
-            </a>
+            
+            <!-- Profile Dropdown Menu -->
+            <div class="profile-dropdown">
+                {% if request.user.author %}
+                    <a href="{% url 'author' request.user.author.author_url_slug %}" class="dropdown-item">
+                        <span>👤</span> View Profile
+                    </a>
+                    <a href="{% url 'edit_author' request.user.author.author_url_slug %}" class="dropdown-item">
+                        <span>✏️</span> Edit Profile
+                    </a>
+                    <a href="{% url 'create_post' %}" class="dropdown-item">
+                        <span>📝</span> Create Post
+                    </a>
+                {% else %}
+                    <a href="{% url 'reader-edit' %}" class="dropdown-item">
+                        <span>✏️</span> Edit Profile
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>📚</span> Saved Posts
+                    </a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
         </div>
+    </div>
+    {% elif request.user.is_authenticated %}
+    <!-- AUTHENTICATED USER WITHOUT PROFILE (Desktop) -->
+    <div class="header-login desktop-only">
+        <div class="profile-container">
+            <div class="profile-trigger">
+                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="User profile" />
+                <span class="profile-name">{{ request.user.username }}</span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            
+            <!-- Profile Dropdown Menu -->
+            <div class="profile-dropdown">
+                <a href="{% url 'update-profile' %}" class="dropdown-item">
+                    <span>✏️</span> Complete Profile
+                </a>
+                <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </div>
+    </div>
     {% else %}
-    <div class="header-login">
+    <div class="header-login desktop-only">
         <div class="not-logged">
             <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
             <div class="register">
@@ -73,16 +213,10 @@
     {% endif %}
     </div>
 
-    <a class="menu-link"
-    href="/">Home</a>
-    <a class="menu-link"
-    href="#">Sobre</a>
-    <a class="menu-link"
-    href="#">Trabalhos</a>
-    <a class="menu-link"
-    href="{% url 'team' %}">Nossa Equipe</a>
-    <a class="menu-link"
-    href="#">Contato</a>
+    <a class="menu-link" href="/">Home</a>
+    <a class="menu-link" href="#">Sobre</a>
+    <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
+    <a class="menu-link" href="#">Contato</a>
 </nav>
 {% block scripts %}
 <script src="{% static './scripts/buttonMobile.js' %}"></script>

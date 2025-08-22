@@ -15,7 +15,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ("email", "phone_number", "username", "is_staff")
+    list_display = ("email", "phone_number", "username", "is_staff", "get_profile_type", "get_profile_name")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
@@ -31,6 +31,32 @@ class UserAdmin(BaseUserAdmin):
     )
     search_fields = ("email", "phone_number")
     ordering = ("email", "phone_number")
+    
+    def get_profile_type(self, obj):
+        """Display the user's profile type"""
+        try:
+            if hasattr(obj, 'author'):
+                return "Author"
+            elif hasattr(obj, 'reader'):
+                return "Reader"
+            else:
+                return "No Profile"
+        except:
+            return "No Profile"
+    get_profile_type.short_description = "Profile Type"
+    
+    def get_profile_name(self, obj):
+        """Display the user's profile name"""
+        try:
+            if hasattr(obj, 'author') and obj.author.author_name:
+                return obj.author.author_name
+            elif hasattr(obj, 'reader') and obj.reader.reader_name:
+                return obj.reader.reader_name
+            else:
+                return obj.username
+        except:
+            return obj.username
+    get_profile_name.short_description = "Profile Name"
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Author)

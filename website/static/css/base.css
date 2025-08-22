@@ -1,27 +1,60 @@
-@media screen and (max-width: 768px) {
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+/* Global styles for all screen sizes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    position: relative;
+    background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: #b9b9b9;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0 !important;
+    padding: 0 0 20vh 0 !important;
+}
+
+/* Desktop styles */
+@media screen and (min-width: 769px) {
+    body {
+        font-size: 16px;
+        line-height: 1.6;
     }
     
-    a {
-        text-decoration: none;
+    .container-fluid {
+        max-width: 1400px;
+        margin: 0 auto;
     }
-    html {
-        overflow-y: scroll;
+    
+    .d-flex {
+        position: relative;
+        margin-top: 80px;
+        padding: 0 2rem;
     }
-    body {
-        position: absolute;
-        background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        color: #b9b9b9;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        margin: 0 !important;
-        padding: 0 0 20vh 0 !important;
+    
+    /* Improved content area for desktop */
+    .content-area {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
     }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
     .d-flex {
         position: relative;
         margin-top: calc(4em + 15px);
