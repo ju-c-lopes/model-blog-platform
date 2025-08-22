@@ -1,289 +1,31 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Create New Post{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/post.css' %}">
-<link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
-<style>
-    .post-form-container {
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        padding: 2.5rem;
-        margin: 2rem auto;
-        max-width: 1000px;
-    }
-    
-    .form-title {
-        color: #264d60;
-        margin-bottom: 2rem;
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-    }
-    
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-group.full-width {
-        grid-column: 1 / -1;
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #264d60;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: #264d60;
-        box-shadow: 0 0 0 3px rgba(38, 77, 96, 0.1);
-    }
-    
-    .char-counter {
-        font-size: 0.85rem;
-        color: #6c757d;
-        text-align: right;
-        margin-top: 0.25rem;
-    }
-    
-    .char-counter.warning {
-        color: #ffc107;
-    }
-    
-    .char-counter.danger {
-        color: #dc3545;
-    }
-    
-    /* Rich Text Editor Styles */
-    .editor-container {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: border-color 0.3s ease;
-    }
-    
-    .editor-container:focus-within {
-        border-color: #264d60;
-    }
-    
-    .ql-toolbar {
-        border-bottom: 1px solid #e9ecef;
-        background-color: #f8f9fa;
-    }
-    
-    .ql-container {
-        min-height: 400px;
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-    
-    .ql-editor {
-        min-height: 400px;
-    }
-    
-    /* Media Upload Buttons */
-    .media-upload-section {
-        margin: 1rem 0;
-        padding: 1rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        border: 2px dashed #dee2e6;
-    }
-    
-    .media-buttons {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-    
-    .media-btn {
-        background-color: #264d60;
-        color: white;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background-color 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .media-btn:hover {
-        background-color: #1a3a4a;
-    }
-    
-    .media-btn i {
-        font-size: 1rem;
-    }
-    
-    /* Form Buttons */
-    .form-buttons {
-        margin-top: 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .btn-submit {
-        background: linear-gradient(135deg, #264d60 0%, #1a3a4a 100%);
-        color: white;
-        padding: 0.75rem 2rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1.1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(38, 77, 96, 0.2);
-    }
-    
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(38, 77, 96, 0.3);
-    }
-    
-    .btn-cancel {
-        background-color: #6c757d;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-    
-    .btn-cancel:hover {
-        background-color: #5a6268;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .help-text {
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin-top: 0.25rem;
-    }
-    
-    .errorlist {
-        color: #dc3545;
-        list-style-type: none;
-        padding-left: 0;
-        margin-top: 0.25rem;
-        font-size: 0.85rem;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .post-form-container {
-            margin: 1rem;
-            padding: 1.5rem;
-        }
-        
-        .form-title {
-            font-size: 2rem;
-        }
-        
-        .media-buttons {
-            justify-content: center;
-        }
-        
-        .form-buttons {
-            flex-direction: column;
-            gap: 1rem;
-        }
-    }
-    
-    /* Hidden file inputs */
-    .hidden-input {
-        display: none;
-    }
-    
-    /* Preview styles */
-    .media-preview {
-        margin-top: 1rem;
-        padding: 1rem;
-        background-color: white;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
-    }
-    
-    .preview-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        background-color: #f8f9fa;
-        border-radius: 4px;
-    }
-    
-    .preview-item:last-child {
-        margin-bottom: 0;
-    }
-    
-    .remove-btn {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 0.25rem 0.5rem;
-        cursor: pointer;
-        font-size: 0.8rem;
-    }
-    
-    .remove-btn:hover {
-        background-color: #c82333;
-    }
-</style>
+{% load static %} {% block title %}Create New Post{% endblock %}
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}" />
+<link rel="stylesheet" href="{% static 'css/create_post.css' %}" />
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+/>
 {% endblock %}
-
 {% block content %}
 <div class="post-form-container">
     <h1 class="form-title">✍️ Create New Blog Post</h1>
-    
+
     <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
-        
+
         <div class="form-grid">
             <!-- Title Field -->
             <div class="form-group">
-                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                <label for="{{ form.title.id_for_label }}"
+                    >{{ form.title.label }}</label
+                >
                 {{ form.title }}
                 <div class="char-counter" id="title-counter">0/200</div>
                 {% if form.title.help_text %}
                 <div class="help-text">{{ form.title.help_text }}</div>
-                {% endif %}
-                {% if form.title.errors %}
+                {% endif %} {% if form.title.errors %}
                 <ul class="errorlist">
                     {% for error in form.title.errors %}
                     <li>{{ error }}</li>
@@ -291,15 +33,15 @@
                 </ul>
                 {% endif %}
             </div>
-            
+
             <!-- URL Slug Field -->
             <div class="form-group">
-                <label for="{{ form.url_slug.id_for_label }}">{{ form.url_slug.label }}</label>
-                {{ form.url_slug }}
-                {% if form.url_slug.help_text %}
+                <label for="{{ form.url_slug.id_for_label }}"
+                    >{{ form.url_slug.label }}</label
+                >
+                {{ form.url_slug }} {% if form.url_slug.help_text %}
                 <div class="help-text">{{ form.url_slug.help_text }}</div>
-                {% endif %}
-                {% if form.url_slug.errors %}
+                {% endif %} {% if form.url_slug.errors %}
                 <ul class="errorlist">
                     {% for error in form.url_slug.errors %}
                     <li>{{ error }}</li>
@@ -307,16 +49,19 @@
                 </ul>
                 {% endif %}
             </div>
-            
+
             <!-- Meta Description Field -->
             <div class="form-group full-width">
-                <label for="{{ form.meta_description.id_for_label }}">{{ form.meta_description.label }}</label>
+                <label for="{{ form.meta_description.id_for_label }}"
+                    >{{ form.meta_description.label }}</label
+                >
                 {{ form.meta_description }}
                 <div class="char-counter" id="meta-counter">0/160</div>
                 {% if form.meta_description.help_text %}
-                <div class="help-text">{{ form.meta_description.help_text }}</div>
-                {% endif %}
-                {% if form.meta_description.errors %}
+                <div class="help-text">
+                    {{ form.meta_description.help_text }}
+                </div>
+                {% endif %} {% if form.meta_description.errors %}
                 <ul class="errorlist">
                     {% for error in form.meta_description.errors %}
                     <li>{{ error }}</li>
@@ -325,49 +70,84 @@
                 {% endif %}
             </div>
         </div>
-        
+
         <!-- Rich Text Editor -->
         <div class="form-group full-width">
-            <label for="{{ form.text.id_for_label }}">{{ form.text.label }}</label>
-            
+            <label for="rich-editor-container">{{ form.text.label }}</label>
+
             <!-- Media Upload Section -->
             <div class="media-upload-section">
-                <h4 style="margin-bottom: 1rem; color: #264d60;">📎 Add Media</h4>
+                <h4 style="margin-bottom: 1rem; color: #264d60">
+                    📎 Add Media
+                </h4>
                 <div class="media-buttons">
-                    <button type="button" class="media-btn" onclick="document.getElementById('image-upload').click()">
+                    <button
+                        type="button"
+                        class="media-btn"
+                        onclick="document.getElementById('image-upload').click()"
+                    >
                         <i>🖼️</i> Add Image
                     </button>
-                    <button type="button" class="media-btn" onclick="document.getElementById('video-upload').click()">
+                    <button
+                        type="button"
+                        class="media-btn"
+                        onclick="document.getElementById('video-upload').click()"
+                    >
                         <i>🎥</i> Add Video
                     </button>
-                    <button type="button" class="media-btn" onclick="insertTable()">
+                    <button
+                        type="button"
+                        class="media-btn"
+                        onclick="insertTable()"
+                    >
                         <i>📊</i> Insert Table
                     </button>
-                    <button type="button" class="media-btn" onclick="insertHeading()">
+                    <button
+                        type="button"
+                        class="media-btn"
+                        onclick="insertHeading()"
+                    >
                         <i>📝</i> Add Heading
                     </button>
                 </div>
-                
+
                 <!-- Hidden file inputs -->
-                <input type="file" id="image-upload" class="hidden-input" accept="image/*" onchange="handleImageUpload(event)">
-                <input type="file" id="video-upload" class="hidden-input" accept="video/*" onchange="handleVideoUpload(event)">
-                
+                <input
+                    type="file"
+                    id="image-upload"
+                    class="hidden-input"
+                    accept="image/*"
+                    onchange="handleImageUpload(event)"
+                />
+                <input
+                    type="file"
+                    id="video-upload"
+                    class="hidden-input"
+                    accept="video/*"
+                    onchange="handleVideoUpload(event)"
+                />
+
                 <!-- Media preview area -->
-                <div id="media-preview" class="media-preview" style="display: none;"></div>
+                <div
+                    id="media-preview"
+                    class="media-preview"
+                    style="display: none"
+                ></div>
             </div>
-            
+
             <!-- Rich Text Editor Container -->
             <div class="editor-container">
-                <div id="rich-editor-container" style="min-height: 400px;"></div>
+                <div id="rich-editor-container" style="min-height: 400px"></div>
             </div>
-            
+
             <!-- Hidden textarea for form submission -->
-            <textarea name="text" id="id_text" style="display: none;">{{ form.text.value|default:'' }}</textarea>
-            
+            <textarea name="text" id="id_text" style="display: none">
+{{ form.text.value|default:'' }}</textarea
+            >
+
             {% if form.text.help_text %}
             <div class="help-text">{{ form.text.help_text }}</div>
-            {% endif %}
-            {% if form.text.errors %}
+            {% endif %} {% if form.text.errors %}
             <ul class="errorlist">
                 {% for error in form.text.errors %}
                 <li>{{ error }}</li>
@@ -375,273 +155,14 @@
             </ul>
             {% endif %}
         </div>
-        
+
         <div class="form-buttons">
             <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
             <button type="submit" class="btn-submit">🚀 Publish Post</button>
         </div>
     </form>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-<script>
-// Character counters
-function updateCharCounter(inputId, counterId, maxLength) {
-    const input = document.getElementById(inputId);
-    const counter = document.getElementById(counterId);
-    
-    function updateCounter() {
-        const currentLength = input.value.length;
-        counter.textContent = `${currentLength}/${maxLength}`;
-        
-        // Update counter color based on usage
-        counter.classList.remove('warning', 'danger');
-        if (currentLength > maxLength * 0.8) {
-            counter.classList.add('warning');
-        }
-        if (currentLength > maxLength * 0.95) {
-            counter.classList.add('danger');
-        }
-    }
-    
-    input.addEventListener('input', updateCounter);
-    updateCounter(); // Initial count
-}
-
-// Initialize character counters and Quill editor when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Character counters
-    updateCharCounter('id_title', 'title-counter', 200);
-    updateCharCounter('id_meta_description', 'meta-counter', 160);
-    
-    // Auto-generate URL slug from title
-    document.getElementById('id_title').addEventListener('input', function() {
-        const title = this.value;
-        const slug = title
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-            .replace(/\s+/g, '-') // Replace spaces with hyphens
-            .replace(/-+/g, '-') // Replace multiple hyphens with single
-            .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
-        
-        document.getElementById('id_url_slug').value = slug;
-    });
-    
-    // Initialize Quill Rich Text Editor
-    const editorContainer = document.querySelector('#rich-editor-container');
-    if (editorContainer) {
-        const quill = new Quill('#rich-editor-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'font': [] }],
-                    [{ 'align': [] }],
-                    ['blockquote', 'code-block'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    ['link', 'image', 'video'],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Start writing your amazing content here...'
-        });
-        
-        // Set initial content if editing
-        const initialContent = document.getElementById('id_text').value;
-        if (initialContent) {
-            quill.root.innerHTML = initialContent;
-        }
-        
-        // Update hidden textarea when content changes
-        quill.on('text-change', function() {
-            document.getElementById('id_text').value = quill.root.innerHTML;
-        });
-        
-        // Make quill globally accessible for media functions
-        window.quillEditor = quill;
-    } else {
-        console.error('Rich editor container not found!');
-    }
-});
-
-// Configure the toolbar after initialization
-const toolbar = quill.getModule('toolbar');
-if (toolbar) {
-    // Add custom toolbar configuration
-    const toolbarContainer = document.querySelector('#rich-editor-toolbar');
-    toolbarContainer.innerHTML = `
-        <span class="ql-formats">
-            <select class="ql-header">
-                <option value="1">Heading 1</option>
-                <option value="2">Heading 2</option>
-                <option value="3">Heading 3</option>
-                <option value="4">Heading 4</option>
-                <option value="5">Heading 5</option>
-                <option value="6">Heading 6</option>
-                <option selected>Normal</option>
-            </select>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-strike"></button>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-color"></select>
-            <select class="ql-background"></select>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-font"></select>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-align"></select>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-blockquote"></button>
-            <button class="ql-code-block"></button>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-list" value="ordered"></button>
-            <button class="ql-list" value="bullet"></button>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-indent" value="-1"></button>
-            <button class="ql-indent" value="+1"></button>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-link"></button>
-            <button class="ql-image"></button>
-            <button class="ql-video"></button>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-clean"></button>
-        </span>
-    `;
-}
-
-// Set initial content if editing
-const initialContent = document.getElementById('id_text').value;
-if (initialContent) {
-    quill.root.innerHTML = initialContent;
-}
-
-// Update hidden textarea when content changes
-quill.on('text-change', function() {
-    document.getElementById('id_text').value = quill.root.innerHTML;
-});
-
-// Media upload functions
-function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (file && window.quillEditor) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const range = window.quillEditor.getSelection();
-            window.quillEditor.insertEmbed(range ? range.index : 0, 'image', e.target.result);
-            showMediaPreview('Image', file.name);
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function handleVideoUpload(event) {
-    const file = event.target.files[0];
-    if (file && window.quillEditor) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const range = window.quillEditor.getSelection();
-            window.quillEditor.insertEmbed(range ? range.index : 0, 'video', e.target.result);
-            showMediaPreview('Video', file.name);
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function insertTable() {
-    if (!window.quillEditor) return;
-    
-    const rows = prompt('Number of rows:', '3');
-    const cols = prompt('Number of columns:', '3');
-    
-    if (rows && cols) {
-        let tableHTML = '<table border="1" style="border-collapse: collapse; width: 100%; margin: 1rem 0;">';
-        
-        // Header row
-        tableHTML += '<thead><tr>';
-        for (let j = 0; j < cols; j++) {
-            tableHTML += '<th style="padding: 8px; background-color: #f8f9fa; border: 1px solid #dee2e6;">Header ' + (j + 1) + '</th>';
-        }
-        tableHTML += '</tr></thead>';
-        
-        // Body rows
-        tableHTML += '<tbody>';
-        for (let i = 0; i < rows - 1; i++) {
-            tableHTML += '<tr>';
-            for (let j = 0; j < cols; j++) {
-                tableHTML += '<td style="padding: 8px; border: 1px solid #dee2e6;">Cell ' + (i + 1) + ',' + (j + 1) + '</td>';
-            }
-            tableHTML += '</tr>';
-        }
-        tableHTML += '</tbody></table>';
-        
-        const range = window.quillEditor.getSelection();
-        window.quillEditor.clipboard.dangerouslyPasteHTML(range ? range.index : 0, tableHTML);
-    }
-}
-
-function insertHeading() {
-    if (!window.quillEditor) return;
-    
-    const level = prompt('Heading level (1-6):', '2');
-    const text = prompt('Heading text:', 'Your Heading Here');
-    
-    if (level && text && level >= 1 && level <= 6) {
-        const range = window.quillEditor.getSelection();
-        window.quillEditor.insertText(range ? range.index : 0, text);
-        window.quillEditor.formatText(range ? range.index : 0, text.length, 'header', parseInt(level));
-    }
-}
-
-function showMediaPreview(type, filename) {
-    const preview = document.getElementById('media-preview');
-    preview.style.display = 'block';
-    
-    const item = document.createElement('div');
-    item.className = 'preview-item';
-    item.innerHTML = `
-        <span><strong>${type}:</strong> ${filename}</span>
-        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
-    `;
-    
-    preview.appendChild(item);
-}
-
-// Form submission handler
-document.querySelector('form').addEventListener('submit', function(e) {
-    // Update hidden textarea with final content
-    document.getElementById('id_text').value = quill.root.innerHTML;
-    
-    // Basic validation
-    const title = document.getElementById('id_title').value.trim();
-    const content = quill.getText().trim();
-    
-    if (!title) {
-        alert('Please enter a title for your post.');
-        e.preventDefault();
-        return;
-    }
-    
-    if (!content || content.length < 10) {
-        alert('Please write some content for your post (at least 10 characters).');
-        e.preventDefault();
-        return;
-    }
-});
-</script>
+{% endblock %} {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="{% static 'scripts/create_post.js' %}"></script>
 {% endblock %}
