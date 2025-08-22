@@ -1,0 +1,266 @@
+<html lang="pt-br"><head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&amp;family=Sixtyfour&amp;display=swap" rel="stylesheet">
+        
+        
+        <link rel="icon" type="image/x-icon" href="/website/static/img/juclops-techxperience-logo.ico">
+        <link rel="stylesheet" type="text/css" href="/website/static/css/base.css" media="all">
+        <link rel="stylesheet" type="text/css" href="/website/static/css/header.css" media="all">
+        
+        
+        <title>Create New Post</title>
+    </head>
+    <body class="container-fluid vh-100" style="overflow-y: scroll;" cz-shortcut-listen="true">
+        <!-- Page's header with menu and login options -->
+        <header class="row">
+            
+<div class="header-container">
+    <button class="button-menu-mobile" width="90" height="90">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- Tentará verificar a url -->
+    <div class="logo-container">
+        
+        <a href="#">
+            <img class="logo" width="50" height="50" src="/website/static/img/juclops-techxperience-logo.webp" alt="Juclops TechXperience" title="Logo Juclops TechXperience">
+            <span class="logo-text">Juclops' TechXperience</span>
+        </a>
+        
+    </div>
+</div>
+
+<nav class="menu-navigation" style="top: 0px; transform: translateY(calc(-4em - 815px)); transition: 0.3s ease-out;">
+    <!-- MOBILE PROFILE SECTION -->
+    
+        
+        <div class="mobile-profile-section">
+            <div class="mobile-profile-header">
+                <div class="mobile-profile-image">
+                    
+                        
+                            <img src="/media/12613461.png" alt="Administrator">
+                        
+                    
+                </div>
+                <div class="mobile-profile-info">
+                    <div class="mobile-profile-name">
+                        
+                            <a href="/nossa-equipe/administrator/edit">Administrator</a>
+                        
+                    </div>
+                    <div class="mobile-profile-type">
+                        
+                            Author
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mobile-profile-actions">
+                
+                    <a href="/nossa-equipe/administrator" class="mobile-profile-btn">View Profile</a>
+                    <a href="/nossa-equipe/administrator" class="mobile-profile-btn">Edit Profile</a>
+                    <a href="/post/create/" class="mobile-profile-btn mobile-profile-btn-primary">Create Post</a>
+                
+                <a href="/logout/" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
+            </div>
+        </div>
+        
+    
+    
+    <!-- SEARCH -->
+    <form method="POST" accept-charset="utf-8"><input type="hidden" name="csrfmiddlewaretoken" value="liKeNytdEMeyoQwCSmQaUEbrEPJ2EyT58NZhFWsWdCwFLZqD6frrOMvf2BLqujkI">
+        <div class="search">
+            <input type="text" name="search" id="search" placeholder="Buscar postagem...">
+            <button class="search-btn" type="submit">
+                <img src="/website/static/img/lupa.png">
+            </button>
+        </div>
+    </form>
+    
+    <!-- Create Post Button (for authors only) -->
+    
+    <div class="create-post-button">
+        <a href="/post/create/" class="btn-create-post">Create Post</a>
+    </div>
+    
+    
+    <!-- LOGIN (Desktop only) -->
+    
+    <div class="header-login logged desktop-only">
+        <div class="profile-container">
+            <div class="profile-trigger">
+                
+                <img class="header-login--img" src="/media/12613461.png" alt="Administrator">            
+                <span class="profile-name">
+                    
+                    Administrator
+                    
+                </span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            
+            <!-- Profile Dropdown Menu -->
+            <div class="profile-dropdown">
+                
+                    <a href="/nossa-equipe/administrator" class="dropdown-item">
+                        <span>👤</span> View Profile
+                    </a>
+                    <a href="/nossa-equipe/administrator/edit" class="dropdown-item">
+                        <span>✏️</span> Edit Profile
+                    </a>
+                    <a href="/post/create/" class="dropdown-item">
+                        <span>📝</span> Create Post
+                    </a>
+                
+                <a href="/logout/" class="dropdown-item logout-item">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <a class="menu-link" href="/">Home</a>
+    <a class="menu-link" href="#">Sobre</a>
+    <a class="menu-link" href="/nossa-equipe/">Nossa Equipe</a>
+    <a class="menu-link" href="#">Contato</a>
+</nav>
+
+<script src="/website/static/scripts/buttonMobile.js"></script>
+
+        </header>
+        
+        <div class="d-flex flex-column">
+
+            
+<!-- Debug Panel -->
+<div id="debug-panel" style="
+        background: #f8f9fa;
+        border: 2px solid #007bff;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+    ">
+    <h4 style="color: #007bff; margin: 0 0 1rem 0">🔧 Debug Information</h4>
+    <div id="debug-output" style="
+            font-family: monospace;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        ">
+        Initializing debug panel...
+    </div>
+</div>
+
+<div class="post-form-container">
+    <h1 class="form-title">✍️ Create New Blog Post</h1>
+
+    <form method="post" enctype="multipart/form-data" novalidate="">
+        <input type="hidden" name="csrfmiddlewaretoken" value="liKeNytdEMeyoQwCSmQaUEbrEPJ2EyT58NZhFWsWdCwFLZqD6frrOMvf2BLqujkI">
+
+        <div class="form-grid">
+            <!-- Title Field -->
+            <div class="form-group">
+                <label for="id_title">Post Title</label>
+                <input type="text" name="title" class="form-control" placeholder="Enter an engaging post title" maxlength="200" required="" id="id_title">
+                <div class="char-counter" id="title-counter">0/200</div>
+                 
+            </div>
+
+            <!-- URL Slug Field -->
+            <div class="form-group">
+                <label for="id_url_slug">URL Slug</label>
+                <input type="text" name="url_slug" value="d0112de8-f8d2-4972-b04a-7fd76f946662" class="form-control" placeholder="my-awesome-post" pattern="[a-z0-9-]+" title="Only lowercase letters, numbers, and hyphens allowed" maxlength="70" required="" aria-describedby="id_url_slug_helptext" id="id_url_slug"><input type="hidden" name="initial-url_slug" value="d0112de8-f8d2-4972-b04a-7fd76f946662" aria-describedby="id_url_slug_helptext" id="initial-id_url_slug"> 
+                <div class="help-text">A unique URL-friendly identifier (use lowercase letters, numbers, and hyphens only)</div>
+                 
+            </div>
+
+            <!-- Meta Description Field -->
+            <div class="form-group full-width">
+                <label for="id_meta_description">Meta Description (SEO)</label>
+                <textarea name="meta_description" cols="40" rows="3" class="form-control" placeholder="Write a compelling meta description for SEO (max 160 characters)" maxlength="160" aria-describedby="id_meta_description_helptext" id="id_meta_description"></textarea>
+                <div class="char-counter" id="meta-counter">0/160</div>
+                
+                <div class="help-text">
+                    This appears in search engine results. Keep it under 160 characters.
+                </div>
+                 
+            </div>
+        </div>
+
+        <!-- Rich Text Editor -->
+        <div class="form-group full-width">
+            <label for="rich-editor">Content</label>
+
+            <!-- Media Upload Section -->
+            <div class="media-upload-section">
+                <h4 style="margin-bottom: 1rem; color: #264d60">
+                    📎 Add Media
+                </h4>
+                <div class="media-buttons">
+                    <button type="button" class="media-btn" onclick="document.getElementById('image-upload').click()">
+                        <i>🖼️</i> Add Image
+                    </button>
+                    <button type="button" class="media-btn" onclick="document.getElementById('video-upload').click()">
+                        <i>🎥</i> Add Video
+                    </button>
+                    <button type="button" class="media-btn" onclick="insertTable()">
+                        <i>📊</i> Insert Table
+                    </button>
+                    <button type="button" class="media-btn" onclick="insertHeading()">
+                        <i>📝</i> Add Heading
+                    </button>
+                </div>
+
+                <!-- Hidden file inputs -->
+                <input type="file" id="image-upload" class="hidden-input" accept="image/*" onchange="handleImageUpload(event)">
+                <input type="file" id="video-upload" class="hidden-input" accept="video/*" onchange="handleVideoUpload(event)">
+
+                <!-- Media preview area -->
+                <div id="media-preview" class="media-preview" style="display: none"></div>
+            </div>
+
+            <!-- Rich Text Editor Container -->
+            <div class="editor-container">
+                <div id="rich-editor-container" style="min-height: 400px"></div>
+            </div>
+
+            <!-- Hidden textarea for form submission -->
+            <textarea name="text" id="id_text" style="display: none"></textarea>
+
+            
+            <div class="help-text">Use the rich text editor to format your content with headings, images, videos, and tables.</div>
+             
+        </div>
+
+        <div class="form-buttons">
+            <a href="/" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-submit">🚀 Publish Post</button>
+        </div>
+    </form>
+</div>
+
+
+            <footer>
+                
+            </footer>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+            
+        </div>
+    
+</body></html>
