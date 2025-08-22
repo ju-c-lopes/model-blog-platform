@@ -1,0 +1,39 @@
+/* Error page styles */
+.error-container {
+    padding: 5rem 0;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #343a40;
+}
+
+.error-description {
+    font-size: 1.2rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 6rem;
+    }
+    
+    .error-message {
+        font-size: 2rem;
+    }
+    
+    .error-description {
+        font-size: 1rem;
+    }
+}

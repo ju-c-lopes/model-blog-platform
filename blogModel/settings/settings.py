@@ -22,12 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-77acf&hr=@cl$$u3$2m$wb)^+mwf^uci@gv@r8ndt*=9pq#^*8'
+# Use environment variable for SECRET_KEY in production
+# In development, use this fallback key
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-77acf&hr=@cl$$u3$2m$wb)^+mwf^uci@gv@r8ndt*=9pq#^*8')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Use environment variable for DEBUG in production
+# In development, default to True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
+
+# Debug Toolbar settings
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -42,6 +52,7 @@ INSTALLED_APPS = [
     'website',
     'bootstrap',
     'phonenumber_field',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'website.middleware.Custom404Middleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

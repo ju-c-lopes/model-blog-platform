@@ -1,0 +1,8 @@
+<!-- Replace all "Edit Profile" and "Complete Profile" links with: -->
+<a href="{% url 'update-profile' %}" class="profile-action-btn">
+    {% if request.user.author or request.user.reader %}
+        Atualizar Perfil
+    {% else %}
+        Completar Perfil
+    {% endif %}
+</a>

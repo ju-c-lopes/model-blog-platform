@@ -3,3 +3,9 @@
 run_manage_py_with_test.py
 .vscode
 blog-model.code-workspace
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production

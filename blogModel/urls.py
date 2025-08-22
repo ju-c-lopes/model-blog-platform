@@ -18,7 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from django.conf.urls import include
+from django.urls import include
+import debug_toolbar
+
+# Import error handlers
+from website.views.ErrorView import handler404, handler500, handler403
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +31,15 @@ urlpatterns = [
     path('login/', include('website.urls.LoginUrl')),
     path('cadastre-se/', include('website.urls.SignUpUrl')),
     path('editar-leitor/', include('website.urls.ReaderEditUrl')),
+    path('atualizar-perfil/', include('website.urls.ProfileUpdateUrl')),  # Unified profile management
     path('logout/', include('website.urls.LogoutUrl')),
+    path('post/', include('website.urls.PostUrl')),
+    path('error/', include('website.urls.ErrorUrl')),
+    path('search/', include('website.urls.SearchUrl')),
+    path('__debug__/', include(debug_toolbar.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Configure error handlers
+handler404 = 'website.views.ErrorView.handler404'
+handler500 = 'website.views.ErrorView.handler500'
+handler403 = 'website.views.ErrorView.handler403'

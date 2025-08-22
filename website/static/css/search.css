@@ -1,0 +1,31 @@
+/* Search page styles */
+.search-info {
+    margin-bottom: 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .search-info {
+        font-size: 0.9rem;
+    }
+}
