@@ -31,6 +31,45 @@
     color: #444;
 }
 
+.post-content iframe {
+    max-width: 100%;
+    border: none;
+    border-radius: 3px;
+    margin: 1rem 0;
+}
+
+.post-content video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    margin: 1rem 0;
+}
+
+/* Responsive video container for embedded videos */
+.post-content .video-responsive {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.post-content .video-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    margin: 1rem 0;
+}
+
 .post-footer {
     border-top: 1px solid #eee;
     padding-top: 1.5rem;
