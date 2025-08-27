@@ -101,6 +101,7 @@
 .ql-editor {
     background-color: #e8f1f5;
     min-height: 400px;
+    color: var(--text-dark);
 }
 
 /* Media Upload Section */
@@ -187,7 +188,7 @@
 /* Help Text and Error Messages */
 .help-text {
     font-size: 0.85rem;
-    color: #6c757d;
+    color: var(--light-blue);
     margin-top: 0.25rem;
 }
 
