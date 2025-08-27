@@ -167,19 +167,6 @@
     }
 }
 
-/* Updated Color Variables for Project Palette */
-:root {
-    --primary-blue: #264d60;
-    --primary-blue-dark: #1a3a4a;
-    --light-blue: #e8f1f5;
-    --text-dark: #212529;
-    --text-light: #6c757d;
-    --background-light: #f8f9fa;
-    --white: #ffffff;
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 8px 30px rgba(38, 77, 96, 0.15);
-}
-
 /* Messages */
 .messages-container {
     max-width: 1200px;
