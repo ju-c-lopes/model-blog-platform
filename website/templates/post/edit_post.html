@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    {% if is_creating %}
-    Create New Post
-    {% else %}
-    Edit Post
-    {% endif %}
-{% endblock %}
-{% block head-css %}
+{% if is_creating %} Create New Post {% else %} Edit Post {% endif %} {% endblock %} {% block head-css %}
 <link rel="stylesheet" href="{% static 'css/post.css' %}" />
 <link rel="stylesheet" href="{% static 'css/edit_post.css' %}" />
 <link
@@ -17,11 +11,7 @@
 {% endblock %} {% block content %}
 <div class="post-form-container">
     <h1 class="form-title">
-        {% if is_creating %}
-        ✍️ Create New Blog Post
-        {% else %}
-        ✏️ Edit Blog Post
-        {% endif %}
+        {% if is_creating %} ✍️ Create New Blog Post {% else %} ✏️ Edit Blog Post {% endif %}
     </h1>
 
     <form method="post" enctype="multipart/form-data" novalidate>
@@ -37,8 +27,7 @@
                 <div class="char-counter" id="title-counter">0/200</div>
                 {% if form.title.help_text %}
                 <div class="help-text">{{ form.title.help_text }}</div>
-                {% endif %}
-                {% if form.title.errors %}
+                {% endif %} {% if form.title.errors %}
                 <ul class="errorlist">
                     {% for error in form.title.errors %}
                     <li>{{ error }}</li>
@@ -52,11 +41,9 @@
                 <label for="{{ form.url_slug.id_for_label }}"
                     >{{ form.url_slug.label }}</label
                 >
-                {{ form.url_slug }}
-                {% if form.url_slug.help_text %}
+                {{ form.url_slug }} {% if form.url_slug.help_text %}
                 <div class="help-text">{{ form.url_slug.help_text }}</div>
-                {% endif %}
-                {% if form.url_slug.errors %}
+                {% endif %} {% if form.url_slug.errors %}
                 <ul class="errorlist">
                     {% for error in form.url_slug.errors %}
                     <li>{{ error }}</li>
@@ -76,8 +63,7 @@
                 <div class="help-text">
                     {{ form.meta_description.help_text }}
                 </div>
-                {% endif %}
-                {% if form.meta_description.errors %}
+                {% endif %} {% if form.meta_description.errors %}
                 <ul class="errorlist">
                     {% for error in form.meta_description.errors %}
                     <li>{{ error }}</li>
@@ -99,19 +85,56 @@
                 <div class="media-buttons">
                     <button
                         type="button"
-                        class="media-btn"
+                        class="media-btn media-image-btn"
                         onclick="document.getElementById('image-upload').click()"
                     >
                         <i>🖼️</i> Add Image
                     </button>
                     <button
                         type="button"
-                        class="media-btn"
-                        onclick="document.getElementById('video-upload').click()"
-                        title="Upload small video files (max 10MB)"
+                        class="media-btn media-video-btn"
+                        title="Add local video file or YouTube URL"
                     >
                         <i>🎥</i> Add Video File
                     </button>
+                    <div class="video-buttons">
+                        <div class="popup">
+                            <div class="close-btn">X</div>
+                            <div class="popup-buttons">
+                                <button
+                                    type="button"
+                                    class="media-btn local-btn"
+                                    onclick="document.getElementById('video-upload').click()"
+                                    title="Add local video file (max 10MB)"
+                                >
+                                    <i>🎥</i> Add Video File
+                                </button>
+    
+                                <button
+                                    type="button"
+                                    class="media-btn youtube-btn"
+                                    onclick="insertYouTubeVideo()"
+                                    title="Add YouTube video by URL"
+                                >
+                                    <i>📺</i> Add YouTube Video
+                                </button>
+                                <div class="youtube-form">
+                                    <input
+                                        type="text"
+                                        id="youtube-url"
+                                        placeholder="Enter YouTube URL"
+                                    />
+                                    <button
+                                        type="button"
+                                        class="media-btn"
+                                        onclick="insertUrl()"
+                                    >
+                                        >
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button
                         type="button"
                         class="media-btn"
@@ -136,10 +159,11 @@
                         color: #6c757d;
                     "
                 >
-                    💡 <strong>Video tips:</strong> For YouTube videos, use the
-                    <strong>🎥 Video button</strong> in the editor toolbar
-                    above. For local files, use "Add Video File" (max 10MB
-                    recommended).
+                    💡 <strong>Media tips:</strong> <br />• Use
+                    <strong>📺 Add YouTube Video</strong> for YouTube links
+                    <br />• Use <strong>🎥 Add Video File</strong> for local
+                    files (max 10MB) <br />• YouTube videos are embedded
+                    securely and load faster
                 </div>
 
                 <!-- Hidden file inputs -->
@@ -178,8 +202,7 @@
 
             {% if form.text.help_text %}
             <div class="help-text">{{ form.text.help_text }}</div>
-            {% endif %}
-            {% if form.text.errors %}
+            {% endif %} {% if form.text.errors %}
             <ul class="errorlist">
                 {% for error in form.text.errors %}
                 <li>{{ error }}</li>

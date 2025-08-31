@@ -8,4 +8,5 @@ blog-model.code-workspace
 .env
 .env.local
 .env.development
-.env.production
+.env.productionvenv/
+venv/

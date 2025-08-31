@@ -1,8 +1,23 @@
 /**
  * Edit Post Page JavaScript
- * Handles rich text editor, character counters, media uploads, and form validation
+ * Handles rich text editor, character modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["blockquote", "code-block"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    ["link", "image"], // removed "video" here
+                    ["clean"],
+                ],
+                // Removed video handler - using custom YouTube button instead
+            },ploads, and form validation
  * Works for both creating new posts and editing existing posts
  */
+console.log("Edit Post JS loaded");
 
 // Character counters
 function updateCharCounter(inputId, counterId, maxLength) {
@@ -78,27 +93,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     ["blockquote", "code-block"],
                     [{ list: "ordered" }, { list: "bullet" }],
                     [{ indent: "-1" }, { indent: "+1" }],
-                    ["link", "image", "video"],
+                    ["link", "image"], // video removed
                     ["clean"],
                 ],
-                handlers: {
-                    video: function () {
-                        insertVideoHandler();
-                    },
-                },
+                // no custom video handler here
             },
             placeholder: "Start writing your amazing content here...",
         });
 
         // Set initial content if editing
         const initialContent = document.getElementById("id_text").value;
+        console.log("Initial content:", initialContent);
         if (initialContent) {
             quill.root.innerHTML = initialContent;
         }
 
         // Update hidden textarea when content changes
         quill.on("text-change", function () {
-            document.getElementById("id_text").value = quill.root.innerHTML;
+            document.getElementById("id_text").value = initialContent;
         });
 
         // Make quill globally accessible for media functions
@@ -162,68 +174,20 @@ function handleVideoUpload(event) {
     }
 }
 
-// Custom video handler for YouTube and other video URLs
-function insertVideoHandler() {
-    if (!window.quillEditor) return;
+// Remove legacy Quill video handler usage (kept commented/removed)
+// legacy code that used prompt/dangerously insert video has been removed to avoid Quill video issues
 
-    const url = prompt(
-        "Enter video URL (YouTube, Vimeo, or direct video URL):"
-    );
-    if (!url) return;
+const mediaBtn = document.querySelector(".media-video-btn");
+const videoButtons = document.querySelector(".video-buttons");
+mediaBtn.onclick = () => {
+    videoButtons.style.display = "flex";
+};
 
-    let embedUrl = url;
-    let videoHtml = "";
-
-    // Handle YouTube URLs
-    if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/")) {
-        const videoId = extractYouTubeId(url);
-        if (videoId) {
-            embedUrl = `https://www.youtube.com/embed/${videoId}`;
-            videoHtml = `<div class="video-responsive">
-                <iframe src="${embedUrl}" frameborder="0" allowfullscreen 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-            </div>`;
-        }
-    }
-    // Handle Vimeo URLs
-    else if (url.includes("vimeo.com/")) {
-        const videoId = url.split("/").pop();
-        embedUrl = `https://player.vimeo.com/video/${videoId}`;
-        videoHtml = `<div class="video-responsive">
-            <iframe src="${embedUrl}" frameborder="0" allowfullscreen 
-                allow="autoplay; fullscreen; picture-in-picture"></iframe>
-        </div>`;
-    }
-    // Handle direct video URLs or already embedded URLs
-    else if (
-        url.includes("youtube.com/embed/") ||
-        url.includes("player.vimeo.com/video/")
-    ) {
-        videoHtml = `<div class="video-responsive">
-            <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
-        </div>`;
-    }
-    // Handle direct video file URLs
-    else if (url.match(/\.(mp4|webm|ogg)$/i)) {
-        videoHtml = `<video controls style="max-width: 100%; height: auto;">
-            <source src="${url}" type="video/${url
-            .split(".")
-            .pop()
-            .toLowerCase()}">
-            Your browser does not support the video tag.
-        </video>`;
-    } else {
-        alert(
-            "Please enter a valid video URL (YouTube, Vimeo, or direct video file URL)."
-        );
-        return;
-    }
-
-    const range = window.quillEditor.getSelection();
-    window.quillEditor.clipboard.dangerouslyPasteHTML(
-        range ? range.index : 0,
-        videoHtml
-    );
+const closeButton = document.querySelector(".close-btn");
+if (closeButton && videoButtons) {
+    closeButton.onclick = () => {
+        videoButtons.style.display = "none";
+    };
 }
 
 // Helper function to extract YouTube video ID
@@ -234,71 +198,141 @@ function extractYouTubeId(url) {
     return match && match[2].length === 11 ? match[2] : null;
 }
 
-function insertTable() {
-    if (!window.quillEditor) return;
+// Secure YouTube video insertion function (keeps building iframe dynamically)
+function insertYouTubeVideo() {
+    const youtubeForm = document.querySelector(".youtube-form");
+    const popup = document.querySelector(".popup");
 
-    const rows = prompt("Number of rows:", "3");
-    const cols = prompt("Number of columns:", "3");
+    if (!youtubeForm) return;
 
-    if (rows && cols) {
-        let tableHTML =
-            '<table border="1" style="border-collapse: collapse; width: 100%; margin: 1rem 0;">';
+    // Show form and focus input
+    youtubeForm.style.display = "flex";
+    if (popup) {
+        popup.style.height = "auto";
+        popup.style.padding = "2rem";
+    }
+    const input = document.getElementById("youtube-url");
+    if (input) {
+        input.value = ""; // clear previous
+        input.focus();
+    }
+}
 
-        // Header row
-        tableHTML += "<thead><tr>";
-        for (let j = 0; j < cols; j++) {
-            tableHTML +=
-                '<th style="padding: 8px; background-color: #f8f9fa; border: 1px solid #dee2e6;">Header ' +
-                (j + 1) +
-                "</th>";
-        }
-        tableHTML += "</tr></thead>";
+// Called by the small button next to the input in your template
+function insertUrl() {
+    const input = document.getElementById("youtube-url");
+    if (!input) return;
+    const url = input.value.trim();
+    sendYoutubeUrl(url);
+}
 
-        // Body rows
-        tableHTML += "<tbody>";
-        for (let i = 0; i < rows - 1; i++) {
-            tableHTML += "<tr>";
-            for (let j = 0; j < cols; j++) {
-                tableHTML +=
-                    '<td style="padding: 8px; border: 1px solid #dee2e6;">Cell ' +
-                    (i + 1) +
-                    "," +
-                    (j + 1) +
-                    "</td>";
+// -- Replace sendYoutubeUrl to insert only the link wrapper --
+function sendYoutubeUrl(url) {
+    if (!url || url.trim() === "") {
+        alert("Por favor cole a URL do YouTube no campo.");
+        return;
+    }
+
+    const videoId = extractYouTubeId(url.trim());
+    if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+        alert(
+            "❌ URL inválida! Use https://youtu.be/VIDEO_ID ou https://www.youtube.com/watch?v=VIDEO_ID"
+        );
+        return;
+    }
+
+    // Insert only the link wrapper into the editor. iframe will be injected on submit.
+    const linkHtml = `
+        <div class="youtube-link-wrapper" data-video-id="${videoId}" contenteditable="false" style="margin:1rem 0; text-align:center;">
+            <p style="margin:0.25rem 0; font-size:0.95em; color:#666;">
+                📺 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer">View on YouTube</a>
+            </p>
+        </div>
+    `;
+    const ta = document.getElementById("id_text");
+    if (ta) ta.value += linkHtml;
+
+    showMediaPreview("YouTube Link", `Video ID: ${videoId}`);
+
+    // Clear and hide the form
+    const input = document.getElementById("youtube-url");
+    if (input) input.value = "";
+    const youtubeForm = document.querySelector(".youtube-form");
+    if (youtubeForm) youtubeForm.style.display = "none";
+    const popup = document.querySelector(".popup");
+    if (popup) {
+        popup.style.display = "none";
+        videoButtons.style.display = "none";
+    }
+
+    console.log(
+        `✅ YouTube link inserted (video id ${videoId}). Iframe will be added on save.`
+    );
+    if (ta) {
+        ta.value = injectYouTubeIframes(ta.value, videoId);
+        console.log("Text area", ta)
+    }
+}
+
+// -- New helper: inject iframe tags into HTML payload before submit --
+function injectYouTubeIframes(html, vid) {
+    // Use DOMParser to safely manipulate HTML string
+    try {
+        html += `
+            <div class="youtube-video-container ql-editor" contenteditable="true" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; height: 0; overflow: hidden; background-color: #000; border-radius: 8px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        `;
+        console.log("Processed HTML:", html);
+        return html;
+    } catch (err) {
+        console.error("injectYouTubeIframes error:", err);
+        return html; // fallback: return original html
+    }
+}
+
+// -- Update form submit handler to inject iframes before saving payload --
+const form = document.querySelector("form");
+if (form) {
+    form.addEventListener("submit", function (e) {
+        // Update hidden textarea with final content (after injecting iframes)
+        if (window.quillEditor) {
+            const currentHtml = window.quillEditor.root.innerHTML;
+            const processedHtml = injectYouTubeIframes(currentHtml);
+            document.getElementById("id_text").value = processedHtml;
+        } else {
+            // Fallback for non-Quill case: try to inject in textarea value
+            const ta = document.getElementById("id_text");
+            if (ta) {
+                ta.value += injectYouTubeIframes(ta.value);
             }
-            tableHTML += "</tr>";
         }
-        tableHTML += "</tbody></table>";
 
-        const range = window.quillEditor.getSelection();
-        window.quillEditor.clipboard.dangerouslyPasteHTML(
-            range ? range.index : 0,
-            tableHTML
-        );
-    }
+        // Basic validation (unchanged)
+        const titleEl = document.getElementById("id_title");
+        const title = titleEl ? titleEl.value.trim() : "";
+        const contentText = window.quillEditor
+            ? window.quillEditor.getText().trim()
+            : "";
+
+        if (!title) {
+            alert("Please enter a title for your post.");
+            e.preventDefault();
+            return;
+        }
+
+        if (!contentText || contentText.length < 10) {
+            alert(
+                "Please write some content for your post (at least 10 characters)."
+            );
+            e.preventDefault();
+            return;
+        }
+    });
 }
 
-function insertHeading() {
-    if (!window.quillEditor) return;
-
-    const level = prompt("Heading level (1-6):", "2");
-    const text = prompt("Heading text:", "Your Heading Here");
-
-    if (level && text && level >= 1 && level <= 6) {
-        const range = window.quillEditor.getSelection();
-        window.quillEditor.insertText(range ? range.index : 0, text);
-        window.quillEditor.formatText(
-            range ? range.index : 0,
-            text.length,
-            "header",
-            parseInt(level)
-        );
-    }
-}
-
+// Helper function to show media previews
 function showMediaPreview(type, filename) {
     const preview = document.getElementById("media-preview");
-    preview.style.display = "block";
+    preview.style.display = "flex";
 
     const item = document.createElement("div");
     item.className = "preview-item";
@@ -309,32 +343,3 @@ function showMediaPreview(type, filename) {
 
     preview.appendChild(item);
 }
-
-// Form submission handler
-document.querySelector("form").addEventListener("submit", function (e) {
-    // Update hidden textarea with final content
-    if (window.quillEditor) {
-        document.getElementById("id_text").value =
-            window.quillEditor.root.innerHTML;
-    }
-
-    // Basic validation
-    const title = document.getElementById("id_title").value.trim();
-    const content = window.quillEditor
-        ? window.quillEditor.getText().trim()
-        : "";
-
-    if (!title) {
-        alert("Please enter a title for your post.");
-        e.preventDefault();
-        return;
-    }
-
-    if (!content || content.length < 10) {
-        alert(
-            "Please write some content for your post (at least 10 characters)."
-        );
-        e.preventDefault();
-        return;
-    }
-});
