@@ -63,13 +63,13 @@
             {% endfor %}
         
         <div class="author-social-media">
-                {% for social_media in author.social_media.all %}
-                    {% for i, social in social_media_index %}
-                        {% if social_media.social_media == i %}
-                            <a class="{{ social|lower }}" href="{{ social_media.social_media_profile }}"><img src="{% static './img/'|add:social|lower|add:'.png' %}" width="20" height="20"/></a>
-                        {% endif %}
-                    {% endfor %}
+            {% for social_media in author.social_media.all %}
+                {% for i, social in social_media_index %}
+                    {% if social_media.social_media == i %}
+                        <a class="{{ social|lower }}" href="{{ social_media.social_media_profile }}"><img src="{% static './img/'|add:social|lower|add:'.png' %}" width="20" height="20"/></a>
+                    {% endif %}
                 {% endfor %}
+            {% endfor %}
         </div>
         
     </div>

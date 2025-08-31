@@ -19,6 +19,13 @@
         border-radius: 10px;
         padding: 1em;
     }
+    .post-author-presentation-card {
+        margin: 0;
+        border: 1px #6b6b6b solid;
+        border-radius: 10px;
+        padding: 0.5em;
+        box-shadow: 1px 1px 5px #6b6b6b;
+    }
     .our-team {
         margin-top: 20px;
     }
@@ -27,6 +34,17 @@
         flex-direction: row;
         justify-content: start;
         margin-bottom: 2vh;
+    }
+    .post-author-card-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        gap: 1.5em;
+        flex-wrap: wrap;
+    }
+    .post-author-card-top p {
+        margin: 0;
     }
     .author-card-top img {
         border-radius: 4vw;
@@ -40,24 +58,39 @@
     }
     .card-top-right a {
         padding: 5px;
+        color: #b9b9b9;
+        text-decoration: none;
+    }
+    .card-top-right a:hover,
+    .card-top-right a:visited {
+        padding: 5px;
+        color: #b9b9b9;
+        text-decoration: none;
     }
     .author-name-h1, .author-name-h2 {
         font-size: 1.5em;
+    }
+    .post-author-name-h2 {
+        font-size: 1em;
+        color: #6b6b6b;
     }
     .author-url {
         text-decoration: none;
         color: inherit;
     }
-    .author-name-h2 {
+    .author-name-h2,
+    . {
         color: inherit;
-
     }
     .author-social-media {
         height: 24px;
     }
+    .post-author-social-media {
+        height: 24px;
+        margin: 8px 0;
+    }
     .facebook, .instagram, .linkedin, .x {
         margin-right: 0.8em;
         height: 24px;
-
     }
 }
