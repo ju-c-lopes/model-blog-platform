@@ -2,6 +2,7 @@ from website.models.AuthorModel import Author
 from website.models.__init__ import ACADEMIC_LEVEL, SOCIAL_MEDIA
 from django.shortcuts import render, redirect, get_object_or_404
 
+
 def view_team(request):
     team = Author.objects.all()
     context = {

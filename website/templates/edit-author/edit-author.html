@@ -1,130 +1,239 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block head-css %}
-<link rel="stylesheet" type="text/css" href="{% static './css/edit-author-page.css' %}" media="all" />
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block head-css %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static './css/edit-author-page.css' %}"
+    media="all"
+/>
+{% endblock %} {% block content %}
 <div class="row text-center edit-user-display">
-    <p class="edit-user">Editando o usuário<br><span>{{ request.user.author.author_name }}</span>.</p>
+    <p class="edit-user">
+        Editando o usuário<br /><span
+            >{{ request.user.author.author_name }}</span
+        >.
+    </p>
 </div>
 <div class="display-message-error">
-    {% if messages %}
-        {% for message in messages %}
-        <span class="text-error-message">{{ message }}</span>
-        {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %}
+    <span class="text-error-message">{{ message }}</span>
+    {% endfor %} {% endif %}
 </div>
 <div>
     <div class="row text-center" id="main-form-div">
-        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             <fieldset class="author-form">
                 <table class="form-table">
-
                     {% for form in userForm %}
-                        <tr>
-                            <td><label for="username">{{ form.label }}</label></td>
-                            <td>{{ form }}</td>
-                        </tr>
-                    {% endfor %}
-                    {% for form in authorForm %}
                     <tr>
-                        <td><label for="{{ form.label.lower }}">{{ form.label }}</label></td>
+                        <td><label for="username">{{ form.label }}</label></td>
+                        <td>{{ form }}</td>
+                    </tr>
+                    {% endfor %} {% for form in authorForm %}
+                    <tr>
+                        <td>
+                            <label for="{{ form.label.lower }}"
+                                >{{ form.label }}</label
+                            >
+                        </td>
                         <td>{{ form }}</td>
                     </tr>
                     {% endfor %}
                 </table>
-                <hr>
+                <hr />
                 <table class="form-table form-table-social">
                     <th colspan="2">Redes Sociais</th>
                     {% for social in socialForms %}
                     <tr>
                         <td>
-                            <label for="{{ social.social_media.label.lower }}">{{ social.social_media.label }}</label>
+                            <label for="{{ social.social_media.label.lower }}"
+                                >{{ social.social_media.label }}</label
+                            >
                         </td>
                         <td>
-                            <select name="{{ social.social_media.html_name }}" id="{{ social.social_media.id_for_label }}">
-                                {% for value, media in social.social_media.field.choices %}
+                            <div class="select-wrapper">
+                                <select
+                                    class="custom-select"
+                                    name="{{ social.social_media.html_name }}"
+                                    id="{{ social.social_media.id_for_label }}"
+                                >
+                                    {% for value, media in social.social_media.field.choices %}
                                     {% if social.social_media.value == value %}
-                                    <option class="op-selected" value="{{ value }}" selected>{{ media }}</option>
+                                    <option
+                                        class="op-selected"
+                                        value="{{ value }}"
+                                        selected
+                                    >
+                                        {{ media }}
+                                    </option>
                                     {% elif forloop.counter <= socialForms|length and value != social.social_media.value %}
-                                    <option value="{{ value }}" disabled>{{ media }}</option>
+                                    <option value="{{ value }}" disabled>
+                                        {{ media }}
+                                    </option>
                                     {% else %}
-                                    <option value="{{ value }}">{{ media }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+                                    <option value="{{ value }}">
+                                        {{ media }}
+                                    </option>
+                                    {% endif %} {% endfor %}
+                                </select>
+                            </div>
                             {% for value, media in social.social_media.field.choices %}
                             {% if social.social_media.value == value %}
-                                <button type="submit" class="btn-exclude-social" id="{{ value }}">X</button>
-                                <input type="hidden" name="exclude-social" id="{{ media.lower }}">
-                            {% endif %}
-                            {% endfor %}
+                            <button
+                                type="submit"
+                                class="btn-exclude-social"
+                                id="{{ value }}"
+                            >
+                                X
+                            </button>
+                            <input
+                                type="hidden"
+                                name="exclude-social"
+                                id="{{ media.lower }}"
+                            />
+                            {% endif %} {% endfor %}
                         </td>
                     </tr>
                     <tr class="plus-field-last">
                         <td>
-                            <label for="{{ social.social_media_profile.label.lower }}">{{ social.social_media_profile.label }}</label>
-                        </td> 
+                            <label
+                                for="{{ social.social_media_profile.label.lower }}"
+                                >{{ social.social_media_profile.label }}</label
+                            >
+                        </td>
                         <td>{{ social.social_media_profile }}</td>
                     </tr>
                     {% endfor %}
                     {% if socialForms|length < 4 %}
-                        {% for i in socialEmptyForm.social_media.field.choices %}
-                            {% if forloop.counter > socialForms|length %}
-                            <tr class="plus-field">
-                                <td>
-                                    <label for="{{ socialEmptyForm.social_media.label.lower }}">{{ socialEmptyForm.social_media.label }}</label>
-                                </td>
-                                <td>
-                                    <select name="{{ socialEmptyForm.social_media.html_name }}" id="{{ socialEmptyForm.social_media.id_for_label }}">
-                                        {% for value, media in socialEmptyForm.social_media.field.choices %}
-                                            <option class="plus-options" value="{{ value }}">{{ media }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="plus-field plus-field-last">
-                                <td>
-                                    <label for="{{ socialEmptyForm.social_media_profile.label.lower }}">{{ socialEmptyForm.social_media_profile.label }}</label>
-                                </td> 
-                                <td>{{ socialEmptyForm.social_media_profile }}</td>
-                            </tr>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <tr class="plus-button-field">
-                        <td colspan="2"><button type="button" class="btn btn-primary w-100 social-button-plus">+</button></td>
+                    {% for i in socialEmptyForm.social_media.field.choices %}
+                    {% if forloop.counter > socialForms|length %}
+                    <tr class="plus-field">
+                        <td>
+                            <label
+                                for="{{ socialEmptyForm.social_media.label.lower }}"
+                                >{{ socialEmptyForm.social_media.label }}</label
+                            >
+                        </td>
+                        <td>
+                            <select
+                                name="{{ socialEmptyForm.social_media.html_name }}"
+                                id="{{ socialEmptyForm.social_media.id_for_label }}"
+                            >
+                                {% for value, media in socialEmptyForm.social_media.field.choices %}
+                                <option
+                                    class="plus-options"
+                                    value="{{ value }}"
+                                >
+                                    {{ media }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class="plus-field plus-field-last">
+                        <td>
+                            <label
+                                for="{{ socialEmptyForm.social_media_profile.label.lower }}"
+                                >{{ socialEmptyForm.social_media_profile.label }}</label
+                            >
+                        </td>
+                        <td>{{ socialEmptyForm.social_media_profile }}</td>
+                    </tr>
+                    {% endif %} {% endfor %} {% endif %}
+                    <tr class="plus-button-field">
                         <td colspan="2">
-                            <button type="submit" class="btn btn-primary w-100 save-button">
-                            Salvar
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100 social-button-plus"
+                            >
+                                +
                             </button>
                         </td>
                     </tr>
                 </table>
             </fieldset>
-            
+
             <fieldset class="graduations">
                 <h2>Tipo de Formação</h2>
-                <div class="academic-level">
-                    <label for="level">Formação: </label>
-                    <select name="level" id="level">
-                        <option value="" disabled>Selecione</option>
-                        {% for level in academic_levels %}
-                        <option value="{{ level.0 }}">{{ level.1 }}</option>
-                        {% endfor %}
-                    </select>
+                {{ graduation_formset.management_form }}
+                <div class="graduation-list">
+                    {% for gform in graduation_formset %}
+                    <table class="form-table graduation-item select-wrapper">
+                        <tr>
+                            <td>
+                                {{ gform.graduation_level.label_tag }}
+                            </td>
+                            <td class="wrapper">
+                                {{ gform.graduation_level }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                {{ gform.course.label_tag }}
+                            </td>
+                            <td>
+                                {{ gform.course }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                {{ gform.school.label_tag }}
+                            </td>
+                            <td>
+                                {{ gform.school }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                {{ gform.year_graduation.label_tag }}
+                            </td>
+                            <td>
+                                {{ gform.year_graduation }}
+                            </td>
+                        </tr>
+
+                        <tr class="form-check">
+                            <td>
+                                {{ gform.concluded.label_tag }}
+                                {{ gform.concluded }}
+                            </td>
+                        </tr>
+
+                        {% if gform.DELETE %}
+                        <tr class="form-check">
+                            <td>
+                                <label for="{{ gform.DELETE.id_for_label }}">Remover</label>
+                                {{ gform.DELETE }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    <hr />
+                    {% endfor %}
                 </div>
+
+                <button
+                    type="button"
+                    id="add-graduation"
+                    class="social-button-plus"
+                >
+                    +
+                </button>
             </fieldset>
+            <button
+                type="submit"
+                class="btn btn-primary w-100 save-button"
+            >
+                Salvar
+            </button>
         </form>
     </div>
 </div>
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{% static './scripts/buttonSocialPlus.js' %}"></script>
 <script src="{% static './scripts/buttonSocialExclude.js' %}"></script>
 <script src="{% static './scripts/buttonSave.js' %}"></script>
-<!-- <script src="{% static 'scripts/buttonAlterImage.js' %}"></script> -->
 {% endblock %}
