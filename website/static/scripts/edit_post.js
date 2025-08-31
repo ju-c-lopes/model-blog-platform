@@ -47,7 +47,7 @@ function updateCharCounter(inputId, counterId, maxLength) {
 // Initialize character counters and Quill editor when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
     // Character counters
-    updateCharCounter("id_title", "title-counter", 200);
+    updateCharCounter("id_title", "title-counter", 60);
     updateCharCounter("id_meta_description", "meta-counter", 160);
 
     // Auto-generate URL slug from title (only if creating new post)
@@ -103,12 +103,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Set initial content if editing
         const initialContent = document.getElementById("id_text").value;
-        console.log("Initial content:", initialContent);
-        if (initialContent) {
-            quill.root.innerHTML = initialContent;
+        console.log(initialContent.length > 0);
+        if (initialContent.length > 0) {
+            document.querySelector(".ql-editor").innerHTML = initialContent;
+            console.log("entrou")
         }
+        console.log("quill root after init:", document.querySelector(".ql-editor"));
 
-        // Update hidden textarea when content changes
+        // Update hidden textarea when c
+        // ontent changes
         quill.on("text-change", function () {
             document.getElementById("id_text").value = initialContent;
         });
@@ -243,11 +246,11 @@ function sendYoutubeUrl(url) {
 
     // Insert only the link wrapper into the editor. iframe will be injected on submit.
     const linkHtml = `
-        <div class="youtube-link-wrapper" data-video-id="${videoId}" contenteditable="false" style="margin:1rem 0; text-align:center;">
-            <p style="margin:0.25rem 0; font-size:0.95em; color:#666;">
+        <p class="youtube-link-wrapper" data-video-id="${videoId}" contenteditable="false" style="margin:1rem 0;">
+            <p style="margin: 0 auto; font-size:0.95em; color:#666; text-align:center;">
                 📺 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer">View on YouTube</a>
             </p>
-        </div>
+        </p>
     `;
     const ta = document.getElementById("id_text");
     if (ta) ta.value += linkHtml;
@@ -279,7 +282,7 @@ function injectYouTubeIframes(html, vid) {
     // Use DOMParser to safely manipulate HTML string
     try {
         html += `
-            <div class="youtube-video-container ql-editor" contenteditable="true" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; height: 0; overflow: hidden; background-color: #000; border-radius: 8px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+            <p class="youtube-video-container" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; height: 0; overflow: hidden; background-color: #000; border-radius: 8px;"><iframe src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
         `;
         console.log("Processed HTML:", html);
         return html;
