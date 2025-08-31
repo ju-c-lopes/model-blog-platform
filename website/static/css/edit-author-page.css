@@ -20,7 +20,7 @@
     form {
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
     }
     .author-form {
@@ -105,4 +105,109 @@
     .social-button-plus {
         font-size: 1.3em;
     }
+    .graduations {
+        position: relative;
+        margin-top: 2em;
+        font-size: 1.1em;
+        color: #b9b9b9;
+    }
+}
+
+/* Select customizado */
+:root {
+    --primary: #007bff;
+    --input-bg: #fff;
+    --input-radius: 1rem;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+}
+.select-wrapper .custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    padding-right: 2.5rem;
+    border-radius: var(--input-radius);
+    border: 1px solid rgba(0,0,0,0.08);
+    background: var(--input-bg);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04) inset;
+    font-size: 1rem;
+    color: #222;
+    cursor: pointer;
+}
+.wrapper::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    right: 2rem;
+    top: 8%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid rgba(0,0,0,0.45);
+    border-bottom: 2px solid rgba(0,0,0,0.45);
+    opacity: 0.9;
+}
+select.custom-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 6px rgba(91,59,255,0.08);
+}
+
+/* remove seta no IE */
+select.custom-select::-ms-expand { display: none; }
+
+/* mobile: mantém boa altura e espaçamento */
+@media screen and (max-width: 768px) {
+    .select-wrapper .custom-select { padding: 0.7rem 1rem; font-size: 1rem; }
+}
+
+/* Botões estilo padrão (ajuste cores) */
+.btn-exclude-social {
+    background: rgba(255,0,0,0.18);
+    color: #fff;
+    border: none;
+}
+.social-button-plus, .save-button {
+    background: var(--primary);
+    border: none;
+    color: #fff;
+    border-radius: 0.6rem;
+    padding: 0.6rem 1rem;
+}
+
+.save-button {
+    margin-top: 2em;
+}
+
+.graduation-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.graduation-item tr {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+
+.form-check,
+.form-check td,
+.form-check td label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+    margin: 0;
+    padding: 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 1em;
+    width: 1em;
 }

@@ -3,6 +3,7 @@
 
 {% block head-css %}
 <link rel="stylesheet" href="{% static 'css/post.css' %}" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
 {% endblock %}
 
 {% block title %}{{ post.title }}{% endblock %}
@@ -13,10 +14,66 @@
         <div class="col-md-8 offset-md-2">
             <article class="post-detail">
                 <h1 class="post-title">{{ post.title }}</h1>
-                
-                <div class="post-meta">
-                    <span class="post-date">Published on {{ post.published_date }}</span>
-                    <span class="post-author">by {{ post.author.author_name|default:post.author.user.username }}</span>
+                <div class="head-card">
+                    <div class="post-meta">
+                        <div class="post-author-presentation-card">
+                            <div class="post-author-card-top">
+                                <!-- Imagem do autor -->
+                                {% if not post.author.image %}
+                                <img src="{% static './img/no-user.jpg' %}" width="50" height="50" />
+                                {% else %}
+                                <img src="/media/{{ post.author.image }}" width="50" height="50" />
+                                {% endif %}
+                                <div class="post-card-top-right">
+                                    <!-- nome do autor H1 -->
+                                    <a href="{% url 'author' post.author.author_url_slug %}">
+                                        <h2 class="post-author-name-h2">{{ post.author.author_name }}</h2>
+                                    </a>
+                                    {% if author_connected %}
+                                        <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
+                                    {% endif %}
+                                </div>
+                                <!-- Resumo da formaçao do autor -->
+                                {% load replace_word %}
+                                    {% for graduation in post.author.graduations.all %}
+                                        {% if not graduation.concluded %}
+                                            {% for i, level in graduations_level %}
+                                                {% if graduation.graduation_level == i %}
+                                                <p>{{ level|replace_word  }} em {{ graduation.course }} na {{ graduation.school }}</p>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% elif forloop.counter == post.author.graduations.all|length %}
+                                            <p>
+                                            {% for i, level in graduations_level %}
+                                                {% if graduation.graduation_level == i %}
+                                                {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
+                                                {% endif %}
+                                            {% endfor %}
+                                            </p>
+                                        {% else %}
+                                            <p>
+                                            {% for i, level in graduations_level %}
+                                                {% if graduation.graduation_level == i %}
+                                                {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
+                                                {% endif %}
+                                            {% endfor %}
+                                            </p>
+                                        {% endif %}
+                                    {% endfor %}
+                            </div>
+                            
+                            <div class="post-author-social-media">
+                                {% for social_media in post.author.social_media.all %}
+                                    {% for i, social in social_media_index %}
+                                        {% if social_media.social_media == i %}
+                                            <a class="post-{{ social|lower }}" href="{{ social_media.social_media_profile }}"><img src="{% static './img/'|add:social|lower|add:'.png' %}" width="20" height="20"/></a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                            <span class="post-date">Published on {{ post.published_date }}</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="post-content mt-4">
