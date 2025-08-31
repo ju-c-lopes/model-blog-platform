@@ -1,23 +1,38 @@
 /* Post detail page styles */
 
 /* Common styles for all screen sizes */
+.post-author-social-media {
+    display: flex;
+    justify-content: start;
+    gap: 0.5em;
+}
 .post-detail {
-    background-color: #fff;
-    padding: 2rem;
+    background-color: none;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.head-card {
+    background: none;
 }
 
 .post-title {
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #333;
+    margin-left: 1em;
+    color: #b9b9b9;
 }
 
 .post-meta {
+    background: rgba(255, 255, 255, 0.4);
     font-size: 0.9rem;
+    border-radius: 10px;
     color: #6c757d;
-    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    margin: 0 1em;
+}
+.post-author-presentation-card {
+    overflow: hidden;
 }
 
 .post-meta span {
@@ -25,8 +40,11 @@
 }
 
 .post-content {
+    background: #fff;
     line-height: 1.8;
     color: #444;
+    border-radius: 10px;
+    padding: 1em;
 }
 
 .post-content iframe {

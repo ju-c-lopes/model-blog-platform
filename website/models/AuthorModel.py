@@ -10,7 +10,6 @@ class Author(models.Model):
     author_url_slug = models.TextField(max_length=70, blank=False, null=False, unique=True, default=uuid.uuid4)
     access_level = models.IntegerField(choices=ROLE_CHOICE, default=1)
     written_posts = models.ManyToManyField('Post', db_column='pk', blank=True, related_name='+')
-    graduations = models.ManyToManyField('Graduation', db_column='pk', blank=True, related_name='+')
     history = models.TextField(max_length=1000, blank=True, null=True)
     jobs = models.ManyToManyField('Job', db_column='pk', blank=True, related_name='+')
     social_media = models.ManyToManyField('SocialMedia', blank=True, related_name='+')

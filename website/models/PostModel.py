@@ -3,6 +3,7 @@ from website.models import *
 from website.models.AuthorModel import Author
 import uuid
 
+
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
