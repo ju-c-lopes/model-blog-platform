@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    'csp.middleware.CSPMiddleware',
+    "csp.middleware.CSPMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "website.middleware.Custom404Middleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -172,11 +172,17 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
 CSP_SCRIPT_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'", "data:")
-CSP_FRAME_SRC = [
+CSP_IMG_SRC = (
+    "'self'",
+    "data:",
+    "https://i.ytimg.com",
+    "https://img.youtube.com",
+    "https://ytimg.googleusercontent.com",
+)
+CSP_FRAME_SRC = (
     "'self'",
     "https://www.youtube.com",
     "https://youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
-]
+)
