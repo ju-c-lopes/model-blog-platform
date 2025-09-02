@@ -80,7 +80,7 @@
                     </div>
                 {% endif %}
                 <div class="post-content">
-                    <h3 class="post-title">{{ post.title }}</h3>
+                    <a href="{% url 'post_detail' post.url_slug %}"><h3 class="post-title">{{ post.title }}</h3></a>
                     <p class="post-excerpt">{{ post.content|truncatewords:20 }}</p>
                     <div class="post-meta">
                         <span class="post-author">{{ post.author.author_name }}</span>
