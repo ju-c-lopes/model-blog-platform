@@ -115,7 +115,16 @@
         </div>
     </div>
     {% endif %}
-    
+
+    {% if window.innerWidth > 768 %}
+    <div class="links-desktop">
+        <a class="menu-link" href="/">Home</a>
+        <a class="menu-link" href="#">Sobre</a>
+        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
+        <a class="menu-link" href="#">Contato</a>
+    </div>
+    {% endif %}
+
     <!-- SEARCH -->
     <form method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="search">
@@ -125,13 +134,6 @@
             </button>
         </div>
     </form>
-    
-    <!-- Create Post Button (for authors only) -->
-    {% if request.user.author %}
-    <div class="create-post-button">
-        <a href="{% url 'create_post' %}" class="btn-create-post">Create Post</a>
-    </div>
-    {% endif %}
     
     <!-- LOGIN (Desktop only) -->
     {% if request.user.author or request.user.reader %}
@@ -213,10 +215,12 @@
     {% endif %}
     </div>
 
-    <a class="menu-link" href="/">Home</a>
-    <a class="menu-link" href="#">Sobre</a>
-    <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
-    <a class="menu-link" href="#">Contato</a>
+    <div class="links">
+        <a class="menu-link" href="/">Home</a>
+        <a class="menu-link" href="#">Sobre</a>
+        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
+        <a class="menu-link" href="#">Contato</a>
+    </div>
 </nav>
 {% block scripts %}
 <script src="{% static './scripts/buttonMobile.js' %}"></script>
