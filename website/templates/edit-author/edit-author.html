@@ -155,49 +155,45 @@
 
             <fieldset class="graduations">
                 <h2>Tipo de Formação</h2>
-                {{ graduation_formset.management_form }}
+
+                {# management form obrigatório para o formset #} 
+                {{ graduation_formset.management_form }} 
+                {# template oculto com o empty_form (contém __prefix__) usado pelo JS #}
+                <template id="graduation-empty-template">
+                    <table class="form-table graduation-item select-wrapper">
+                        {{ graduation_formset.empty_form.as_table }}
+                    </table>
+                    <hr />
+                </template>
+
                 <div class="graduation-list">
                     {% for gform in graduation_formset %}
                     <table class="form-table graduation-item select-wrapper">
                         <tr>
-                            <td>
-                                {{ gform.graduation_level.label_tag }}
-                            </td>
+                            <td>{{ gform.graduation_level.label_tag }}</td>
                             <td class="wrapper">
                                 {{ gform.graduation_level }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td>
-                                {{ gform.course.label_tag }}
-                            </td>
-                            <td>
-                                {{ gform.course }}
-                            </td>
+                            <td>{{ gform.course.label_tag }}</td>
+                            <td>{{ gform.course }}</td>
                         </tr>
 
                         <tr>
-                            <td>
-                                {{ gform.school.label_tag }}
-                            </td>
-                            <td>
-                                {{ gform.school }}
-                            </td>
+                            <td>{{ gform.school.label_tag }}</td>
+                            <td>{{ gform.school }}</td>
                         </tr>
 
                         <tr>
-                            <td>
-                                {{ gform.year_graduation.label_tag }}
-                            </td>
-                            <td>
-                                {{ gform.year_graduation }}
-                            </td>
+                            <td>{{ gform.year_graduation.label_tag }}</td>
+                            <td>{{ gform.year_graduation }}</td>
                         </tr>
 
                         <tr class="form-check">
                             <td>
-                                {{ gform.concluded.label_tag }}
+                                {{ gform.concluded.label_tag }} 
                                 {{ gform.concluded }}
                             </td>
                         </tr>
@@ -205,7 +201,9 @@
                         {% if gform.DELETE %}
                         <tr class="form-check">
                             <td>
-                                <label for="{{ gform.DELETE.id_for_label }}">Remover</label>
+                                <label for="{{ gform.DELETE.id_for_label }}"
+                                    >Remover</label
+                                >
                                 {{ gform.DELETE }}
                             </td>
                         </tr>
@@ -218,15 +216,12 @@
                 <button
                     type="button"
                     id="add-graduation"
-                    class="social-button-plus"
+                    class="graduation-button-plus"
                 >
                     +
                 </button>
             </fieldset>
-            <button
-                type="submit"
-                class="btn btn-primary w-100 save-button"
-            >
+            <button type="submit" class="btn btn-primary w-100 save-button">
                 Salvar
             </button>
         </form>
@@ -234,6 +229,7 @@
 </div>
 {% endblock %} {% block scripts %}
 <script src="{% static './scripts/buttonSocialPlus.js' %}"></script>
+<script src="{% static './scripts/buttonGraduationPlus.js' %}"></script>
 <script src="{% static './scripts/buttonSocialExclude.js' %}"></script>
 <script src="{% static './scripts/buttonSave.js' %}"></script>
 {% endblock %}
