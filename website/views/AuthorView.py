@@ -48,7 +48,7 @@ def edit_author_profile(request, slug):
 
     # create formset factory here (safe even if GraduationFormSet defined later)
     GraduationFormSetLocal = inlineformset_factory(
-        Author, Graduation, form=GraduationForm, extra=1, can_delete=True
+        Author, Graduation, form=GraduationForm, extra=0, can_delete=True
     )
 
     if request.POST:
