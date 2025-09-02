@@ -3,9 +3,11 @@ const menuNavigation = document.querySelector(".menu-navigation");
 
 // Initialize menu in closed position on page load
 const initializeMenu = () => {
-    menuNavigation.style.top = "0";
-    menuNavigation.style.transform = "translateY(calc(-800px - 4em - 15px))";
-    menuNavigation.style.transition = "0.3s ease-out";
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        menuNavigation.style.top = "0";
+        menuNavigation.style.transform = "translateY(calc(-800px - 4em - 15px))";
+        menuNavigation.style.transition = "0.3s ease-out";
+    }
     // Ensure body scroll is enabled on initialization
     document.body.style.overflowY = "scroll";
 };
@@ -21,7 +23,7 @@ const closeMenu = () => {
 };
 
 const openMenu = () => {
-    menuNavigation.style.top = "-360px";
+    menuNavigation.style.top = "-380px";
     menuNavigation.style.transform = "";
     menuNavigation.style.transition = "";
     // Disable body scroll when menu is open

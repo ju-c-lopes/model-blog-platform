@@ -52,60 +52,121 @@ def edit_author_profile(request, slug):
     )
 
     if request.POST:
-        # instantiate formset with POST (and FILES)
-        graduation_formset = GraduationFormSetLocal(
-            request.POST, request.FILES, instance=author
-        )
+        # rebind user and author forms with POST data
+        user_form = UserChangeForm(request.POST, instance=request.user)
+        author_form = EditAuthorForm(request.POST, request.FILES, instance=author)
 
+        # instantiate formset with POST (and FILES) and try to detect prefix
+        prefix = None
+        for k in request.POST.keys():
+            if k.endswith("-TOTAL_FORMS") and "gradu" in k.lower():
+                prefix = k.rsplit("-TOTAL_FORMS", 1)[0]
+                break
+        if prefix is None:
+            for k in request.POST.keys():
+                if k.endswith("-TOTAL_FORMS"):
+                    prefix = k.rsplit("-TOTAL_FORMS", 1)[0]
+                    break
+
+        if prefix:
+            graduation_formset = GraduationFormSetLocal(
+                request.POST, request.FILES, instance=author, prefix=prefix
+            )
+        else:
+            graduation_formset = GraduationFormSetLocal(
+                request.POST, request.FILES, instance=author
+            )
+
+        # (debug logs removed)
+
+        # rebind social forms with POST
         social_forms = []
         for social in author_social_media:
             social_forms.append(SocialMediaForm(request.POST, instance=social))
+
         author_request_post = check_request_post(request)
         if author_request_post is not None:
             if author.image != "" and author_request_post["image"] is not None:
                 author.image.delete(save=True)
                 author.image = author_request_post["image"]
-        # validate & save author form
-        if check_author_form(request, author):
+
+        # validate forms
+        forms_ok = True
+
+        # (debug logs removed)
+
+        # username conflict check
+        username_conflict = False
+        if author_request_post:
+            username_conflict = bool(author_request_post.get("check_username_request"))
+        if not user_form.is_valid() or username_conflict:
+            forms_ok = False
+            if username_conflict:
+                messages.error(request, "Nome de usuário já está em uso.")
+
+        if not author_form.is_valid():
+            forms_ok = False
+
+        # validate graduation formset
+        if not graduation_formset.is_valid():
+            forms_ok = False
+
+        if forms_ok:
+            # save user (handle password: preserve original if empty)
+            original_password = request.user.password
+            user = user_form.save(commit=False)
+            pw = user_form.cleaned_data.get("password")
+            if pw:
+                user.set_password(pw)
+            else:
+                # preserve original hashed password
+                user.password = original_password
+            user.save()
+
+            # save author
+            author = author_form.save()
+
             # update social media entries
             if update_social_media(request, author_social_media):
                 send_message = True
             # create new social media if requested
-            if author_request_post["new_social_addition"] and not any(
-                author_request_post["exclude_social_media"]
+            if (
+                author_request_post
+                and author_request_post.get("new_social_addition")
+                and not any(author_request_post.get("exclude_social_media", []))
             ):
                 create_social_media(request, author_request_post)
                 send_message = True
             # exclude if requested
-            if any(author_request_post["exclude_social_media"]):
+            if author_request_post and any(
+                author_request_post.get("exclude_social_media", [])
+            ):
                 exclude_social_media(request, author)
                 send_message = True
 
-            # validate and save graduation formset
-            if graduation_formset.is_valid():
-                graduation_formset.save()
-                send_message = True
-            else:
-                # if formset invalid, render page with errors (no redirect)
-                context = {
-                    "socialEmptyForm": social_empty_form,
-                    "userForm": user_form,
-                    "authorForm": form,
-                    "socialForms": social_forms,
-                    "academic_levels": ACADEMIC_LEVEL,
-                    "graduation_formset": graduation_formset,
-                }
-                return render(
-                    request,
-                    template_name="edit-author/edit-author.html",
-                    context=context,
-                )
+            # save graduation formset (instance already saved)
+            graduation_formset.instance = author
+            graduation_formset.save()
+            send_message = True
 
             if send_message:
                 messages.success(request, "Dados atualizados com sucesso.")
             return redirect("author", slug=author.author_url_slug)
-        elif not author_request_post["check_username_request"]:
-            messages.error(request, "Nome de usuário já está em uso.")
+        else:
+            # render page with errors (no redirect)
+            context = {
+                "socialEmptyForm": social_empty_form,
+                "userForm": user_form,
+                "authorForm": author_form,
+                "socialForms": social_forms,
+                "academic_levels": ACADEMIC_LEVEL,
+                "graduation_formset": graduation_formset,
+            }
+            return render(
+                request,
+                template_name="edit-author/edit-author.html",
+                context=context,
+            )
     else:
         # GET: provide an empty/loaded formset instance
         graduation_formset = GraduationFormSetLocal(instance=author)
@@ -229,27 +290,17 @@ def set_graduation():
     pass
 
 
-GraduationFormSet = inlineformset_factory(
-    Author, Graduation, form=GraduationForm, extra=1, can_delete=True
-)
-
-
 def edit_author(request, author_slug=None):
-    author = (
-        request.user.author
-        if not author_slug
-        else get_object_or_404(Author, author_url_slug=author_slug)
-    )
+    """Wrapper to keep compatibility: delegate to edit_author_profile.
 
-    if request.method == "POST":
-        graduation_formset = GraduationFormSet(request.POST, instance=author)
-        # ... seus outros forms (userForm, authorForm, socialForms) devem ser validados aqui ...
-        if graduation_formset.is_valid():
-            graduation_formset.save()
-            # redirecione ou adicione mensagem
-            return redirect("edit_author", author_slug=author.author_url_slug)
+    If no author_slug is provided, use the logged-in user's author slug.
+    """
+    if not author_slug:
+        if hasattr(request, "user") and getattr(request.user, "author", None):
+            slug = request.user.author.author_url_slug
+        else:
+            # nothing sensible to edit; redirect to home
+            return redirect("/")
     else:
-        graduation_formset = GraduationFormSet(instance=author)
-
-    context = {"graduation_formset": graduation_formset}
-    return render(request, "edit-author/edit-author.html", context)
+        slug = author_slug
+    return edit_author_profile(request, slug)

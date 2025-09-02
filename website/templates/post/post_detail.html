@@ -35,7 +35,6 @@
                                 </div>
                                 <!-- Resumo da formaçao do autor -->
                                 {% load replace_word %}
-                                {{ post.author.graduations.all }}
                                     {% for graduation in post.author.graduations.all %}
                                         {% if not graduation.concluded %}
                                             {% for i, level in graduations_level %}

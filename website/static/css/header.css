@@ -1,5 +1,15 @@
 /* Desktop header styles */
 @media screen and (min-width: 769px) {
+    .row {
+        position: fixed;
+        background: linear-gradient(90deg, rgba(38, 77, 96, 0.95), rgba(38, 77, 96, 0.8));
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        width: 100%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
     .btn-create-post {
         background-color: #264d60;
         color: white;
@@ -26,18 +36,15 @@
     }
     
     header, .header-container {
-        position: fixed;
+        position: relative;
         top: 0;
         left: 0;
         right: 0;
-        background: linear-gradient(90deg, rgba(38, 77, 96, 0.95), rgba(38, 77, 96, 0.8));
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0;
-        z-index: 1000;
     }
     
     .button-menu-mobile {
@@ -47,6 +54,7 @@
     .logo-container {
         display: flex;
         align-items: center;
+        padding-left: 2vw;
     }
     
     .logo-container a {
@@ -63,26 +71,41 @@
     }
     
     .logo-text {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #fff;
-        margin: 0;
+        position: sticky;
+        font-size: 16pt;
+        font-family: 'Bungee shade', sans-serif;
+        line-height: 1.2;
+        font-weight: 600;
+        color: rgb(255, 255, 255);
+        text-shadow: 0 1px 2px #06516b;
     }
     
     .menu-navigation {
         display: flex;
         position: static;
-        transform: none;
         flex-direction: row;
+        justify-content: space-around;
         align-items: center;
         background: none;
         box-shadow: none;
+        width: 45% !important;
         height: auto;
         padding: 0;
     }
     
     .menu-navigation form {
         margin-right: 20px;
+    }
+
+    .links {
+        position: absolute;
+        left: 30vw;
+    }
+
+    .menu-link {
+        margin-right: 2vw;
+        color: #fff;
+        text-decoration: none;
     }
     
     .search {
@@ -98,7 +121,7 @@
         border: none;
         color: #fff;
         padding: 5px;
-        width: 200px;
+        width: 400px;
     }
     
     .search input::placeholder {
@@ -146,7 +169,7 @@
         position: fixed;
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .7);
-        width: 100vw;
+        width: 100vw !important;
         height: calc(4em + 15px);
         display: flex;
         flex-direction: row;
@@ -369,7 +392,7 @@
         align-items: center;
         justify-content: start;
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
-        width: 100%;
+        width: 100% !important;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .7);
         padding-bottom: 20px;
         /* Enable scrolling for mobile menu */
@@ -432,6 +455,10 @@
     .search-btn img {
         height: 20px;
         margin-right: 12px;
+    }
+
+    .links {
+        width: 100%;
     }
     
     .header-login {
@@ -733,6 +760,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        padding-right: 2vw;
     }
     
     .profile-trigger {
