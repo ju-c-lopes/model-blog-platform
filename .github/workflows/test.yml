@@ -3,7 +3,7 @@ on:
     pull_request:
         branches: [main]
     push:
-        branches: [main]
+        branches: [main, dev]
 jobs:
     test-django-app:
         runs-on: ubuntu-latest
