@@ -7,7 +7,6 @@
     gap: 0.5em;
 }
 .post-detail {
-    background-color: none;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -222,6 +221,30 @@
     
     .post-card .post-title {
         font-size: 1.2rem;
+    }
+
+    .post-footer div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around !important;
+        align-items: center;
+        padding: 0.5em;
+    }
+
+    .reaction-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .reaction-div {
+        display: flex;
+        flex-direction: column !important;
+    }
+
+    .reaction-count {
+        margin: 0;
     }
     
     .read-more {
