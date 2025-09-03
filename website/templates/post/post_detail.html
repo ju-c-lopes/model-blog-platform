@@ -4,6 +4,15 @@
 {% block head-css %}
 <link rel="stylesheet" href="{% static 'css/post.css' %}" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
+<style>
+/* Reaction icon styles */
+.reaction-btn{ background:transparent; border:0; padding:0; cursor:pointer; }
+.reaction-icon{ font-size:20px; opacity:0.45; transition:opacity .15s, transform .12s; }
+.reaction-icon.active{ opacity:1; transform:scale(1.05); }
+.reaction-icon.like.active{ color: #0d6efd; } /* blue for like */
+.reaction-icon.love.active{ color: #e0245e; } /* red for love */
+.reaction-count{ font-size:0.95rem; color:#333; }
+</style>
 {% endblock %}
 
 {% block title %}{{ post.title }}{% endblock %}
@@ -80,15 +89,148 @@
                     {{ post.text|safe }}
                 </div>
                 
-                <div class="post-footer mt-5">
-                    <div class="d-flex justify-content-between">
+                <div class="post-footer mt-2">
+                    <div class="justify-content-between">
                         <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Posts</a>
-                        
-                        {% if request.user.author == post.author %}
-                        <a href="{% url 'edit_post' url_slug=post.url_slug %}" class="btn btn-primary">Edit Post</a>
-                        {% endif %}
+                        <div class="align-items-center">
+                            {% if request.user.is_authenticated and request.user.author == post.author %}
+                            <a href="{% url 'edit_post' url_slug=post.url_slug %}" class="btn btn-primary">Edit Post</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
+                <div class="reaction-section">
+                    <div class="reaction-div align-items-center">
+                        <button id="like-btn" class="reaction-btn" aria-label="Like">
+                            <span id="like-icon" class="reaction-icon like {% if user_liked %}active{% endif %}">
+                                {% if user_liked %}
+                                <img width="40" src="{% static './img/activate-like.png' %}" alt="" class="like-btn">
+                                {% else %}
+                                <img width="40" src="{% static './img/deactivate-like.png' %}" alt="" class="like-btn">
+                                {% endif %}
+                            </span>
+                        </button>
+                        <span id="likes-count" class="reaction-count">{{ post.likes.count }}</span>
+                    </div>
+                    <div class="reaction-div align-items-center">
+                        <button id="love-btn" class="reaction-btn" aria-label="Love">
+                            <span id="love-icon" class="reaction-icon love {% if user_loved %}active{% endif %}">
+                                {% if user_loved %}
+                                <img width="40" src="{% static './img/activate-love.png' %}" alt="" class="love-btn">
+                                {% else %}
+                                <img width="40" src="{% static './img/deactivate-love.png' %}" alt="" class="love-btn">
+                                {% endif %}
+                            </span>
+                        </button>
+                        <span id="loves-count" class="reaction-count">{{ post.loves.count }}</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+    const likeBtn = document.getElementById('like-btn');
+    const loveBtn = document.getElementById('love-btn');
+    const likeIcon = document.getElementById('like-icon');
+    const loveIcon = document.getElementById('love-icon');
+    const likesCountEl = document.getElementById('likes-count');
+    const lovesCountEl = document.getElementById('loves-count');
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        function postToggle(path, onDone){
+            fetch(path, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Accept': 'application/json',
+                }
+                }).then(r => {
+                    if (!r.ok) throw r;
+                    return r.json();
+                }).then(onDone).catch(err => {
+                    // If forbidden, show signup modal instead of generic alert
+                    if (err.status === 403) {
+                        const modal = document.getElementById('signup-modal');
+                        if (modal) modal.style.display = 'block';
+                    } else {
+                        console.error(err);
+                    }
+                });
+        }
+
+        if (likeBtn){
+            likeBtn.addEventListener('click', function(){
+                postToggle(`{% url 'post_toggle_like' url_slug=post.url_slug %}`, function(data){
+                    // always update both counts from server response
+                    likesCountEl.textContent = data.likes_count;
+                    lovesCountEl.textContent = data.loves_count;
+                    if (data.liked) {
+                        likeIcon.classList.add('active');
+                        likeIcon.innerHTML = "<img width='40' src='{% static './img/activate-like.png' %}' alt='' class='like-btn'>";
+                    } else {
+                        likeIcon.classList.remove('active');
+                        likeIcon.innerHTML = "<img width='40' src='{% static './img/deactivate-like.png' %}' alt='' class='like-btn'>";
+                    }
+                    // update love icon state
+                    if (data.loved) {
+                        loveIcon.classList.add('active');
+                        loveIcon.innerHTML = "<img width='40' src='{% static './img/activate-love.png' %}' alt='' class='love-btn'>";
+                    } else {
+                        loveIcon.classList.remove('active');
+                        loveIcon.innerHTML = "<img width='40' src='{% static './img/deactivate-love.png' %}' alt='' class='love-btn'>";
+                    }
+                });
+            });
+        }
+
+        if (loveBtn){
+            loveBtn.addEventListener('click', function(){
+                postToggle(`{% url 'post_toggle_love' url_slug=post.url_slug %}`, function(data){
+                    // always update both counts from server response
+                    lovesCountEl.textContent = data.loves_count;
+                    likesCountEl.textContent = data.likes_count;
+                    if (data.loved) {
+                        loveIcon.classList.add('active');
+                        loveIcon.innerHTML = "<img width='40' src='{% static './img/activate-love.png' %}' alt='' class='love-btn'>";
+                    } else {
+                        loveIcon.classList.remove('active');
+                        loveIcon.innerHTML = "<img width='40' src='{% static './img/deactivate-love.png' %}' alt='' class='love-btn'>";
+                    }
+                    // update like icon state
+                    if (data.liked) {
+                        likeIcon.classList.add('active');
+                        likeIcon.innerHTML = "<img width='40' src='{% static './img/activate-like.png' %}' alt='' class='like-btn'>";
+                    } else {
+                        likeIcon.classList.remove('active');
+                        likeIcon.innerHTML = "<img width='40' src='{% static './img/deactivate-like.png' %}' alt='' class='like-btn'>";
+                    }
+                });
+            });
+        }
+    })();
+</script>
+<!-- Signup modal (very simple) -->
+<div id="signup-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:20px; max-width:400px; margin:80px auto; position:relative;">
+        <h4>Faça seu cadastro</h4>
+        <p>Para reagir a posts, crie uma conta ou faça login.</p>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+            <a href="{% url 'login' %}" class="btn btn-primary">Entrar</a>
+            <a href="{% url 'sign_up' %}" class="btn btn-outline-secondary">Criar conta</a>
+            <button id="close-signup-modal" class="btn btn-link">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('close-signup-modal')?.addEventListener('click', function(){
+    document.getElementById('signup-modal').style.display = 'none';
+});
+</script>
+<form style="display:none">{% csrf_token %}</form>
             </article>
         </div>
     </div>
