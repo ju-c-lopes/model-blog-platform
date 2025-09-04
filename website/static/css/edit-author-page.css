@@ -177,8 +177,8 @@ select.custom-select::-ms-expand { display: none; }
     color: #fff;
     border: none;
 }
-.social-button-plus, 
-.graduation-button-plus, 
+.social-button-plus,
+.graduation-button-plus,
 .save-button {
     background: var(--primary);
     border: none;

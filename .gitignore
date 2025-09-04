@@ -10,3 +10,7 @@ blog-model.code-workspace
 .env.development
 .env.productionvenv/
 venv/
+
+# Local artifacts
+.DS_Store
+core

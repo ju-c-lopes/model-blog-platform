@@ -5,20 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0004_remove_author_graduations_alter_graduation_student'),
+        ("website", "0004_remove_author_graduations_alter_graduation_student"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='likes',
-            field=models.ManyToManyField(blank=True, related_name='liked_posts', to=settings.AUTH_USER_MODEL),
+            model_name="post",
+            name="likes",
+            field=models.ManyToManyField(
+                blank=True, related_name="liked_posts", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='post',
-            name='loves',
-            field=models.ManyToManyField(blank=True, related_name='loved_posts', to=settings.AUTH_USER_MODEL),
+            model_name="post",
+            name="loves",
+            field=models.ManyToManyField(
+                blank=True, related_name="loved_posts", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

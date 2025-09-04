@@ -70,7 +70,7 @@
                                         {% endif %}
                                     {% endfor %}
                             </div>
-                            
+
                             <div class="post-author-social-media">
                                 {% for social_media in post.author.social_media.all %}
                                     {% for i, social in social_media_index %}
@@ -84,11 +84,11 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="post-content mt-4">
                     {{ post.text|safe }}
                 </div>
-                
+
                 <div class="post-footer mt-2">
                     <div class="justify-content-between">
                         <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Posts</a>

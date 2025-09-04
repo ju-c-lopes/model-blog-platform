@@ -5,19 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0003_alter_post_author'),
+        ("website", "0003_alter_post_author"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='author',
-            name='graduations',
+            model_name="author",
+            name="graduations",
         ),
         migrations.AlterField(
-            model_name='graduation',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='graduations', to='website.author'),
+            model_name="graduation",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="graduations",
+                to="website.author",
+            ),
         ),
     ]

@@ -20,7 +20,7 @@
 {% for message in messages %}
     <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
         {{ message }}
-    </div> 
+    </div>
 {% endfor %}
 </div>
 
@@ -28,7 +28,7 @@
     <div class="sign-up-wrapper">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <fieldset>
                 <!-- Profile Type Selection -->
                 <div class="form-field">

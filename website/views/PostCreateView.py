@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from website.forms.PostForm import PostForm
 from website.models.AuthorModel import Author
@@ -10,7 +10,6 @@ from website.models.PostModel import Post
 
 
 @xframe_options_exempt
-
 @login_required
 def edit_post(request, url_slug=None):
     """Unified view for editing an existing blog post or creating a new one"""

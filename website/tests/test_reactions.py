@@ -23,7 +23,6 @@ class ReactionToggleTests(TestCase):
         )
 
     def test_like_then_switch_to_love_decrements_like_counter(self):
-        # login as user
         self.client.force_login(self.user)
 
         # initial counts
@@ -47,10 +46,8 @@ class ReactionToggleTests(TestCase):
         self.post.refresh_from_db()
         self.assertEqual(r2.status_code, 200)
         data2 = r2.json()
-        # love should be active now
         self.assertTrue(data2.get("loved"))
         self.assertEqual(data2.get("loves_count"), 1)
-        # like should have been removed and decremented
         self.assertEqual(data2.get("likes_count"), 0)
         self.assertEqual(self.post.likes.count(), 0)
         self.assertEqual(self.post.loves.count(), 1)
@@ -58,11 +55,13 @@ class ReactionToggleTests(TestCase):
     def test_undo_like_removes_relation_and_decrements(self):
         self.client.force_login(self.user)
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
+
         # like
         r1 = self.client.post(url_like)
         self.post.refresh_from_db()
         self.assertEqual(r1.status_code, 200)
         self.assertEqual(self.post.likes.count(), 1)
+
         # unlike (toggle)
         r2 = self.client.post(url_like)
         self.post.refresh_from_db()
@@ -73,22 +72,20 @@ class ReactionToggleTests(TestCase):
         self.assertEqual(self.post.likes.count(), 0)
 
     def test_multiple_users_counts_and_switching(self):
-        # create second user
         user2 = User.objects.create_user(
             username="tester2", email="t2@test.com", password="pass"
         )
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
         url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
-
         # user1 likes
         self.client.force_login(self.user)
-        r1 = self.client.post(url_like)
+        self.client.post(url_like)
         self.post.refresh_from_db()
         self.assertEqual(self.post.likes.count(), 1)
 
         # user2 likes
         self.client.force_login(user2)
-        r2 = self.client.post(url_like)
+        self.client.post(url_like)
         self.post.refresh_from_db()
         self.assertEqual(self.post.likes.count(), 2)
 
@@ -98,14 +95,12 @@ class ReactionToggleTests(TestCase):
         self.post.refresh_from_db()
         self.assertEqual(r3.status_code, 200)
         data3 = r3.json()
-        # now likes should be 1 (user2), loves 1 (user1)
         self.assertEqual(data3.get("likes_count"), 1)
         self.assertEqual(data3.get("loves_count"), 1)
         self.assertEqual(self.post.likes.count(), 1)
         self.assertEqual(self.post.loves.count(), 1)
 
     def test_guest_cannot_toggle_reaction(self):
-        # ensure client not logged in
         self.client.logout()
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
         r = self.client.post(url_like)

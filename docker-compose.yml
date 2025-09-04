@@ -24,6 +24,7 @@ services:
         pip install --no-cache-dir --upgrade pip &&
         pip install --no-cache-dir -r requirements.txt &&
         echo 'Dependencies installed successfully!' &&
+        pip install --no-cache-dir -r requirements-dev.txt &&
         echo 'Container is ready. You can now run: docker exec -it python_app bash' &&
         tail -f /dev/null
       "

@@ -1,8 +1,6 @@
 from django.contrib import messages
-from django.contrib.messages import get_messages
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 
 from website.forms.EditAuthorForm import (
     EditAuthorForm,
@@ -11,7 +9,7 @@ from website.forms.EditAuthorForm import (
     UserChangeForm,
 )
 from website.models import User
-from website.models.__init__ import ACADEMIC_LEVEL, ROLE_CHOICE, SOCIAL_MEDIA
+from website.models.__init__ import ACADEMIC_LEVEL, SOCIAL_MEDIA
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
 from website.models.GraduationsModel import Graduation
@@ -281,9 +279,8 @@ def exclude_social_media(request, author):
     exclusions = check_request_post(request)["exclude_social_media"]
     for exclude_request in exclusions:
         if exclude_request != "":
-            social_media = author.social_media.get(
-                social_media=exclude_request
-            ).delete()
+            # directly delete the matched social media entry
+            author.social_media.get(social_media=exclude_request).delete()
 
 
 def set_graduation():
