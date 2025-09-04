@@ -40,6 +40,9 @@ jobs:
                         coverage.xml
                         htmlcov/**
 
+            - name: Debug secrets context
+              run: echo "${{ toJson(secrets) }}"
+
             - name: Upload to Codecov
               if: ${{ secrets.CODECOV_TOKEN }}
               uses: codecov/codecov-action@v4
