@@ -41,3 +41,7 @@ jobs:
               with:
                   files: coverage.xml
                   token: ${{ secrets.CODECOV_TOKEN }}
+            - name: Run pre-commit hooks
+              uses: pre-commit/action@v4
+              with:
+                  extra_args: --all-files

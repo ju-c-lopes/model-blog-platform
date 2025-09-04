@@ -41,7 +41,8 @@ class AuthorViewMoreTests(TestCase):
         assert self.author.author_name == "Updated Name"
 
     def test_check_user_form_updates_username_when_free(self):
-        # attempt to change current author's username to an existing username (other_user)
+        # attempt to change current author's username to an existing
+        # username (other_user)
         data = {
             "username": "newname",
             "author_name": "X",

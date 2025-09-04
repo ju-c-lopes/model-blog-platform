@@ -64,18 +64,18 @@ class AuthorProfileHelpersTest(TestCase):
             def getlist(self, k):
                 return self.get(k, [])
 
-    # change the social media values
-    post = PostDict({"social_media": ["2"], "social_media_profile": ["http://y"]})
-    req = SimpleNamespace(POST=post, FILES={}, user=user)
+        # change the social media values
+        post = PostDict({"social_media": ["2"], "social_media_profile": ["http://y"]})
+        req = SimpleNamespace(POST=post, FILES={}, user=user)
 
-    # call update_social_media for coverage; return value not needed here
-    AuthorView.update_social_media(req, list(author.social_media.all()))
-    # ensure DB reflects the new values for the first social entry
-    author.refresh_from_db()
-    sms = list(author.social_media.all())
-    self.assertGreaterEqual(len(sms), 1)
-    self.assertEqual(str(sms[0].social_media), "2")
-    self.assertEqual(sms[0].social_media_profile, "http://y")
+        # call update_social_media for coverage; return value not needed here
+        AuthorView.update_social_media(req, list(author.social_media.all()))
+        # ensure DB reflects the new values for the first social entry
+        author.refresh_from_db()
+        sms = list(author.social_media.all())
+        self.assertGreaterEqual(len(sms), 1)
+        self.assertEqual(str(sms[0].social_media), "2")
+        self.assertEqual(sms[0].social_media_profile, "http://y")
 
 
 class ReaderEditHelpersTest(TestCase):

@@ -71,9 +71,8 @@ class ProfileReaderPostViewsTest(TestCase):
         user = User.objects.create_user(
             username="pp2", email="pp2@test.com", password="p"
         )
-        author = Author.objects.create(
-            user=user, author_name="AuthX", author_url_slug="authx"
-        )
+        # ensure an author profile exists for this user
+        Author.objects.create(user=user, author_name="AuthX", author_url_slug="authx")
         self.client.force_login(user)
 
         url = reverse("create_post")

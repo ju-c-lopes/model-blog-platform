@@ -11,15 +11,12 @@ from website.views.SignUpView import treat_accentuation
 def update_profile(request):
     user = request.user
     current_profile_type = None
-    current_profile = None
 
     # Determine current profile state
     if hasattr(user, "author"):
         current_profile_type = "author"
-        current_profile = user.author
     elif hasattr(user, "reader"):
         current_profile_type = "reader"
-        current_profile = user.reader
 
     if request.method == "POST":
         form = ProfileUpdateForm(user=user, data=request.POST, files=request.FILES)
@@ -38,7 +35,6 @@ def update_profile(request):
                     user.reader.delete()
 
                 current_profile_type = None
-                current_profile = None
 
             # Create or update profile
             if new_profile_type == "author":

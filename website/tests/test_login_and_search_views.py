@@ -101,9 +101,11 @@ class SearchViewTests(TestCase):
         def fake_render(req_in, template, context=None):
             return SimpleNamespace(status_code=200, context=context)
 
+        resp = None
         with patch("website.views.SearchView.render", fake_render):
             resp = search_posts(req)
 
         assert resp.status_code == 200
-        # posts is a Page object; ensure it corresponds to page 1 by checking object_list length
+        # posts is a Page object; ensure it corresponds to page 1
+        # by checking object_list length
         assert len(list(resp.context["posts"])) == 1
