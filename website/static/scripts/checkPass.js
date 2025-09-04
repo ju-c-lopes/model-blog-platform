@@ -30,7 +30,7 @@ inputPassOne.addEventListener('focus', () => {
 inputPassOne.addEventListener('input', (passValue) => {
     let passTyped = passValue.target.value;
     lineChecks = document.querySelectorAll(".popup-validate>ul>li");
-    
+
     checked.Upper = (passTyped.match(checkPass.Upper)) === null ? false : passTyped.match(checkPass.Upper).length > 0;
     if (checked.Upper) {
         checked.Upper = true;
@@ -86,5 +86,3 @@ inputPassOne.addEventListener('input', (passValue) => {
         });
     }
 });
-
-

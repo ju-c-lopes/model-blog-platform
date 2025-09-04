@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0001_initial'),
+        ("website", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='meta_description',
-            field=models.CharField(blank=True, help_text='SEO meta description (max 160 characters)', max_length=160, null=True),
+            model_name="post",
+            name="meta_description",
+            field=models.CharField(
+                blank=True,
+                help_text="SEO meta description (max 160 characters)",
+                max_length=160,
+                null=True,
+            ),
         ),
     ]

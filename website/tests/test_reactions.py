@@ -30,47 +30,48 @@ class ReactionToggleTests(TestCase):
         self.assertEqual(self.post.likes.count(), 0)
         self.assertEqual(self.post.loves.count(), 0)
 
-        # like the post
-        url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
-        r1 = self.client.post(url_like)
-        self.post.refresh_from_db()
-        self.assertEqual(r1.status_code, 200)
-        data1 = r1.json()
-        self.assertTrue(data1.get("liked"))
-        self.assertEqual(data1.get("likes_count"), 1)
-        self.assertEqual(self.post.likes.count(), 1)
-        self.assertEqual(self.post.loves.count(), 0)
+    # like the post
+    url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
+    r1 = self.client.post(url_like)
+    self.post.refresh_from_db()
+    self.assertEqual(r1.status_code, 200)
+    data1 = r1.json()
+    self.assertTrue(data1.get("liked"))
+    self.assertEqual(data1.get("likes_count"), 1)
+    self.assertEqual(self.post.likes.count(), 1)
+    self.assertEqual(self.post.loves.count(), 0)
 
-        # now switch to love
-        url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
-        r2 = self.client.post(url_love)
-        self.post.refresh_from_db()
-        self.assertEqual(r2.status_code, 200)
-        data2 = r2.json()
-        # love should be active now
-        self.assertTrue(data2.get("loved"))
-        self.assertEqual(data2.get("loves_count"), 1)
-        # like should have been removed and decremented
-        self.assertEqual(data2.get("likes_count"), 0)
-        self.assertEqual(self.post.likes.count(), 0)
-        self.assertEqual(self.post.loves.count(), 1)
+    # now switch to love
+    url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
+    r2 = self.client.post(url_love)
+    self.post.refresh_from_db()
+    self.assertEqual(r2.status_code, 200)
+    data2 = r2.json()
+    # love should be active now
+    self.assertTrue(data2.get("loved"))
+    self.assertEqual(data2.get("loves_count"), 1)
+    # like should have been removed and decremented
+    self.assertEqual(data2.get("likes_count"), 0)
+    self.assertEqual(self.post.likes.count(), 0)
+    self.assertEqual(self.post.loves.count(), 1)
 
     def test_undo_like_removes_relation_and_decrements(self):
         self.client.force_login(self.user)
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
-        # like
-        r1 = self.client.post(url_like)
-        self.post.refresh_from_db()
-        self.assertEqual(r1.status_code, 200)
-        self.assertEqual(self.post.likes.count(), 1)
-        # unlike (toggle)
-        r2 = self.client.post(url_like)
-        self.post.refresh_from_db()
-        self.assertEqual(r2.status_code, 200)
-        data2 = r2.json()
-        self.assertFalse(data2.get("liked"))
-        self.assertEqual(data2.get("likes_count"), 0)
-        self.assertEqual(self.post.likes.count(), 0)
+
+    # like
+    r1 = self.client.post(url_like)
+    self.post.refresh_from_db()
+    self.assertEqual(r1.status_code, 200)
+    self.assertEqual(self.post.likes.count(), 1)
+    # unlike (toggle)
+    r2 = self.client.post(url_like)
+    self.post.refresh_from_db()
+    self.assertEqual(r2.status_code, 200)
+    data2 = r2.json()
+    self.assertFalse(data2.get("liked"))
+    self.assertEqual(data2.get("likes_count"), 0)
+    self.assertEqual(self.post.likes.count(), 0)
 
     def test_multiple_users_counts_and_switching(self):
         # create second user
