@@ -1,0 +1,36 @@
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.isort]
+profile = 'black'
+
+[tool.ruff]
+line-length = 88
+
+# Exclude generated and non-source trees and package re-export files where
+# star-imports are intentional. This keeps automatic fixes safer and focused
+# on application code.
+exclude = [
+	"**/migrations/*",
+	"reports/*",
+	"media/*",
+	"static/*",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "C", "B", "I"]
+ignore = ["E203"]
+
+# Per-file ignores for intentional package re-exports and files we don't want
+# ruff to modify automatically (models use internal re-exports).
+[tool.ruff.lint.per-file-ignores]
+"website/models/__init__.py" = ["F401", "F403", "F405"]
+"website/views/__init__.py" = ["F401", "F403", "F405"]
+"website/urls/__init__.py" = ["F401", "F403", "F405"]
+"website/forms/RegistrationForm.py" = ["F401", "F403", "F405"]
+"website/forms/LoginForm.py" = ["F401", "F403", "F405"]
+"website/models/AuthorModel.py" = ["F403", "F405"]
+"website/models/GraduationsModel.py" = ["F403", "F405"]
+"website/models/JobsModel.py" = ["F403", "F405"]
+"website/models/PostModel.py" = ["F403", "F405"]

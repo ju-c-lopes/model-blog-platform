@@ -105,15 +105,15 @@
         margin: 2rem auto;
         max-width: 800px;
     }
-    
+
     .post-title {
         font-size: 2.5rem;
     }
-    
+
     .post-content {
         font-size: 1.1rem;
     }
-    
+
     /* Post list/card styles for desktop */
     .posts-container {
         display: grid;
@@ -121,7 +121,7 @@
         gap: 2rem;
         padding: 1rem;
     }
-    
+
     .post-card {
         background-color: white;
         border-radius: 8px;
@@ -132,20 +132,20 @@
         flex-direction: column;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .post-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-    
+
     .post-card .post-title {
         font-size: 1.5rem;
     }
-    
+
     .post-card .post-content {
         flex-grow: 1;
     }
-    
+
     .post-card .post-footer {
         margin-top: 1rem;
         display: flex;
@@ -154,7 +154,7 @@
         border-top: none;
         padding-top: 0.5rem;
     }
-    
+
     .read-more {
         display: inline-block;
         background-color: #264d60;
@@ -164,22 +164,22 @@
         text-decoration: none;
         transition: background-color 0.3s ease;
     }
-    
+
     .read-more:hover {
         background-color: #1a3a4a;
     }
-    
+
     /* Pagination styling */
     .pagination {
         display: flex;
         justify-content: center;
         margin: 2rem 0;
     }
-    
+
     .pagination .page-item {
         margin: 0 0.25rem;
     }
-    
+
     .pagination .page-link {
         color: #264d60;
         background-color: white;
@@ -188,11 +188,11 @@
         padding: 0.5rem 0.75rem;
         transition: all 0.3s ease;
     }
-    
+
     .pagination .page-link:hover {
         background-color: #e9ecef;
     }
-    
+
     .pagination .active .page-link {
         background-color: #264d60;
         color: white;
@@ -205,11 +205,11 @@
     .post-title {
         font-size: 1.8rem;
     }
-    
+
     .post-content {
         font-size: 1rem;
     }
-    
+
     /* Post list/card styles for mobile */
     .post-card {
         background-color: white;
@@ -218,7 +218,7 @@
         padding: 1rem;
         margin: 1rem 0;
     }
-    
+
     .post-card .post-title {
         font-size: 1.2rem;
     }
@@ -246,7 +246,7 @@
     .reaction-count {
         margin: 0;
     }
-    
+
     .read-more {
         display: inline-block;
         background-color: #264d60;

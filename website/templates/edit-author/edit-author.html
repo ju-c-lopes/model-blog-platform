@@ -1,11 +1,14 @@
-{% extends 'base.html' %} {% load static %} {% block head-css %}
+{% extends 'base.html' %}
+{% load static %}
+{% block head-css %}
 <link
     rel="stylesheet"
     type="text/css"
     href="{% static './css/edit-author-page.css' %}"
     media="all"
 />
-{% endblock %} {% block content %}
+{% endblock %}
+{% block content %}
 <div class="row text-center edit-user-display">
     <p class="edit-user">
         Editando o usuário<br /><span
@@ -14,9 +17,11 @@
     </p>
 </div>
 <div class="display-message-error">
-    {% if messages %} {% for message in messages %}
+    {% if messages %}
+    {% for message in messages %}
     <span class="text-error-message">{{ message }}</span>
-    {% endfor %} {% endif %}
+    {% endfor %}
+    {% endif %}
 </div>
 <div>
     <div class="row text-center" id="main-form-div">
@@ -29,7 +34,8 @@
                         <td><label for="username">{{ form.label }}</label></td>
                         <td>{{ form }}</td>
                     </tr>
-                    {% endfor %} {% for form in authorForm %}
+                    {% endfor %}
+                    {% for form in authorForm %}
                     <tr>
                         <td>
                             <label for="{{ form.label.lower }}"
@@ -57,9 +63,8 @@
                                     name="{{ social.social_media.html_name }}"
                                     id="{{ social.social_media.id_for_label }}"
                                 >
-                                    {% for value, media in
-                                    social.social_media.field.choices %} {% if
-                                    social.social_media.value == value %}
+                                    {% for value, media in social.social_media.field.choices %}
+                                    {% if social.social_media.value == value %}
                                     <option
                                         class="op-selected"
                                         value="{{ value }}"
@@ -67,9 +72,7 @@
                                     >
                                         {{ media }}
                                     </option>
-                                    {% elif forloop.counter <=
-                                    socialForms|length and value !=
-                                    social.social_media.value %}
+                                    {% elif forloop.counter <= socialForms|length and value != social.social_media.value %}
                                     <option value="{{ value }}" disabled>
                                         {{ media }}
                                     </option>
@@ -77,12 +80,12 @@
                                     <option value="{{ value }}">
                                         {{ media }}
                                     </option>
-                                    {% endif %} {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
-                            {% for value, media in
-                            social.social_media.field.choices %} {% if
-                            social.social_media.value == value %}
+                            {% for value, media in social.social_media.field.choices %}
+                            {% if social.social_media.value == value %}
                             <button
                                 type="submit"
                                 class="btn-exclude-social"
@@ -95,7 +98,8 @@
                                 name="exclude-social"
                                 id="{{ media.lower }}"
                             />
-                            {% endif %} {% endfor %}
+                            {% endif %}
+                            {% endfor %}
                         </td>
                     </tr>
                     <tr class="plus-field-last">
@@ -107,9 +111,10 @@
                         </td>
                         <td>{{ social.social_media_profile }}</td>
                     </tr>
-                    {% endfor %} {% if socialForms|length < 4 %} {% for i in
-                    socialEmptyForm.social_media.field.choices %} {% if
-                    forloop.counter > socialForms|length %}
+                    {% endfor %}
+                    {% if socialForms|length < 4 %}
+                    {% for i in socialEmptyForm.social_media.field.choices %}
+                    {% if forloop.counter > socialForms|length %}
                     <tr class="plus-field">
                         <td>
                             <label

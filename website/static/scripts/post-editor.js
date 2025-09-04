@@ -10,13 +10,13 @@ class PostEditor {
     init() {
         // Initialize Quill editor
         this.initQuillEditor();
-        
+
         // Setup event listeners
         this.setupEventListeners();
-        
+
         // Setup character counters
         this.setupCharacterCounters();
-        
+
         // Setup form validation
         this.setupFormValidation();
     }
@@ -75,14 +75,14 @@ class PostEditor {
         // Auto-generate URL slug from title
         const titleField = document.getElementById('id_title');
         const slugField = document.getElementById('id_url_slug');
-        
+
         if (titleField && slugField) {
             titleField.addEventListener('input', (e) => {
                 if (!slugField.dataset.userModified) {
                     slugField.value = this.generateSlug(e.target.value);
                 }
             });
-            
+
             slugField.addEventListener('input', () => {
                 slugField.dataset.userModified = 'true';
             });
@@ -93,7 +93,7 @@ class PostEditor {
         // Title counter
         const titleField = document.getElementById('id_title');
         const titleCounter = document.getElementById('title-counter');
-        
+
         if (titleField && titleCounter) {
             titleField.addEventListener('input', (e) => {
                 const count = e.target.value.length;
@@ -105,7 +105,7 @@ class PostEditor {
         // Meta description counter
         const metaField = document.getElementById('id_meta_description');
         const metaCounter = document.getElementById('meta-counter');
-        
+
         if (metaField && metaCounter) {
             metaField.addEventListener('input', (e) => {
                 const count = e.target.value.length;
@@ -130,7 +130,7 @@ class PostEditor {
         const field = event.target;
         const value = field.value.trim();
         const fieldGroup = field.closest('.form-group');
-        
+
         if (!fieldGroup) return;
 
         // Remove existing error
@@ -249,7 +249,7 @@ class PostEditor {
     insertTable() {
         const rows = prompt('Number of rows:', '3');
         const cols = prompt('Number of columns:', '3');
-        
+
         if (rows && cols) {
             const tableModule = this.quill.getModule('table');
             if (tableModule) {
@@ -263,7 +263,7 @@ class PostEditor {
 
     insertHTMLTable(rows, cols) {
         let tableHTML = '<table class="table table-bordered"><tbody>';
-        
+
         for (let i = 0; i < rows; i++) {
             tableHTML += '<tr>';
             for (let j = 0; j < cols; j++) {
@@ -271,9 +271,9 @@ class PostEditor {
             }
             tableHTML += '</tr>';
         }
-        
+
         tableHTML += '</tbody></table>';
-        
+
         const range = this.quill.getSelection();
         this.quill.clipboard.dangerouslyPasteHTML(range.index, tableHTML);
     }

@@ -17,13 +17,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Sixtyfour&display=swap" rel="stylesheet">
-        
+
         {% load static %}
-        <link rel="icon" type="image/x-icon" href="{% static '/img/juclops-techxperience-logo.ico' %}">
+        <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.ico' %}">
         <link rel="stylesheet" type="text/css" href="{% static './css/base.css' %}" media="all" />
         <link rel="stylesheet" type="text/css" href="{% static './css/header.css' %}" media="all" />
         {% block head-css %}{% endblock %}
-        
+
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body class="container-fluid vh-100">
@@ -31,7 +31,7 @@
         <header class="row">
             {% include "header/header.html" %}
         </header>
-        
+
         <div class="d-flex flex-column">
 
             {% block content %}{% endblock %}

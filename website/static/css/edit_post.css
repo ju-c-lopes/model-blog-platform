@@ -335,22 +335,22 @@
     .form-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .post-form-container {
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
         margin: 1rem;
         padding: 1.5rem;
     }
-    
+
     .form-title {
         color: var(--light-blue);
         font-size: 2rem;
     }
-    
+
     .media-buttons {
         justify-content: center;
     }
-    
+
     .form-buttons {
         flex-direction: column;
         gap: 1rem;
