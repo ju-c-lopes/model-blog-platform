@@ -42,7 +42,8 @@ def login_user(request):
                     messages.error(request, "Senha inválida.")
 
             except Exception:
-                # Be defensive: if email is malformed or missing '@', fallback to a simple message
+                # Be defensive: if email is malformed or missing '@',
+                # fallback to a simple message
                 try:
                     cut_at_email = email.index("@")
                     email_cutted = email[cut_at_email : cut_at_email + 2]

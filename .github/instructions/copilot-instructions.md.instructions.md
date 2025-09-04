@@ -28,8 +28,8 @@ Incorrect:
 or
 
 ```html
-{% if user.is_authenticated and 
-    user.is_active 
+{% if user.is_authenticated and
+    user.is_active
 %}
     <p>Welcome, {{ user.username }}!</p>
 {% else %}

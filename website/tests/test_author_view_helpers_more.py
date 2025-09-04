@@ -25,9 +25,7 @@ class AuthorViewHelpersMoreTest(TestCase):
         user = User.objects.create_user(
             username="au1", email="au1@test.com", password="p"
         )
-        author = Author.objects.create(
-            user=user, author_name="Au1", author_url_slug="au1"
-        )
+        Author.objects.create(user=user, author_name="Au1", author_url_slug="au1")
         # author has zero social entries
 
         post = PostDict(

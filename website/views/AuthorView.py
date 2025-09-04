@@ -279,9 +279,8 @@ def exclude_social_media(request, author):
     exclusions = check_request_post(request)["exclude_social_media"]
     for exclude_request in exclusions:
         if exclude_request != "":
-            social_media = author.social_media.get(
-                social_media=exclude_request
-            ).delete()
+            # directly delete the matched social media entry
+            author.social_media.get(social_media=exclude_request).delete()
 
 
 def set_graduation():

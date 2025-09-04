@@ -25,12 +25,34 @@ ignore = ["E203"]
 # Per-file ignores for intentional package re-exports and files we don't want
 # ruff to modify automatically (models use internal re-exports).
 [tool.ruff.lint.per-file-ignores]
-"website/models/__init__.py" = ["F401", "F403", "F405"]
 "website/views/__init__.py" = ["F401", "F403", "F405"]
 "website/urls/__init__.py" = ["F401", "F403", "F405"]
 "website/forms/RegistrationForm.py" = ["F401", "F403", "F405"]
 "website/forms/LoginForm.py" = ["F401", "F403", "F405"]
-"website/models/AuthorModel.py" = ["F403", "F405"]
+"website/models/AuthorModel.py" = ["F403", "F405", "E501"]
 "website/models/GraduationsModel.py" = ["F403", "F405"]
 "website/models/JobsModel.py" = ["F403", "F405"]
 "website/models/PostModel.py" = ["F403", "F405"]
+"website/models/ReaderModel.py" = ["E501"]
+
+# Additional conservative ignores for generated/intentional long strings and
+# small management scripts where line-length checks or unused local vars are
+# not helpful for automated fixes.
+"blogModel/settings/settings.py" = ["E501"]
+"website/forms/PostForm.py" = ["E501"]
+"website/management/commands/create_test_user.py" = ["E501", "F841"]
+"website/models/__init__.py" = ["F401", "F403", "F405", "E402"]
+
+# Suppress complexity warnings for large view handlers that are intentional
+# and would require a broader refactor; keep the linter focused on safe auto
+# fixes across the repo for now.
+"website/views/AuthorView.py" = ["C901"]
+"website/views/ProfileUpdateView.py" = ["C901"]
+"website/templatetags/get_type.py" = ["C901"]
+
+# Allow long lines in tests that contain long help text or comments; these
+# are test-only strings and are not safe to auto-wrap automatically.
+"website/tests/test_admin_and_templatetag.py" = ["E501"]
+"website/tests/test_author_view.py" = ["E501"]
+"website/tests/test_author_view_helpers_more.py" = ["E501"]
+"website/tests/test_profile_reader_post_views.py" = ["E501"]

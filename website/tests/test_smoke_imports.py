@@ -6,7 +6,7 @@ def test_import_website_modules():
     root = os.path.dirname(os.path.dirname(__file__))
     imported = 0
     errors = {}
-    for dirpath, dirnames, filenames in os.walk(root):
+    for dirpath, _dirnames, filenames in os.walk(root):
         # skip tests and migrations folders
         if "tests" in dirpath.split(os.sep) or "migrations" in dirpath.split(os.sep):
             continue
