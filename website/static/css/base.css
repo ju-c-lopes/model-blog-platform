@@ -43,18 +43,18 @@ body {
         line-height: 1.6;
         overflow-y: hidden;
     }
-    
+
     .container-fluid {
         /* max-width: 1400px; */
         margin: 0;
     }
-    
+
     .d-flex {
         position: relative;
         margin-top: 80px;
         padding: 0 2rem;
     }
-    
+
     /* Improved content area for desktop */
     .content-area {
         background-color: rgba(255, 255, 255, 0.9);

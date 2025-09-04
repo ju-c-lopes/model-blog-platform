@@ -5,7 +5,7 @@
         <span></span>
         <span></span>
     </button>
-    
+
     <!-- Tentará verificar a url -->
     <div class="logo-container">
         {% if request.path is None or request.path == "/" %}
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mobile-profile-actions">
                 {% if request.user.author %}
                     <a href="{% url 'author' request.user.author.author_url_slug %}" class="mobile-profile-btn">View Profile</a>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mobile-profile-actions">
                 <a href="{% url 'update-profile' %}" class="mobile-profile-btn mobile-profile-btn-primary">Complete Profile</a>
                 <a href="{% url 'logout' %}" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
@@ -134,7 +134,7 @@
             </button>
         </div>
     </form>
-    
+
     <!-- LOGIN (Desktop only) -->
     {% if request.user.author or request.user.reader %}
     <div class="header-login logged desktop-only">
@@ -153,7 +153,7 @@
                 </span>
                 <span class="dropdown-arrow">▼</span>
             </div>
-            
+
             <!-- Profile Dropdown Menu -->
             <div class="profile-dropdown">
                 {% if request.user.author %}
@@ -189,7 +189,7 @@
                 <span class="profile-name">{{ request.user.username }}</span>
                 <span class="dropdown-arrow">▼</span>
             </div>
-            
+
             <!-- Profile Dropdown Menu -->
             <div class="profile-dropdown">
                 <a href="{% url 'update-profile' %}" class="dropdown-item">

@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_fb4081b6cc255517_GraduationsModel_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-13 08:06 -0300
+            created at 2025-09-04 08:24 -0300
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -80,18 +80,21 @@
     </div>
 </header>
 <main id="source">
-    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="key">from</span> <span class="nam">website</span><span class="op">.</span><span class="nam">models</span> <span class="key">import</span> <span class="nam">SOCIAL_MEDIA</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t"><span class="key">from</span> <span class="nam">django</span><span class="op">.</span><span class="nam">db</span> <span class="key">import</span> <span class="nam">models</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">website</span><span class="op">.</span><span class="nam">models</span><span class="op">.</span><span class="nam">AuthorModel</span> <span class="key">import</span> <span class="nam">Author</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t"><span class="key">class</span> <span class="nam">SocialMedia</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">    <span class="nam">user_social_media</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span><span class="str">'Author'</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">unique</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">on_delete</span><span class="op">=</span><span class="nam">models</span><span class="op">.</span><span class="nam">CASCADE</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t">    <span class="nam">social_media</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">choices</span><span class="op">=</span><span class="nam">SOCIAL_MEDIA</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">    <span class="nam">social_media_profile</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">100</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">'Social_Media'</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="key">from</span> <span class="nam">django</span><span class="op">.</span><span class="nam">db</span> <span class="key">import</span> <span class="nam">models</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">website</span><span class="op">.</span><span class="nam">models</span> <span class="key">import</span> <span class="nam">SOCIAL_MEDIA</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">website</span><span class="op">.</span><span class="nam">models</span><span class="op">.</span><span class="nam">AuthorModel</span> <span class="key">import</span> <span class="nam">Author</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">class</span> <span class="nam">SocialMedia</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">    <span class="nam">user_social_media</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">        <span class="str">"Author"</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">unique</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">on_delete</span><span class="op">=</span><span class="nam">models</span><span class="op">.</span><span class="nam">CASCADE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t">    <span class="nam">social_media</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">choices</span><span class="op">=</span><span class="nam">SOCIAL_MEDIA</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="nam">social_media_profile</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">100</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Social_Media"</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -101,7 +104,7 @@
             <a class="nav" href="z_fb4081b6cc255517_GraduationsModel_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-13 08:06 -0300
+            created at 2025-09-04 08:24 -0300
         </p>
     </div>
 </footer>

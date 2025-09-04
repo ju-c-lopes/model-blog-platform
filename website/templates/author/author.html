@@ -33,7 +33,7 @@
                 {% endif %}
             </div>
         </div>
-        
+
         <!-- Resumo da formaçao do autor -->
         {% load replace_word %}
             {% for graduation in author.graduations.all %}
@@ -61,7 +61,7 @@
                     </p>
                 {% endif %}
             {% endfor %}
-        
+
         <div class="author-social-media">
             {% for social_media in author.social_media.all %}
                 {% for i, social in social_media_index %}
@@ -71,20 +71,20 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        
+
     </div>
-    
+
     <div class="biography">
         <div class="author-history">
-            
+
         </div>
-        
+
         <div class="author-graduation">
-            
+
         </div>
-        
+
         <div class="author-professional-tragetory">
-            
+
         </div>
     </div>
 </main>
