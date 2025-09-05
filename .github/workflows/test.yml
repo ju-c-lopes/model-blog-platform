@@ -110,3 +110,4 @@ jobs:
                     coverage.svg
                     docs/*
                   author: GitHub Actions <actions@github.com>
+                  base: main
