@@ -46,6 +46,7 @@ jobs:
                   include-hidden-files: true
 
     coverage:
+        if: github.actor != 'github-actions[bot]'
         name: "Calcular e Salvar Coverage"
         needs: test
         runs-on: ubuntu-latest
@@ -98,11 +99,15 @@ jobs:
             - name: "Verificando o status do repositório"
               run: git status && git add .
 
-            - name: "Commitando o novo badge de coverage"
-              uses: stefanzweifel/git-auto-commit-action@v5
+            - name: "Commit e Criação de Pull Request com Coverage"
+              uses: peter-evans/create-pull-request@v6
               with:
-                  commit_message: "chore: Atualiza badge de coverage"
-                  file_pattern: coverage.svg
-                  commit_user_name: GitHub Actions
-                  commit_user_email: actions@github.com
-                  commit_author: GitHub Actions <actions@github.com>
+                  commit-message: "chore: Atualiza badge de coverage e documentação"
+                  branch: "update-coverage-badge${{ github.run_number }}"
+                  title: "Atualiza badge de coverage e documentação"
+                  body: "Este PR atualiza o badge de coverage e a documentação gerada automaticamente."
+                  add-paths: |
+                    coverage.svg
+                    docs/*
+                  author: GitHub Actions <actions@github.com>
+                  base: main
