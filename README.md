@@ -1,9 +1,8 @@
 | TEST | ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ju-c-lopes/model-blog-platform/test.yml?branch=main&event=push&style=flat&label=Actions-Tests) |
 | --- | --- |
-| COVERAGE | [![Coverage Status](./coverage-badge.svg)](./reports/coverage/index.html) |
+| COVERAGE | [![Coverage Status](./coverage.svg)](./reports/coverage/index.html) |
 
 ---
-* _Project paused at this moment..._
 
 # Starting the Model Blog Website
 ---
@@ -37,10 +36,9 @@
 
 ## Screenshot
 
-<figure>
-<img src="./website/static/img/pass-valid.gif" style="width: 200px;" alt="Password Validation using JavaScript" title ="Password Validation using Javascript">
-<figcaption>Password Validation using Javascript</figcaption>
-</figure><br><br>
+| <img alt="Password Validation using JavaScript" title="Password Validation using JavaScript" src="./website/static/img/pass-valid.gif" width="220" /> |  |
+| --- | --- |
+|  |  |
 
 ---
 
