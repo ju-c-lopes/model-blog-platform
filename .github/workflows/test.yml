@@ -70,9 +70,9 @@ jobs:
                   path: coverage-artifacts
                   merge-multiple: true
 
-            # - name: "Movendo arquivos de coverage para a raiz"
-              # run: |
-                  # find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
+            - name: "Movendo arquivos de coverage para a raiz"
+              run: |
+                  find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
 
             - name: "Combinando relatórios de coverage"
               run: |
