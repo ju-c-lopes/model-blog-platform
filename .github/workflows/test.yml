@@ -1,10 +1,10 @@
 name: Run Django Tests
 
 on:
-    push:
-        branches: [ "main", "dev" ]
     pull_request:
-        branches: [ "main" ]
+        branches: [main]
+    push:
+        branches: [main, dev]
 
 jobs:
     test:
@@ -28,7 +28,6 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
-                  pip install -r requirements-dev.txt
                   pip install pytest pytest-cov
 
             - name: "Rodando os testes com pytest e gerando coverage"
@@ -44,6 +43,7 @@ jobs:
                   name: coverage-data-${{ matrix.python-version }}
                   path: .coverage.${{ matrix.python-version }}
                   retention-days: 1
+                  include-hidden-files: true
 
     coverage:
         name: "Calcular e Salvar Coverage"
@@ -68,14 +68,15 @@ jobs:
               with:
                   pattern: coverage-data-*
                   path: coverage-artifacts
-                  # merge-multiple: true
+                  merge-multiple: true
 
-            - name: "Movendo arquivos de coverage para a raiz"
-              run: |
-                  find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
+            # - name: "Movendo arquivos de coverage para a raiz"
+              # run: |
+                  # find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
 
             - name: "Combinando relatórios de coverage"
               run: |
+                  ls -la
                   coverage combine
                   coverage report
                   coverage json
