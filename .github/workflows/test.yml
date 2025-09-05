@@ -33,6 +33,7 @@ jobs:
             - name: "Rodando os testes com pytest e gerando coverage"
               run: |
                   pytest --cov=.  # --cov-report=xml
+                  cp ./reports/coverage ./docs
 
             - name: "Renomeando arquivo de coverage para evitar conflitos"
               run: mv .coverage .coverage.${{ matrix.python-version }}
