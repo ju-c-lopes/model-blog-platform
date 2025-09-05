@@ -67,8 +67,12 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   pattern: coverage-data-*
-                  path: .
-                  merge-multiple: true
+                  path: coverage-artifacts
+                  # merge-multiple: true
+
+            - name: "Movendo arquivos de coverage para a raiz"
+              run: |
+                  find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
 
             - name: "Combinando relatórios de coverage"
               run: |
