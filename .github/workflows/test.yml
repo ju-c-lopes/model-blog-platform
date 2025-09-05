@@ -33,7 +33,6 @@ jobs:
             - name: "Rodando os testes com pytest e gerando coverage"
               run: |
                   pytest --cov=.  # --cov-report=xml
-                  cp -r ./reports/coverage ./docs
 
             - name: "Renomeando arquivo de coverage para evitar conflitos"
               run: mv .coverage .coverage.${{ matrix.python-version }}
@@ -63,6 +62,7 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   pip install coverage
+                  cp -r ./reports/coverage ./docs
 
             - name: "Baixando artefatos de coverage"
               uses: actions/download-artifact@v4
