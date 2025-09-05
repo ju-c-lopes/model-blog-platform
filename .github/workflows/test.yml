@@ -90,7 +90,7 @@ jobs:
                   output: coverage.svg
 
             - name: "Verificando o status do repositório"
-              run: git status
+              run: git status && git add .
 
             - name: "Commitando o novo badge de coverage"
               uses: stefanzweifel/git-auto-commit-action@v5
