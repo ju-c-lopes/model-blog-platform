@@ -1,6 +1,6 @@
 | TEST | ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ju-c-lopes/model-blog-platform/test.yml?branch=main&event=push&style=flat&label=Actions-Tests) |
 | --- | --- |
-| COVERAGE | [![Coverage Status](./coverage.svg)](./reports/coverage/index.html) |
+| COVERAGE | [![Coverage Status](./coverage.svg)](https://ju-c-lopes.github.io/model-blog-platform/) |
 
 ---
 
