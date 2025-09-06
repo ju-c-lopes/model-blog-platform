@@ -35,6 +35,12 @@ jobs:
           yellow: 60
           output: coverage.svg
 
+      - name: Upload coverage badge artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-badge
+          path: coverage.svg
+
   update-badge:
     name: Commit and PR Badge
     needs: test
