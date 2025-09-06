@@ -1,113 +1,61 @@
-name: Run Django Tests
+name: Generate Coverage Badge and PR
 
 on:
-    pull_request:
-        branches: [main]
-    push:
-        branches: [main, dev]
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
 
 jobs:
-    test:
-        name: Teste com Python ${{ matrix.python-version }}
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                python-version: ["3.11"]
+  test:
+    name: Run Tests and Collect Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-        steps:
-            - name: "Clonando o repositório"
-              uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-            - name: "Configurando o Python ${{ matrix.python-version }}"
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
 
-            - name: "Instalando dependências"
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install -r requirements.txt
-                  pip install pytest pytest-cov
+      - name: Run tests and collect coverage
+        run: pytest --cov=.
 
-            - name: "Rodando os testes com pytest e gerando coverage"
-              run: |
-                  pytest --cov=.  # --cov-report=xml
+      - name: Generate coverage badge
+        id: coverage_badge
+        uses: tj-actions/coverage-badge-py@v2
+        with:
+          green: 85
+          yellow: 60
+          output: coverage.svg
 
-            - name: "Renomeando arquivo de coverage para evitar conflitos"
-              run: mv .coverage .coverage.${{ matrix.python-version }}
+  update-badge:
+    name: Commit and PR Badge
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: "Enviando artefato de coverage"
-              uses: actions/upload-artifact@v4
-              with:
-                  name: coverage-data-${{ matrix.python-version }}
-                  path: .coverage.${{ matrix.python-version }}
-                  retention-days: 1
-                  include-hidden-files: true
+      - name: Download badge artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-badge
+          path: .
 
-    coverage:
-        if: github.actor != 'github-actions[bot]'
-        name: "Calcular e Salvar Coverage"
-        needs: test
-        runs-on: ubuntu-latest
-        steps:
-            - name: "Clonando o repositório"
-              uses: actions/checkout@v4
-
-            - name: "Configurando o Python"
-              uses: actions/setup-python@v5
-              with:
-                  python-version: '3.11'
-
-            - name: "Instalando dependências de coverage"
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install coverage
-
-
-            - name: "Baixando artefatos de coverage"
-              uses: actions/download-artifact@v4
-              with:
-                  pattern: coverage-data-*
-                  path: coverage-artifacts
-                  merge-multiple: true
-
-            - name: "Movendo arquivos de coverage para a raiz"
-              run: |
-                  find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
-
-            - name: "Combinando relatórios de coverage"
-              run: |
-                  ls -la
-                  coverage combine
-                  coverage report
-                  coverage json
-
-            - name: "Copiando diretório para reports"
-              run: |
-                  cp -r reports/coverage/* docs/
-                  ls -la docs/
-
-            - name: "Gerando o badge de coverage"
-              id: coverage_badge
-              uses: tj-actions/coverage-badge-py@v2
-              with:
-                  green: 85
-                  yellow: 60
-                  output: coverage.svg
-
-            - name: "Verificando o status do repositório"
-              run: git status && git add .
-
-            - name: "Commit e Criação de Pull Request com Coverage"
-              uses: peter-evans/create-pull-request@v6
-              with:
-                  commit-message: "chore: Atualiza badge de coverage e documentação"
-                  branch: "update-coverage-badge${{ github.run_number }}"
-                  title: "Atualiza badge de coverage e documentação"
-                  body: "Este PR atualiza o badge de coverage e a documentação gerada automaticamente."
-                  add-paths: |
-                    coverage.svg
-                    docs/*
-                  author: GitHub Actions <actions@github.com>
-                  base: main
+      - name: Commit and create PR with coverage badge
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: Atualiza badge de coverage"
+          branch: "update-coverage-badge-${{ github.run_number }}"
+          title: "Atualiza badge de coverage"
+          body: "Este PR atualiza o badge de coverage automaticamente."
+          add-paths: coverage.svg
+          author: GitHub Actions <actions@github.com>
+          base: main
