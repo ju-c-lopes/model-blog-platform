@@ -36,12 +36,27 @@
 
             {% block content %}{% endblock %}
 
+            <div class="screen-size">
+            </div>
             <footer>
                 {% include "footer/footer.html" %}
             </footer>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
             {% block scripts %}{% endblock %}
+            <script>
+                const larguraTela = window.innerWidth;
+                const alturaTela = window.innerHeight;
+                const ratio = window.devicePixelRatio;
+
+                var tela = document.querySelector(".screen-size");
+
+                tela.innerHTML += `
+                    <p style="margin-top=400px;">Largura: ${larguraTela}</p>
+                    <p>Altura: ${alturaTela}</p>
+                    <p>Device Pixel Ratio: ${ratio}</p>
+                `;
+            </script>
         </div>
     </body>
 </html>
