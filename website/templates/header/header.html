@@ -9,12 +9,12 @@
     <!-- Tentará verificar a url -->
     <div class="logo-container">
         {% if request.path is None or request.path == "/" %}
-        <a href="#">
+        <a href="/">
             <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
             <h1 class="logo-text">Juclops' TechXperience</h1>
         </a>
         {% else %}
-        <a href="#">
+        <a href="/">
             <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
             alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
             <span class="logo-text">Juclops' TechXperience</span>
@@ -125,6 +125,13 @@
     </div>
     {% endif %}
 
+    <div class="links">
+        <a class="menu-link" href="/">Home</a>
+        <a class="menu-link" href="#">Sobre</a>
+        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
+        <a class="menu-link" href="#">Contato</a>
+    </div>
+
     <!-- SEARCH -->
     <form method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="search">
@@ -141,7 +148,8 @@
         <div class="profile-container">
             <div class="profile-trigger">
                 {% if request.user.author.image or request.user.reader.image %}
-                <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" {% else %} src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" {% endif %}/>            {% else %}
+                <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" {% else %} src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" {% endif %}/>
+                {% else %}
                 <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="User profile" />
                 {% endif %}
                 <span class="profile-name">
@@ -150,8 +158,8 @@
                     {% else %}
                     {{ request.user.reader.reader_name }}
                     {% endif %}
+                    <span class="dropdown-arrow">▼</span>
                 </span>
-                <span class="dropdown-arrow">▼</span>
             </div>
 
             <!-- Profile Dropdown Menu -->
@@ -185,7 +193,7 @@
     <div class="header-login desktop-only">
         <div class="profile-container">
             <div class="profile-trigger">
-                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="User profile" />
+                <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="{% if request.user.author %}{{ request.user.author.author_name }}{% elif request.user.reader %}{{ request.user.reader.reader_name }}{% endif %}" />
                 <span class="profile-name">{{ request.user.username }}</span>
                 <span class="dropdown-arrow">▼</span>
             </div>
@@ -204,8 +212,8 @@
     {% else %}
     <div class="header-login desktop-only">
         <div class="not-logged">
-            <img class="header-login--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" />
-            <div class="register">
+            <img class="header-login--img no-user--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" alt />
+            <div class="register profile-dropdown">
                 {% if request.path != "/sign-up/" %}
                 <a class="login-link" href="{% url 'sign_up' %}">Cadastre-se</a>
                 {% endif %}
@@ -215,13 +223,9 @@
     {% endif %}
     </div>
 
-    <div class="links">
-        <a class="menu-link" href="/">Home</a>
-        <a class="menu-link" href="#">Sobre</a>
-        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
-        <a class="menu-link" href="#">Contato</a>
-    </div>
+
 </nav>
 {% block scripts %}
 <script src="{% static './scripts/buttonMobile.js' %}"></script>
+<script src="{% static './scripts/buttonDropDown.js' %}"></script>
 {% endblock %}
