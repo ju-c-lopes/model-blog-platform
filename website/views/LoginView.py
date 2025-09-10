@@ -8,6 +8,7 @@ from website.models import Author, User
 
 
 def login_user(request):
+    print(request)
     context = None
     email_not_found = False
 
@@ -22,7 +23,7 @@ def login_user(request):
             user_to_remember = user_to_remember.strip()
             nome = Author.objects.filter(nome__contains=user_to_remember)
             remember = False
-        except Exception:
+        except Author.DoesNotExist:
             nome = user_to_remember
 
     if request.POST:
