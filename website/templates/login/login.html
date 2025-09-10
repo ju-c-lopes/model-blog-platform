@@ -18,8 +18,7 @@
     </div>
 
     {% if not remember %}
-    <form action="" method="POST">
-        {% csrf_token %}
+    <form action="" method="POST">{% csrf_token %}
         <fieldset>
             <div class="form-fieldset">
                 {% for f in form %}
@@ -41,14 +40,12 @@
 
             {% for message in messages %}
             {% if message is not None and email_not_found %}
-            <div>
-                <input type="hidden" name="remember" value="1">
-                <button type="submit" class="bt-remember">Não lembro meu email.</button>
-            </div>
+
+            <input type="hidden" name="remember" value="1">
+            <button type="submit" class="bt-remember">Não lembro meu email.</button>
+
             {% endif %}
             {% endfor %}
-
-            <!-- <button class="btn btn-primary mt-4 btn-entry" type="submit">Entrar</button> -->
         </fieldset>
     </form>
     {% else %}
