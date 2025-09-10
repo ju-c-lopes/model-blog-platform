@@ -5,7 +5,8 @@ from django.db import models
 
 from website.models import *
 from website.models.AuthorModel import Author
-from website.utils.sanitizer import sanitize_html
+
+# from website.utils.sanitizer import sanitize_html
 
 
 class Post(models.Model):
@@ -37,12 +38,7 @@ class Post(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
-        # Sanitize rich text before saving to avoid stored XSS
-        try:
-            self.text = sanitize_html(self.text)
-        except Exception:
-            # If sanitizer fails for any reason, fall back to original text
-            pass
+        # Save without sanitizing if sanitizer is unavailable
         return super().save(*args, **kwargs)
 
     def __str__(self):
