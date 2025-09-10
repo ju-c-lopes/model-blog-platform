@@ -1,67 +1,70 @@
 name: Generate Coverage Badge and PR
 
 on:
-  push:
-    branches: [main, dev]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main, dev]
+    pull_request:
+        branches: [main]
 
 jobs:
-  test:
-    name: Teste com Python 3.11
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    test:
+        name: Teste com Python 3.11
+        runs-on: ubuntu-latest
+        env:
+            DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
+            DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install -r requirements-dev.txt
 
-      - name: Run tests and collect coverage
-        run: pytest --cov=.
+            - name: Run tests and collect coverage
+              run: pytest --cov=.
 
-      - name: Generate coverage badge
-        id: coverage_badge
-        uses: tj-actions/coverage-badge-py@v2
-        with:
-          green: 85
-          yellow: 60
-          output: coverage.svg
+            - name: Generate coverage badge
+              id: coverage_badge
+              uses: tj-actions/coverage-badge-py@v2
+              with:
+                  green: 85
+                  yellow: 60
+                  output: coverage.svg
 
-      - name: Upload coverage badge artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-badge
-          path: coverage.svg
+            - name: Upload coverage badge artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: coverage-badge
+                  path: coverage.svg
 
-  update-badge:
-    name: Commit and PR Badge
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.actor != 'github-actions[bot]'
-    steps:
-      - uses: actions/checkout@v4
+    update-badge:
+        name: Commit and PR Badge
+        needs: test
+        runs-on: ubuntu-latest
+        if: github.actor != 'github-actions[bot]'
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Download badge artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-badge
-          path: .
+            - name: Download badge artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: coverage-badge
+                  path: .
 
-      - name: Commit and create PR with coverage badge
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: "chore: Atualiza badge de coverage"
-          branch: "update-coverage-badge-${{ github.run_number }}"
-          title: "Atualiza badge de coverage"
-          body: "Este PR atualiza o badge de coverage automaticamente."
-          add-paths: coverage.svg
-          author: GitHub Actions <actions@github.com>
-          base: main
+            - name: Commit and create PR with coverage badge
+              uses: peter-evans/create-pull-request@v6
+              with:
+                  commit-message: "chore: Atualiza badge de coverage"
+                  branch: "update-coverage-badge-${{ github.run_number }}"
+                  title: "Atualiza badge de coverage"
+                  body: "Este PR atualiza o badge de coverage automaticamente."
+                  add-paths: coverage.svg
+                  author: GitHub Actions <actions@github.com>
+                  base: main

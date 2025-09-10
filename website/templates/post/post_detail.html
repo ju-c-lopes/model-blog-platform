@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load csp %}
 {% load static %}
 
 {% block head-css %}
@@ -130,7 +131,7 @@
     </div>
 </div>
 
-<script>
+<script nonce="{{ request.csp_nonce }}">
     (function(){
     const likeBtn = document.getElementById('like-btn');
     const loveBtn = document.getElementById('love-btn');
@@ -225,7 +226,7 @@
     </div>
 </div>
 
-<script>
+<script nonce="{{ request.csp_nonce }}">
 document.getElementById('close-signup-modal')?.addEventListener('click', function(){
     document.getElementById('signup-modal').style.display = 'none';
 });

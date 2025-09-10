@@ -17,6 +17,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+# SECURITY WARNING: don't run with debug turned on in production!
+# Use environment variable for DEBUG in production
+# In development, default to True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -24,24 +28,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # Use environment variable for SECRET_KEY in production
 # In development, use this fallback key
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-77acf&hr=@cl$$u3$2m$wb)^+mwf^uci@gv@r8ndt*=9pq#^*8",
-)
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", None)
+if not SECRET_KEY and DEBUG is not True:
+    print(SECRET_KEY, DEBUG)
+    raise RuntimeError(
+        "DJANGO_SECRET_KEY environment variable must be set in production"
+    )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# Use environment variable for DEBUG in production
-# In development, default to True
-DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+# Warn / fail if SECRET_KEY is weak in production
+if SECRET_KEY:
+    _weak_key = (
+        len(SECRET_KEY) < 50
+        or SECRET_KEY.startswith("django-insecure-")
+        or len(set(SECRET_KEY)) < 5
+    )
+    if _weak_key and DEBUG is not True:
+        raise RuntimeError(
+            "DJANGO_SECRET_KEY is too weak for production. Generate a secure, random value (>=50 chars)."
+        )
 
-ALLOWED_HOSTS = ["*"]
-
-# Debug Toolbar settings
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "localhost",
-]
-
+_raw_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS", "example.com")
+ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(",") if h.strip()]
 
 # Application definition
 
@@ -55,7 +62,7 @@ INSTALLED_APPS = [
     "website",
     "bootstrap",
     "phonenumber_field",
-    "debug_toolbar",
+    "csp",
 ]
 
 MIDDLEWARE = [
@@ -68,7 +75,6 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "website.middleware.Custom404Middleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
@@ -134,6 +140,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Keep the project's legacy password checks available via Django's validator
+# framework so we can call `validate_password()` from views/forms while
+# preserving the original learning-oriented rules. The custom validator is
+# implemented in `website.validators.LegacyPasswordValidator`.
+AUTH_PASSWORD_VALIDATORS.insert(
+    1, {"NAME": "website.validators.LegacyPasswordValidator"}
+)
+
+# Prefer Argon2 for password hashing when available. Requires argon2-cffi in
+# the environment (already added to requirements.txt).
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
+
 AUTH_USER_MODEL = "website.User"
 
 PHONENUMBER_DEFAULT_REGION = "BR"
@@ -167,21 +190,53 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_IMG_SRC = (
-    "'self'",
-    "data:",
-    "https://i.ytimg.com",
-    "https://img.youtube.com",
-    "https://ytimg.googleusercontent.com",
-)
-CSP_FRAME_SRC = (
-    "'self'",
-    "https://www.youtube.com",
-    "https://youtube.com",
-    "https://www.youtube-nocookie.com",
-    "https://player.vimeo.com",
-)
+# Django-CSP >=4.0 configuration (new format)
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        "style-src": ("'self'", "https://fonts.googleapis.com"),
+        "font-src": ("'self'", "https://fonts.gstatic.com"),
+        "script-src": (("'self'",)),
+        "img-src": (
+            "'self'",
+            "data:",
+            "https://i.ytimg.com",
+            "https://img.youtube.com",
+            "https://ytimg.googleusercontent.com",
+        ),
+        "frame-src": (
+            "'self'",
+            "https://www.youtube.com",
+            "https://youtube.com",
+            "https://www.youtube-nocookie.com",
+            "https://player.vimeo.com",
+        ),
+    }
+}
+
+# Include nonces for script-src so templates can use {% csp_nonce %}
+CSP_INCLUDE_NONCE_IN = ("script-src",)
+
+if not DEBUG:
+    # Cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+
+    # HSTS
+    SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", 31536000))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # SSL redirect (only if you terminate SSL at Django or trust proxy)
+    SECURE_SSL_REDIRECT = (
+        False if DEBUG else True
+    )  # os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # XSS / clickjacking
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = "DENY"
+
+    # Referrer policy
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"

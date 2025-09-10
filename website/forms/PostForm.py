@@ -1,6 +1,7 @@
 from django import forms
 
 from website.models.PostModel import Post
+from website.utils.sanitizer import sanitize_html
 
 
 class PostForm(forms.ModelForm):
@@ -100,3 +101,11 @@ class PostForm(forms.ModelForm):
                 "Meta description must be 160 characters or less."
             )
         return meta_description
+
+    def clean_text(self):
+        text = self.cleaned_data.get("text")
+        # Sanitize rich text before saving
+        try:
+            return sanitize_html(text)
+        except Exception:
+            return text
