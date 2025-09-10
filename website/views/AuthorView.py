@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -116,6 +117,13 @@ def edit_author_profile(request, slug):
             pw = user_form.cleaned_data.get("password")
             if pw:
                 user.set_password(pw)
+                # keep the current session authenticated after a password change
+                try:
+                    update_session_auth_hash(request, user)
+                except Exception:
+                    # be conservative: if session update fails, continue and let
+                    # Django's auth system handle the next request
+                    pass
             else:
                 # preserve original hashed password
                 user.password = original_password

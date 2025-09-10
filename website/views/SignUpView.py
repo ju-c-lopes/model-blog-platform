@@ -1,7 +1,8 @@
-import re
 import unicodedata
 
 from django.contrib import messages
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
 from website.forms import UserCreationForm
@@ -22,7 +23,15 @@ def sign_up_user(request):
         password2 = request.POST.get("password2", None)
         is_staff = True if request.POST.get("tipo-user") == "author" else False
 
-        if check_password_request(password1, password2):
+        # Use Django's validate_password to run the configured validators
+        try:
+            validate_password(password2)
+            password_ok = True
+        except ValidationError:
+            password_ok = False
+
+        # require passwords to match and pass Django validators
+        if password_ok and (password1 == password2):
             user = User.objects.create_user(
                 username=treated_username,
                 email=request.POST.get("email", None),
@@ -40,7 +49,9 @@ def sign_up_user(request):
             )
             return redirect("login")
         else:
-            messages.error(request, "A senha digitada não confere.")
+            messages.error(
+                request, "A senha digitada não confere ou não satisfaz as regras."
+            )
 
     context = {
         "form": user_form,
@@ -87,15 +98,3 @@ def treat_accentuation(request_name):
     replace_accentuation = replace_accentuation.encode("ascii", "ignore")
     author_name_replaced = replace_accentuation.decode("utf-8")
     return author_name_replaced
-
-
-def check_password_request(pass1, pass2):
-    validations = [pass1 == pass2]
-    validations.append(len(pass2) >= 10 and len(pass2) <= 16)
-    upper_regex = re.compile(r"[A-Z]").search(pass2)
-    validations.append(upper_regex)
-    number_regex = re.compile(r"\d").search(pass2)
-    validations.append(number_regex)
-    special_regex = re.compile(r"[\W_]").search(pass2)
-    validations.append(special_regex)
-    return all(validations)

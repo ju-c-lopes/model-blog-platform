@@ -27,7 +27,6 @@ def login_user(request):
 
     if request.POST:
         form = LoginForm(request.POST)
-        print(request)
         if form.is_valid():
             email = request.POST.get("email")
             password = request.POST.get("password")
