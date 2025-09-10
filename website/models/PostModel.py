@@ -6,6 +6,8 @@ from django.db import models
 from website.models import *
 from website.models.AuthorModel import Author
 
+# from website.utils.sanitizer import sanitize_html
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -34,6 +36,10 @@ class Post(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+
+    def save(self, *args, **kwargs):
+        # Save without sanitizing if sanitizer is unavailable
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

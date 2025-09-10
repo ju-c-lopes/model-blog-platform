@@ -15,7 +15,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-import debug_toolbar
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -31,17 +30,12 @@ urlpatterns = (
         path("login/", include("website.urls.LoginUrl")),
         path("cadastre-se/", include("website.urls.SignUpUrl")),
         path("editar-leitor/", include("website.urls.ReaderEditUrl")),
-        path(
-            "atualizar-perfil/", include("website.urls.ProfileUpdateUrl")
-        ),  # Unified profile management
+        path("atualizar-perfil/", include("website.urls.ProfileUpdateUrl")),
         path("logout/", include("website.urls.LogoutUrl")),
         path("post/", include("website.urls.PostUrl")),
         path("error/", include("website.urls.ErrorUrl")),
         path("search/", include("website.urls.SearchUrl")),
-        path("__debug__/", include(debug_toolbar.urls)),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )
-
-# Configure error handlers (imported above)
