@@ -82,24 +82,26 @@
 
     .menu-navigation {
         display: flex;
-        position: static;
+        position: relative;
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
         background: none;
         box-shadow: none;
-        width: 45% !important;
+        width: 100% !important;
         height: auto;
         padding: 0;
     }
 
     .menu-navigation form {
+        position: absolute;
+        right: 100px;
         margin-right: 20px;
     }
 
     .links {
         position: absolute;
-        left: 30vw;
+        left: 0;
     }
 
     .menu-link {
@@ -146,6 +148,8 @@
     }
 
     .header-login {
+        position: absolute;
+        right: 25px;
         display: flex;
         align-items: center;
     }
@@ -155,6 +159,41 @@
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
+    }
+    .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        min-width: 210px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        margin-top: 8px;
+        margin-right: 2vw;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .profile-dropdown.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .register {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        margin-top: 10px;
+        gap: 15px;
+        text-align: center;
+    }
+    .register.active {
+        gap: 15px;
+        text-align: center;
     }
 }
 
@@ -850,6 +889,7 @@
     .row {
         position: fixed;
         top: 0;
+        display: flex;
         flex-wrap: nowrap;
         justify-content: space-between;
         background: linear-gradient(90deg, rgba(38, 77, 96, 0.95), rgba(38, 77, 96, 0.8));
@@ -1066,6 +1106,8 @@
         justify-content: space-between;
         padding: 10px;
         margin-top: 10px;
+        gap: 15px;
+        text-align: center;
     }
     .register.active {
         gap: 15px;
