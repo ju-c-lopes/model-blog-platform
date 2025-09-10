@@ -28,7 +28,7 @@
                     <label for="{{ f.label.lower }}">{{ f.label }}</label>
                     {{ f }}
                     <button class="show-hide-btn" type="button">
-                        <img src="/website/static/img/hide.png" />
+                        <img src="/website/static/img/hide.png" alt="Mostrar senha" />
                     </button>
                     {% else %}
                     <label for="{{ f.label.lower }}">{{ f.label }}</label>
@@ -36,6 +36,7 @@
                 {% endif %}
                 </div>
                 {% endfor %}
+                <button class="btn btn-primary mt-4 btn-entry" type="submit">Entrar</button>
             </div>
 
             {% for message in messages %}
@@ -47,7 +48,7 @@
             {% endif %}
             {% endfor %}
 
-            <button class="btn btn-primary mt-4" type="submit">Entrar</button>
+            <!-- <button class="btn btn-primary mt-4 btn-entry" type="submit">Entrar</button> -->
         </fieldset>
     </form>
     {% else %}
