@@ -116,22 +116,6 @@
     </div>
     {% endif %}
 
-    {% if window.innerWidth > 768 %}
-    <div class="links-desktop">
-        <a class="menu-link" href="/">Home</a>
-        <a class="menu-link" href="#">Sobre</a>
-        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
-        <a class="menu-link" href="#">Contato</a>
-    </div>
-    {% endif %}
-
-    <div class="links">
-        <a class="menu-link" href="/">Home</a>
-        <a class="menu-link" href="#">Sobre</a>
-        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
-        <a class="menu-link" href="#">Contato</a>
-    </div>
-
     <!-- SEARCH -->
     <form method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="search">
@@ -223,6 +207,12 @@
     {% endif %}
     </div>
 
+    <div class="links">
+        <a class="menu-link" href="/">Home</a>
+        <a class="menu-link" href="#">Sobre</a>
+        <a class="menu-link" href="{% url 'team' %}">Nossa Equipe</a>
+        <a class="menu-link" href="#">Contato</a>
+    </div>
 
 </nav>
 {% block scripts %}
