@@ -17,7 +17,7 @@
     </div>
 {% endfor %}
 </div>
-<div class="row main-div">
+<div class="main-div">
     <div class="sign-up-wrapper">
         <form action="" method="post" accept-charset="utf-8">
             {% csrf_token %}
@@ -103,12 +103,12 @@
                 {% else %}
                 <div class="form-field">
                     <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
-                    <div class="pass-input">
-                        <input class="input-type-pass" type="password" name="password1" id="{{ form.password1.id_for_label }}" placeholder="Digite sua Senha" />
-                        <button class="show-hide-btn" type="button">
-                            <img src="/website/static/img/hide.png" />
-                        </button>
-                    </div>
+                    <input class="input-type-pass" type="password" name="password1" id="{{ form.password1.id_for_label }}" placeholder="Digite sua Senha" />
+                    <button class="show-hide-btn" type="button">
+                        <img src="/website/static/img/hide.png" />
+                    </button>
+                    <!-- <div class="pass-input">
+                    </div> -->
                 </div>
                 {% endif %}
                 <div class="popup-validate">
@@ -125,23 +125,23 @@
 
                 {% if aprovar %}
                 <div class="form-field">
-                    <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
+                    <label for="{{ form.password2.id_for_label }}" class="label label-confirm">Confirme a senha</label>
                     <input type="password" name="password2" id="{{ form.password2.id_for_label }}" value="{{ password }}" />
                 </div>
                 {% else %}
-                <div class="form-field">
-                    <label for="{{ form.password2.id_for_label }}" class="label">Confirme a senha</label>
-                    <div class="pass-input">
-                        <input class="input-type-pass" type="password" name="password2" id="{{ form.password2.id_for_label }}" placeholder="Confirme a senha" />
-                        <button class="show-hide-btn" type="button">
-                            <img src="/website/static/img/hide.png" />
-                        </button>
-                    </div>
+                <div class="form-field confirm">
+                    <label for="{{ form.password2.id_for_label }}" class="label label-confirm" id="confirm">Confirme a senha</label>
+                    <input class="input-type-pass" type="password" name="password2" id="{{ form.password2.id_for_label }}" placeholder="Confirme a senha" />
+                    <button class="show-hide-btn" type="button">
+                        <img src="/website/static/img/hide.png" />
+                    </button>
+                    <!-- <div class="pass-input">
+                    </div> -->
                 </div>
                 {% endif %}
 
-                <div class="form-field pt-4">
-                    <button type="submit" class="btn btn-primary mt-4" id="finish-register">
+                <div class="form-field form-field--button pt-4">
+                    <button type="submit" class="finish-register btn-primary mt-4" id="finish-register">
                         Finalizar Cadastro
                     </button>
                 </div>

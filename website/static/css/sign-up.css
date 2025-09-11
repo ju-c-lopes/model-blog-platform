@@ -49,6 +49,8 @@
     }
     fieldset {
         background: none;
+        border: none;
+        width: 100%;
     }
     .aux-screen {
         position: fixed;
@@ -68,8 +70,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.2em;
+        align-items: stretch;
+        margin: 1.2em auto;
+        width: 90%;
+        gap: 1vh;
     }
     input[type="text"],
     input[type="password"],
@@ -93,26 +97,50 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
     }
-    .show-hide-btn, .show-hide-btn:focus {
-        position: absolute;
-        background: none;
-        width: 30;
+    .pass-input input {
+        width: 100%;
+    }
+    .form-field--button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .finish-register {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 50%;
+        border-radius: 10px;
         outline: none;
         border: none;
-        right: 5px;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .show-hide-btn, .show-hide-btn:focus {
+        position: relative;
+        background: none;
+        outline: none;
+        border: none;
+        width: 30px;
+        left: 90%;
+        top: -2.8em;
     }
     .show-hide-btn img {
         background: none;
         width: 30px;
     }
     .popup-validate {
+        display: none;
+        flex-direction: column;
         color: #000000;
         border-radius: 15px;
         background: #F2E3D5;
-        /* padding: 0.3em 0.3em 0.3em 0.3em; */
         text-shadow: none;
         height: 0;
+        width: 90%;
+        margin: auto;
+        padding: 10px !important;
         visibility: hidden;
     }
     .popup-validate p {
@@ -124,6 +152,286 @@
         margin-bottom: 2px;
         height: 24px;
         list-style: none;
+    }
+    .btn-disabled {
+        background-color: #808080 !important;
+        border-color: #808080 !important;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1080px) {
+    .text-center {
+        position: relative;
+        background: none;
+        text-align: center;
+        box-shadow: none;
+        z-index: 0;
+    }
+    h1 {
+        background: none;
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-align: center;
+        font-weight: 600;
+        font-size: 36px;
+        z-index: 0;
+    }
+    .main-div {
+        position: relative;
+        background: none;
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        width: 400px;
+        box-shadow: none;
+        z-index: 0;
+    }
+    .messages {
+        position: relative;
+        margin: 0 auto 2vh auto;
+        width: 80vw;
+        height: 40px;
+    }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
+    }
+    fieldset {
+        background: none;
+        border: none;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 5vh;
+    }
+    .form-field {
+        padding: 1vh 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 100%;
+        gap: 1vh;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"] {
+        display: flex;
+        align-items: center;
+        padding: 0.5em;
+        border-radius: 1em;
+        outline: none;
+        border: none;
+    }
+    select {
+        padding: 0.5em;
+        border-radius: 1em;
+        outline: none;
+        border: none;
+    }
+    .show-hide-btn, .show-hide-btn:focus {
+        position: absolute;
+        background: none;
+        width: 25px;
+        outline: none;
+        border: none;
+        right: 10px;
+    }
+    .show-hide-btn img {
+        background: none;
+        width: 25px;
+    }
+    .popup-validate {
+        display: none;
+        flex-direction: column;
+        color: #000000;
+        border-radius: 15px;
+        background: #F2E3D5;
+        text-shadow: none;
+        height: 0;
+        width: 100%;
+        padding: 15px !important;
+        visibility: hidden;
+    }
+    .popup-validate p {
+        padding-left: 2vw;
+    }
+    .popup-validate ul li {
+        color: red;
+        font-size: 12px;
+        margin-bottom: 2px;
+        height: 24px;
+        list-style: none;
+    }
+    .confirm {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+    }
+    .label-confirm {
+        word-wrap: break-word;
+        width: 100px;
+    }
+    .form-field--button {
+        display: flex;
+        justify-content: center;
+    }
+    .finish-register {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 50%;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .btn-disabled {
+        background-color: #808080 !important;
+        border-color: #808080 !important;
+    }
+}
+
+@media screen and (min-width: 1081px) {
+    .text-center {
+        position: relative;
+        background: none;
+        text-align: center;
+        box-shadow: none;
+        z-index: 0;
+    }
+    h1 {
+        background: none;
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-align: center;
+        font-weight: 600;
+        font-size: 36px;
+        z-index: 0;
+    }
+    .main-div {
+        position: relative;
+        background: none;
+        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        width: 100%;
+        box-shadow: none;
+        z-index: 0;
+    }
+    .messages {
+        position: relative;
+        margin: 0 auto 2vh auto;
+        width: 80vw;
+        height: 40px;
+    }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
+    }
+    fieldset {
+        background: none;
+        border: none;
+        width: 1000px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 5vh;
+    }
+    .form-field {
+        padding: 1vh 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 40%;
+        gap: 1vh;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"] {
+        display: flex;
+        align-items: center;
+        padding: 0.5em;
+        border-radius: 1em;
+        outline: none;
+        border: none;
+    }
+    select {
+        padding: 0.5em;
+        border-radius: 1em;
+        outline: none;
+        border: none;
+    }
+    .show-hide-btn, .show-hide-btn:focus {
+        position: absolute;
+        background: none;
+        width: 30px;
+        outline: none;
+        border: none;
+        left: 360px;
+    }
+    .show-hide-btn img {
+        background: none;
+        width: 30px;
+    }
+    .popup-validate {
+        display: none;
+        color: #000000;
+        flex-direction: column;
+        border-radius: 15px;
+        background: #F2E3D5;
+        text-shadow: none;
+        height: 0;
+        width: 40%;
+        visibility: hidden;
+    }
+    .popup-validate p {
+        padding-left: 2vw;
+    }
+    .popup-validate ul li {
+        color: red;
+        font-size: 12px;
+        margin-bottom: 2px;
+        height: 24px;
+        list-style: none;
+    }
+    .confirm {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        width: 40%;
+    }
+    .label-confirm {
+        word-wrap: break-word;
+        width: 100px;
+    }
+    .form-field--button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .finish-register {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 50%;
+        text-align: center;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
     }
     .btn-disabled {
         background-color: #808080 !important;
