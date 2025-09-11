@@ -912,6 +912,7 @@
         justify-content: space-between;
         padding: 0;
         width: 35vw !important;
+        z-index: 1000;
     }
     .logo-container {
         display: flex;

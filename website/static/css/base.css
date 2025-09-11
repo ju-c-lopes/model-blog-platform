@@ -73,5 +73,6 @@ body {
         position: absolute;
         margin-top: 80px;
         padding-bottom: 2em;
+        width: 100%;
     }
 }
