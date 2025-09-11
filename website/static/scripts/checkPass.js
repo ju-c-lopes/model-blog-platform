@@ -23,6 +23,7 @@ buttonFinishRegister.classList.add("btn-disabled");
 
 inputPassOne.addEventListener('focus', () => {
     document.querySelector(".popup-validate").style.height = "auto";
+    document.querySelector(".popup-validate").style.display = "flex";
     document.querySelector(".popup-validate").style.visibility = "visible";
     document.querySelector(".popup-validate").style.padding = "0.3em 0.3em 0.3em 0.3em";
 })
