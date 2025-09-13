@@ -94,7 +94,7 @@
     }
 
     .menu-navigation form {
-        position: absolute;
+        position: relative;
         right: 100px;
         margin-right: 20px;
     }
