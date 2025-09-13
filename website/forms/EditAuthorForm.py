@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from website.models import Author, SocialMedia
 from website.models.__init__ import SOCIAL_MEDIA
 from website.models.GraduationsModel import Graduation
+from website.models.JobsModel import Job
 
 User = get_user_model()
 
@@ -105,4 +106,33 @@ class GraduationForm(ModelForm):
                 attrs={"class": "form-control", "min": 1900, "max": 2100}
             ),
             "concluded": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+
+
+class JobForm(ModelForm):
+    class Meta:
+        model = Job
+        fields = [
+            "occupation",
+            "month_begin",
+            "year_begin",
+            "month_end",
+            "year_end",
+            "current_job",
+            "roles_description",
+        ]
+        widgets = {
+            "occupation": forms.TextInput(attrs={"class": "form-control"}),
+            "month_begin": forms.Select(attrs={"class": "custom-select"}),
+            "year_begin": forms.NumberInput(
+                attrs={"class": "form-control", "min": 1900, "max": 2100}
+            ),
+            "month_end": forms.Select(attrs={"class": "custom-select"}),
+            "year_end": forms.NumberInput(
+                attrs={"class": "form-control", "min": 1900, "max": 2100}
+            ),
+            "current_job": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "roles_description": forms.Textarea(
+                attrs={"class": "form-control", "rows": 3}
+            ),
         }
