@@ -158,6 +158,65 @@
                 </table>
             </fieldset>
 
+            <fieldset class="jobs">
+                <h2>Experiência Profissional</h2>
+
+                {{ job_formset.management_form }}
+                <template id="job-empty-template">
+                    <table class="form-table job-item select-wrapper">
+                        {{ job_formset.empty_form.as_table }}
+                    </table>
+                    <hr />
+                </template>
+
+                <div class="job-list">
+                    {% for jform in job_formset %}
+                    <table class="form-table job-item select-wrapper">
+                        {{ jform.id }}
+                        <tr>
+                            <td>{{ jform.occupation.label_tag }}</td>
+                            <td>{{ jform.occupation }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ jform.month_begin.label_tag }}</td>
+                            <td>
+                                {{ jform.month_begin }} {{ jform.year_begin }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{ jform.month_end.label_tag }}</td>
+                            <td>{{ jform.month_end }} {{ jform.year_end }}</td>
+                        </tr>
+                        <tr class="form-check">
+                            <td>
+                                {{ jform.current_job.label_tag }} {{
+                                jform.current_job }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{ jform.roles_description.label_tag }}</td>
+                            <td>{{ jform.roles_description }}</td>
+                        </tr>
+                        {% if jform.DELETE %}
+                        <tr class="form-check">
+                            <td>
+                                <label for="{{ jform.DELETE.id_for_label }}"
+                                    >Remover</label
+                                >
+                                {{ jform.DELETE }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    <hr />
+                    {% endfor %}
+                </div>
+
+                <button type="button" id="add-job" class="job-button-plus">
+                    +
+                </button>
+            </fieldset>
+
             <fieldset class="graduations">
                 <h2>Tipo de Formação</h2>
 
@@ -249,5 +308,9 @@
 <script
     nonce="{{ request.csp_nonce }}"
     src="{% static './scripts/buttonSave.js' %}"
+></script>
+<script
+    nonce="{{ request.csp_nonce }}"
+    src="{% static './scripts/buttonJobPlus.js' %}"
 ></script>
 {% endblock %}

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from website.forms.EditAuthorForm import (
     EditAuthorForm,
     GraduationForm,
+    JobForm,
     SocialMediaForm,
     UserChangeForm,
 )
@@ -14,6 +15,7 @@ from website.models.__init__ import ACADEMIC_LEVEL, SOCIAL_MEDIA
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
 from website.models.GraduationsModel import Graduation
+from website.models.JobsModel import Job
 
 
 def view_author_page(request, slug):
@@ -49,6 +51,9 @@ def edit_author_profile(request, slug):
     GraduationFormSetLocal = inlineformset_factory(
         Author, Graduation, form=GraduationForm, extra=0, can_delete=True
     )
+    JobFormSetLocal = inlineformset_factory(
+        Author, Job, form=JobForm, extra=0, can_delete=True
+    )
 
     if request.POST:
         # rebind user and author forms with POST data
@@ -67,14 +72,32 @@ def edit_author_profile(request, slug):
                     prefix = k.rsplit("-TOTAL_FORMS", 1)[0]
                     break
 
-        if prefix:
+        # try to detect graduation vs job prefix separately
+        grad_prefix = None
+        job_prefix = None
+        for k in request.POST.keys():
+            if k.endswith("-TOTAL_FORMS"):
+                low = k.lower()
+                if "gradu" in low:
+                    grad_prefix = k.rsplit("-TOTAL_FORMS", 1)[0]
+                if "job" in low or "jobs" in low:
+                    job_prefix = k.rsplit("-TOTAL_FORMS", 1)[0]
+
+        if grad_prefix:
             graduation_formset = GraduationFormSetLocal(
-                request.POST, request.FILES, instance=author, prefix=prefix
+                request.POST, request.FILES, instance=author, prefix=grad_prefix
             )
         else:
             graduation_formset = GraduationFormSetLocal(
                 request.POST, request.FILES, instance=author
             )
+
+        if job_prefix:
+            job_formset = JobFormSetLocal(
+                request.POST, request.FILES, instance=author, prefix=job_prefix
+            )
+        else:
+            job_formset = JobFormSetLocal(request.POST, request.FILES, instance=author)
 
         # (debug logs removed)
 
@@ -108,6 +131,10 @@ def edit_author_profile(request, slug):
 
         # validate graduation formset
         if not graduation_formset.is_valid():
+            forms_ok = False
+
+        # validate job formset
+        if not job_formset.is_valid():
             forms_ok = False
 
         if forms_ok:
@@ -153,6 +180,9 @@ def edit_author_profile(request, slug):
             # save graduation formset (instance already saved)
             graduation_formset.instance = author
             graduation_formset.save()
+            # save jobs
+            job_formset.instance = author
+            job_formset.save()
             send_message = True
 
             if send_message:
@@ -167,6 +197,7 @@ def edit_author_profile(request, slug):
                 "socialForms": social_forms,
                 "academic_levels": ACADEMIC_LEVEL,
                 "graduation_formset": graduation_formset,
+                "job_formset": job_formset,
             }
             return render(
                 request,
@@ -176,6 +207,7 @@ def edit_author_profile(request, slug):
     else:
         # GET: provide an empty/loaded formset instance
         graduation_formset = GraduationFormSetLocal(instance=author)
+        job_formset = JobFormSetLocal(instance=author)
 
     context = {
         "socialEmptyForm": social_empty_form,
@@ -184,6 +216,7 @@ def edit_author_profile(request, slug):
         "socialForms": social_forms,
         "academic_levels": ACADEMIC_LEVEL,
         "graduation_formset": graduation_formset,
+        "job_formset": job_formset,
     }
     return render(
         request, template_name="edit-author/edit-author.html", context=context
