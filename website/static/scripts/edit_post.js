@@ -282,7 +282,7 @@ function injectYouTubeIframes(html, vid) {
     // Use DOMParser to safely manipulate HTML string
     try {
         html += `
-            <p class="youtube-video-container" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; height: 0; overflow: hidden; background-color: #000; border-radius: 8px;"><iframe src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+            <p class="youtube-video-container" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; overflow: hidden; border-radius: 8px;"><iframe src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
         `;
         console.log("Processed HTML:", html);
         return html;

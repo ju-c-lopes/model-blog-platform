@@ -6,7 +6,7 @@ from website.models.AuthorModel import Author
 
 class Job(models.Model):
     occupation = models.CharField(max_length=50, blank=True, null=True)
-    employee = models.OneToOneField(Author, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Author, related_name="+", on_delete=models.CASCADE)
     month_begin = models.IntegerField(choices=MONTH_CHOICE, default=1)
     year_begin = models.PositiveIntegerField()
     month_end = models.IntegerField(choices=MONTH_CHOICE, blank=True, null=True)
