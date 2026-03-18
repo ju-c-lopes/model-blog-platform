@@ -8,8 +8,8 @@ from django.test import RequestFactory, TestCase
 
 from website.models.AuthorModel import Author
 from website.models.PostModel import Post
-from website.views.LoginView import login_user
-from website.views.SearchView import search_posts
+from website.views.user.LoginView import login_user
+from website.views.post.SearchView import search_posts
 
 User = get_user_model()
 

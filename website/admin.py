@@ -1,17 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from website.forms import UserChangeForm, UserCreationForm
-
-from .models.AuthorModel import Author
-from .models.AuthorSocialMediaModel import SocialMedia
-from .models.GraduationsModel import Graduation
-from .models.JobsModel import Job
-from .models.PostModel import Post
-from .models.ReaderModel import Reader
-from .models.UserModel import User
-
-# Register your models here.
+from website.forms.user.UserChangeForm import UserChangeForm
+from website.forms.user.UserCreationForm import UserCreationForm
+from website.models import User
+from website.models.author.AuthorModel import Author
+from website.models.author.AuthorSocialMediaModel import SocialMedia
+from website.models.author.GraduationsModel import Graduation
+from website.models.author.JobsModel import Job
+from website.models.post.PostModel import Post
+from website.models.post.PostReactionModel import PostReaction
+from website.models.post.PostViewModel import PostView
+from website.models.post.SeriesModel import Series
+from website.models.user.ReaderModel import Reader
 
 
 class UserAdmin(BaseUserAdmin):
@@ -26,6 +27,7 @@ class UserAdmin(BaseUserAdmin):
         "get_profile_type",
         "get_profile_name",
     )
+    list_select_related = ("author", "reader_profile")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
@@ -61,7 +63,7 @@ class UserAdmin(BaseUserAdmin):
         try:
             if hasattr(obj, "author"):
                 return "Author"
-            elif hasattr(obj, "reader"):
+            elif hasattr(obj, "reader_profile"):
                 return "Reader"
             else:
                 return "No Profile"
@@ -72,23 +74,92 @@ class UserAdmin(BaseUserAdmin):
 
     def get_profile_name(self, obj):
         """Display the user's profile name"""
-        try:
-            if hasattr(obj, "author") and obj.author.author_name:
-                return obj.author.author_name
-            elif hasattr(obj, "reader") and obj.reader.reader_name:
-                return obj.reader.reader_name
-            else:
-                return obj.username
-        except Exception:
-            return obj.username
+        if hasattr(obj, "author"):
+            return obj.author.author_name or obj.username
+
+        if hasattr(obj, "reader_profile"):
+            return obj.reader_profile.reader_name or obj.username
+
+        return obj.username
 
     get_profile_name.short_description = "Profile Name"
 
 
+class GraduationInline(admin.TabularInline):
+    model = Graduation
+    extra = 1
+
+
+class JobInline(admin.TabularInline):
+    model = Job
+    extra = 1
+
+
+class SocialMediaInline(admin.TabularInline):
+    model = SocialMedia
+    extra = 1
+
+
+class AuthorAdmin(admin.ModelAdmin):
+
+    inlines = [
+        JobInline,
+        GraduationInline,
+        SocialMediaInline
+    ]
+
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "author",
+        "published_date",
+        "updated_date",
+    )
+    search_fields = (
+        "title",
+        "meta_description",
+    )
+    list_filter = (
+        "published_date",
+        "series",
+    )
+    prepopulated_fields = {"url_slug": ("title",)}
+
+
+class SeriesAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "title",
+        "author",
+        "created_at",
+    )
+
+    search_fields = ("title",)
+
+
+class PostViewAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        "reader",
+        "post",
+        "viewed_at",
+    )
+
+    list_display = (
+        "post",
+        "reader",
+        "viewed_at",
+    )
+
+
 admin.site.register(User, UserAdmin)
-admin.site.register(Author)
-admin.site.register(Post)
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(SocialMedia)
 admin.site.register(Graduation)
 admin.site.register(Job)
-admin.site.register(SocialMedia)
+admin.site.register(Post, PostAdmin)
+admin.site.register(PostReaction)
+admin.site.register(PostView, PostViewAdmin)
+admin.site.register(Series, SeriesAdmin)
 admin.site.register(Reader)

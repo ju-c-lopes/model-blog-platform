@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import RequestFactory, TestCase
 
 from website.models.AuthorModel import Author
-from website.views.AuthorView import check_author_form, check_user_form, edit_author
+from website.views.author.AuthorView import check_author_form, check_user_form, edit_author
 
 User = get_user_model()
 
@@ -59,7 +59,7 @@ class AuthorViewMoreTests(TestCase):
 
     def test_edit_author_with_user_author_returns_response(self):
         # patch module render to avoid template parsing during unit test
-        import website.views.AuthorView as av
+        import website.views.author.AuthorView as av
 
         old_render = av.render
         av.render = lambda *a, **k: type("R", (), {"status_code": 200})()

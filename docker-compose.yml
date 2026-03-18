@@ -10,7 +10,7 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     environment:
-      - PYTHONPATH=/app:/app/website:/app/blogModel
+      - PYTHONPATH=/app/
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
     volumes:
@@ -22,11 +22,6 @@ services:
       - "8000:8000"
     command: >
       bash -c "
-        echo 'Installing Python dependencies...' &&
-        pip install --no-cache-dir --upgrade pip &&
-        pip install --no-cache-dir -r requirements.txt &&
-        echo 'Dependencies installed successfully!' &&
-        pip install --no-cache-dir -r requirements-dev.txt &&
         echo 'Container is ready. You can now run: docker exec -it python_app bash' &&
         tail -f /dev/null
       "

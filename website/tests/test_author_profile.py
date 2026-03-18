@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
-from website.views import AuthorView
+from website.views.author import AuthorView
 
 User = get_user_model()
 
@@ -32,7 +32,7 @@ class AuthorHelpersTests(TestCase):
 
                 from website.models.AuthorModel import Author
                 from website.models.AuthorSocialMediaModel import SocialMedia
-                from website.views import AuthorView
+                from website.views.author import AuthorView
 
                 User = get_user_model()
 

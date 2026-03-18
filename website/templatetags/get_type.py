@@ -28,7 +28,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def get_tile_types():
+def get_type():
     """Return a list of available tile template names (stem without .html).
 
     It first tries to read files from the package's `templates/tiles/`

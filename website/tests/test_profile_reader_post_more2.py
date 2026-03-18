@@ -36,7 +36,7 @@ class ProfileReaderPostMore2Test(TestCase):
         post = SimpleNamespace(
             POST={"username": user.username, "reader_name": "NewR"}, FILES={}, user=user
         )
-        from website.views.ReaderEditView import check_reader_form
+        from website.views.reader.ReaderEditView import check_reader_form
 
         ok = check_reader_form(post, reader)
         self.assertTrue(ok)

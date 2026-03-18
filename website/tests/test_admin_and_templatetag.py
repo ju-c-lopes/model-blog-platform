@@ -38,7 +38,7 @@ def test_get_type_direct_call(tmp_path, monkeypatch):
 def test_userchangeform_clean_and_save(db):
     from django.contrib.auth import get_user_model
 
-    from website.forms.EditAuthorForm import UserChangeForm
+    from website.forms.author.EditAuthorForm import UserChangeForm
 
     User = get_user_model()
     u = User.objects.create_user(email="ux@example.com", password="old", username="ux")

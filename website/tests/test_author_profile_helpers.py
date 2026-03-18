@@ -6,7 +6,7 @@ from django.test import TestCase
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
 from website.models.ReaderModel import Reader
-from website.views import AuthorView
+from website.views.author import AuthorView
 
 User = get_user_model()
 
@@ -96,7 +96,7 @@ class ReaderEditHelpersTest(TestCase):
         post = PostDict({"username": other.username, "reader_name": "NewR"})
         req = SimpleNamespace(POST=post, FILES={}, user=user)
 
-        from website.views.ReaderEditView import check_user_form as rcheck
+        from website.views.reader.ReaderEditView import check_user_form as rcheck
 
         ok = rcheck(req, reader)
         self.assertIsInstance(ok, bool)

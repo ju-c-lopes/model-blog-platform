@@ -1,0 +1,132 @@
+/* Updated Color Variables for Project Palette */
+:root {
+    --primary-blue: #264d60;
+    --primary-blue-dark: #1a3a4a;
+    --light-blue: #e8f1f5;
+    --text-dark: #212529;
+    --text-light: #6c757d;
+    --background-light: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 30px rgba(38, 77, 96, 0.15);
+}
+
+/* Global styles for all screen sizes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    color: #b9b9b9;
+    overflow-x: hidden;
+    margin: 0 !important;
+    padding: 0 0 20vh 0 !important;
+}
+
+.row>* {
+    width: unset !important;
+}
+
+/* Desktop styles */
+@media screen and (min-width: 769px) {
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+        overflow-y: hidden;
+    }
+
+    .container-fluid {
+        margin: 0;
+    }
+
+    .d-flex {
+        position: relative;
+        margin-top: 80px;
+        padding: 0 2rem;
+    }
+
+    /* Improved content area for desktop */
+    .content-area {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .screen-size {
+        position: relative;
+        margin-top: 2vh;
+        margin-left: 2vw;
+        top: 10px;
+        height: 100%;
+    }
+    .messages {
+        top: 25px;
+        position: relative;
+        margin: 0 auto 2vh auto;
+        width: 80vw;
+        height: 40px;
+    }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
+    }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+    body {
+        overflow-y: scroll;
+    }
+    .d-flex {
+        position: absolute;
+        margin-top: 80px;
+        padding-bottom: 2em;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    
+    .screen-size {
+        position: relative;
+        margin-top: 2vh;
+        margin-left: 2vw;
+        top: 10px;
+        height: 100%;
+    }
+    .messages {
+        top: 25px;
+        position: relative;
+        margin: 0 auto 2vh auto;
+        width: 80vw;
+        height: 40px;
+    }
+    .message-error {
+        color: #ff4f4f;
+        background-color: #ff9d9d;
+        text-align: center;
+    }
+    .message-success {
+        color: olive;
+        background-color: #BBB157;
+        text-align: center;
+    }
+}
