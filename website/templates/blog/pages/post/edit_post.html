@@ -1,0 +1,35 @@
+{% extends 'blog/pages/base.html' %} {% load static %}
+{% block title %}
+    {% if is_creating %} Create New Post {% else %} Edit Post {% endif %}
+{% endblock %}
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}" />
+<link rel="stylesheet" href="{% static 'css/edit_post.css' %}" />
+<link
+    rel="stylesheet"
+    href="{% static 'vendor/quill/quill.snow.css' %}"
+/>
+{% endblock %} {% block content %}
+<div class="post-form-container">
+    
+    {% include 'components/post/editor/form_header.html' with is_creating=is_creating %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+
+        {% include 'components/post/editor/form_fields.html' with form=form %}
+
+        <!-- Rich Text Editor -->
+        <div class="form-group full-width">
+            {% include 'components/post/editor/media_upload.html' with form=form %}
+
+            {% include 'components/post/editor/editor_container.html' with form=form %}
+        </div>
+
+        {% include 'components/post/editor/form_buttons.html' with is_creating=is_creating post=post %}
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'vendor/quill/quill.js' %}"></script>
+<script src="{% static 'scripts/edit_post.js' %}"></script>
+{% endblock %}

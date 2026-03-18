@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.test import RequestFactory, TestCase
 
-import website.views.AuthorView as av
+import website.views.author.AuthorView as av
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
 

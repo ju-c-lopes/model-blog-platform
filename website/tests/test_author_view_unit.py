@@ -3,7 +3,7 @@ from django.test import RequestFactory, TestCase
 
 from website.models.AuthorModel import Author
 from website.models.AuthorSocialMediaModel import SocialMedia
-from website.views.AuthorView import (
+from website.views.author.AuthorView import (
     check_request_post,
     create_social_media,
     edit_author,

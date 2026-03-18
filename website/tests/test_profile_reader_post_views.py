@@ -51,7 +51,7 @@ class ProfileReaderPostViewsTest(TestCase):
         post = SimpleNamespace(
             POST={"username": u2.username, "reader_name": "X"}, FILES={}, user=u1
         )
-        from website.views.ReaderEditView import check_user_form
+        from website.views.reader.ReaderEditView import check_user_form
 
         ok = check_user_form(post, reader)
         self.assertIsInstance(ok, bool)

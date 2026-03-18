@@ -1,0 +1,35 @@
+BACKLOG
+
+Conteúdo
+[x] Ajuste do card do autor
+[ ] * Refatoração Views, Urls, Scripts, CSS
+[ ] Ajuste do template de criacao de posts
+[ ] Ajuste do template de exibicao do post
+
+Autores
+[ ] Página de edição do autor
+[ ] Template da página do autor
+[ ] Template da página de equipe
+
+Series
+[ ] Criar página de series
+[ ] Página individual da série
+[ ] Navegação entre posts da série
+
+SEO
+[ ] Breadcrumbs
+[ ] Open Graph
+[ ] Canonical
+[ ] Tempo de leitura
+
+Experiencia
+[ ] Hangman 404
+
+Testes
+[ ] Validar e reajustar testes
+
+Produção
+[ ] Subir o projeto
+
+# Ideias e melhorias futuras
+[ ] Ranking de readers

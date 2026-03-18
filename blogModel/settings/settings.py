@@ -48,7 +48,7 @@ if SECRET_KEY:
         )
 
 _raw_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS", "example.com")
-ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(",") if h.strip()]
+ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(" ") if h.strip()]
 
 # Application definition
 
@@ -59,10 +59,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "website",
     "bootstrap",
     "phonenumber_field",
     "csp",
+    "website",
 ]
 
 MIDDLEWARE = [
@@ -165,7 +165,7 @@ PHONENUMBER_DEFAULT_REGION = "BR"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "pt-br"
+LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "America/Sao_Paulo"
 
@@ -190,29 +190,50 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# Django-CSP >=4.0 configuration (new format)
-CONTENT_SECURITY_POLICY = {
-    "DIRECTIVES": {
-        "default-src": ("'self'",),
-        "style-src": ("'self'", "https://fonts.googleapis.com"),
-        "font-src": ("'self'", "https://fonts.gstatic.com"),
-        "script-src": (("'self'",)),
-        "img-src": (
-            "'self'",
-            "data:",
-            "https://i.ytimg.com",
-            "https://img.youtube.com",
-            "https://ytimg.googleusercontent.com",
-        ),
-        "frame-src": (
-            "'self'",
-            "https://www.youtube.com",
-            "https://youtube.com",
-            "https://www.youtube-nocookie.com",
-            "https://player.vimeo.com",
-        ),
+if DEBUG:
+
+    CONTENT_SECURITY_POLICY = {
+        "DIRECTIVES": {
+            "default-src": ("'self'",),
+            "script-src": ("'self'", "'unsafe-inline'"),
+            "style-src": ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com"),
+            "font-src": ("'self'", "https://fonts.gstatic.com"),
+            "img-src": ("'self'", "data:", "blob:"),
+            "frame-src": ("'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com",),
+            "media-src": (
+                "'self'",
+                "blob:",
+            ),
+        }
     }
-}
+else:
+    # Django-CSP >=4.0 configuration (new format)
+    CONTENT_SECURITY_POLICY = {
+        "DIRECTIVES": {
+            "default-src": ("'self'",),
+            "style-src": ("'self'", "https://fonts.googleapis.com"),
+            "font-src": ("'self'", "https://fonts.gstatic.com"),
+            "script-src": ("'self'",),
+            "img-src": (
+                "'self'",
+                "data:",
+                "https://i.ytimg.com",
+                "https://img.youtube.com",
+                "https://ytimg.googleusercontent.com",
+            ),
+            "frame-src": (
+                "'self'",
+                "https://www.youtube.com",
+                "https://youtube.com",
+                "https://www.youtube-nocookie.com",
+                "https://player.vimeo.com",
+            ),
+            "media-src": (
+                "'self'",
+                "blob:",
+            ),
+        }
+    }
 
 # Include nonces for script-src so templates can use {% csp_nonce %}
 CSP_INCLUDE_NONCE_IN = ("script-src",)
@@ -240,3 +261,5 @@ if not DEBUG:
 
     # Referrer policy
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+else:
+    SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"

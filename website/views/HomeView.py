@@ -1,7 +1,7 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 
-from website.models.PostModel import Post
+from website.models.post.PostModel import Post
 
 
 def get_home_page(request):
@@ -21,4 +21,4 @@ def get_home_page(request):
         # If page is out of range, deliver last page of results
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, "home-page/homepage.html", {"posts": posts})
+    return render(request, "blog/pages/home-page/homepage.html", {"posts": posts})

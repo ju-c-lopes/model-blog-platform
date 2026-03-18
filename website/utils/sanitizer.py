@@ -33,6 +33,14 @@ ALLOWED_TAGS = [
 ALLOWED_ATTRIBUTES = {
     "a": ["href", "title", "rel", "target"],
     "img": ["src", "alt", "title", "width", "height"],
+    "iframe": [
+        "src",
+        "width",
+        "height",
+        "frameborder",
+        "allow",
+        "allowfullscreen"
+    ],
 }
 
 ALLOWED_PROTOCOLS = ["http", "https", "mailto", "data"]

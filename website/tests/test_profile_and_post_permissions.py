@@ -7,8 +7,8 @@ from django.test import RequestFactory, TestCase
 from website.models.AuthorModel import Author
 from website.models.PostModel import Post
 from website.models.ReaderModel import Reader
-from website.views.PostCreateView import edit_post
-from website.views.ProfileUpdateView import update_profile
+from website.views.post.PostCreateView import edit_post
+from website.views.author.ProfileUpdateView import update_profile
 
 User = get_user_model()
 
@@ -72,7 +72,7 @@ class ProfileAndPostPermissionTests(TestCase):
         req2.session = SessionStore()
         req2._messages = FallbackStorage(req2)
         # patch render to avoid template parsing
-        import website.views.PostCreateView as pcv
+        import website.views.post.PostCreateView as pcv
 
         old_render = pcv.render
         pcv.render = lambda *a, **k: type("R", (), {"status_code": 200})()

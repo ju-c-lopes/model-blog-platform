@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from website.models.AuthorModel import Author
 from website.models.ReaderModel import Reader
-from website.views import AuthorView
+from website.views.author import AuthorView
 
 User = get_user_model()
 
@@ -143,7 +143,7 @@ class ProfileAndAuthorViewTests(TestCase):
             FILES={},
             user=user,
         )
-        from website.views.ReaderEditView import check_request_post as rcp
+        from website.views.reader.ReaderEditView import check_request_post as rcp
 
         rdata = rcp(req)
         self.assertEqual(rdata["username"], user.username)

@@ -1,0 +1,289 @@
+# Project Structure (generated)
+
+.
+├── BACKLOG.txt
+├── blogModel
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── coverage-badge.svg
+├── coverage.svg
+├── coverage.xml
+├── db.sqlite3
+├── docker-compose.yml
+├── Dockerfile
+├── docs
+│   ├── init.html
+│   └── old_password_checks.md
+├── .env
+├── .env.example
+├── generate_tree.sh
+├── .github
+│   ├── instructions
+│   │   └── copilot-instructions.md.instructions.md
+│   └── workflows
+│       ├── cov.yml
+│       └── test.yml
+├── .gitignore
+├── htmlcov
+│   ├── class_index.html
+│   ├── coverage_html.js
+│   ├── favicon_32.png
+│   ├── function_index.html
+│   ├── .gitignore
+│   ├── index.html
+│   ├── keybd_closed.png
+│   ├── keybd_open.png
+│   ├── status.json
+│   └── style.css
+├── manage.py
+├── media
+│   ├── 12613461_0dsLiav.png
+│   ├── 12613461_anzRKeI.png
+│   ├── 12613461.png
+│   ├── 14_Dq5ngNA.jpg
+│   ├── 14.jpg
+│   ├── cartoon1619879740885_J5PHJh5.jpg
+│   ├── cartoon1619879740885.jpg
+│   ├── cartoon1619879740885_XGRnMYw.jpg
+│   └── IMG_-kxo7l8.jpg
+├── poetry.lock
+├── .pre-commit-config.yaml
+├── pyproject.toml
+├── pytest.ini
+├── README.md
+├── reports
+│   └── coverage
+│       ├── class_index.html
+│       ├── coverage_html.js
+│       ├── coverage.xml
+│       ├── favicon_32.png
+│       ├── function_index.html
+│       ├── index.html
+│       ├── keybd_closed.png
+│       ├── keybd_open.png
+│       ├── manage_py.html
+│       ├── status.json
+│       └── style.css
+├── requirements-bkp.txt
+├── requirements-dev.txt
+├── requirements.txt
+├── .stfolder
+├── .stversions
+├── tox.ini
+├── tree.txt
+└── website
+    ├── admin.py
+    ├── apps.py
+    ├── forms
+    │   ├── author
+    │   │   ├── EditAuthorForm.py
+    │   │   ├── GraduationForm.py
+    │   │   ├── __init__.py
+    │   │   ├── JobForm.py
+    │   │   └── SocialMediaForm.py
+    │   ├── __init__.py
+    │   ├── post
+    │   │   ├── __init__.py
+    │   │   ├── PostForm.py
+    │   │   └── SearchForm.py
+    │   └── user
+    │       ├── EditReaderForm.py
+    │       ├── __init__.py
+    │       ├── LoginForm.py
+    │       ├── ProfileUpdateForm.py
+    │       ├── RegistrationForm.py
+    │       ├── UserChangeForm.py
+    │       └── UserCreationForm.py
+    ├── __init__.py
+    ├── management
+    │   ├── commands
+    │   │   ├── create_test_user.py
+    │   │   └── __init__.py
+    │   └── __init__.py
+    ├── manager.py
+    ├── middleware.py
+    ├── migrations
+    │   ├── 0001_initial.py
+    │   └── __init__.py
+    ├── models
+    │   ├── author
+    │   │   ├── AuthorModel.py
+    │   │   ├── AuthorSocialMediaModel.py
+    │   │   ├── GraduationsModel.py
+    │   │   ├── __init__.py
+    │   │   └── JobsModel.py
+    │   ├── __init__.py
+    │   ├── post
+    │   │   ├── __init__.py
+    │   │   ├── PostModel.py
+    │   │   ├── PostReactionModel.py
+    │   │   ├── PostViewModel.py
+    │   │   └── SeriesModel.py
+    │   └── user
+    │       ├── __init__.py
+    │       ├── ReaderModel.py
+    │       └── UserModel.py
+    ├── static
+    │   ├── css
+    │   │   ├── author-page.css
+    │   │   ├── base.css
+    │   │   ├── edit-author-page.css
+    │   │   ├── edit_post.css
+    │   │   ├── edit-reader-page.css
+    │   │   ├── error.css
+    │   │   ├── header.css
+    │   │   ├── home.css
+    │   │   ├── login.css
+    │   │   ├── post.css
+    │   │   ├── search.css
+    │   │   └── sign-up.css
+    │   ├── img
+    │   │   ├── activate-like.png
+    │   │   ├── activate-love.png
+    │   │   ├── deactivate-like.png
+    │   │   ├── deactivate-love.png
+    │   │   ├── facebook.png
+    │   │   ├── favicon.ico
+    │   │   ├── github.png
+    │   │   ├── hide.png
+    │   │   ├── instagram.png
+    │   │   ├── juclops-techxperience-logo.webp
+    │   │   ├── linkedin.png
+    │   │   ├── lupa.png
+    │   │   ├── no-user.jpg
+    │   │   ├── pass-valid.gif
+    │   │   ├── view.png
+    │   │   └── x.png
+    │   ├── scripts
+    │   │   ├── buttonAlterImage.js
+    │   │   ├── buttonDropDown.js
+    │   │   ├── buttonGraduationPlus.js
+    │   │   ├── buttonJobPlus.js
+    │   │   ├── buttonMobile.js
+    │   │   ├── buttonSave.js
+    │   │   ├── buttonShowHide.js
+    │   │   ├── buttonSocialExclude.js
+    │   │   ├── buttonSocialPlus.js
+    │   │   ├── checkPass.js
+    │   │   ├── edit_post.js
+    │   │   ├── insertTable.js
+    │   │   ├── post-editor.js
+    │   │   ├── post_reactions.js
+    │   │   ├── readingBar.js
+    │   │   └── tela.js
+    │   └── vendor
+    │       ├── bootstrap
+    │       │   ├── bootstrap.bundle.min.js
+    │       │   └── bootstrap.min.css
+    │       └── quill
+    │           ├── quill.js
+    │           └── quill.snow.css
+    ├── templates
+    │   ├── blog
+    │   │   └── pages
+    │   │       ├── author
+    │   │       │   └── author.html
+    │   │       ├── base.html
+    │   │       ├── edit-author
+    │   │       │   └── edit-author.html
+    │   │       ├── edit-reader
+    │   │       │   └── edit-reader.html
+    │   │       ├── errors
+    │   │       │   ├── 403.html
+    │   │       │   ├── 404.html
+    │   │       │   └── 500.html
+    │   │       ├── header.html
+    │   │       ├── home-page
+    │   │       │   └── homepage.html
+    │   │       ├── login
+    │   │       │   └── login.html
+    │   │       ├── our-team
+    │   │       │   └── our-team.html
+    │   │       ├── post
+    │   │       │   ├── edit_post.html
+    │   │       │   └── post_detail.html
+    │   │       ├── profile-update
+    │   │       │   └── update-profile.html
+    │   │       ├── search
+    │   │       │   └── search_results.html
+    │   │       └── sign-up
+    │   │           └── sign-up.html
+    │   ├── components
+    │   │   ├── card-author
+    │   │   │   └── card-author.html
+    │   │   ├── footer
+    │   │   │   └── footer.html
+    │   │   ├── header
+    │   │   │   └── header.html
+    │   │   └── post
+    │   │       ├── editor
+    │   │       │   ├── editor_container.html
+    │   │       │   ├── form_buttons.html
+    │   │       │   ├── form_fields.html
+    │   │       │   ├── form_header.html
+    │   │       │   └── media_upload.html
+    │   │       └── presentation
+    │   └── scripts
+    │       └── button-menu.html
+    ├── templatetags
+    │   ├── get_type.py
+    │   └── __init__.py
+    ├── urls
+    │   ├── author
+    │   │   ├── AuthorEditUrl.py
+    │   │   ├── AuthorUrl.py
+    │   │   ├── __init__.py
+    │   │   └── TeamUrl.py
+    │   ├── exception
+    │   │   ├── ErrorUrl.py
+    │   │   └── __init__.py
+    │   ├── HomeUrl.py
+    │   ├── __init__.py
+    │   ├── post
+    │   │   ├── __init__.py
+    │   │   ├── PostUrl.py
+    │   │   └── SearchUrl.py
+    │   ├── reader
+    │   │   ├── __init__.py
+    │   │   └── ReaderEditUrl.py
+    │   └── user
+    │       ├── __init__.py
+    │       ├── LoginUrl.py
+    │       ├── LogoutUrl.py
+    │       └── SignUpUrl.py
+    ├── utils
+    │   ├── __init__.py
+    │   ├── sanitizer.py
+    │   └── youtube_validator.py
+    ├── validators.py
+    └── views
+        ├── author
+        │   ├── AuthorEditView.py
+        │   ├── AuthorView.py
+        │   ├── __init__.py
+        │   └── TeamView.py
+        ├── exception
+        │   ├── ErrorView.py
+        │   └── __init__.py
+        ├── HomeView.py
+        ├── __init__.py
+        ├── post
+        │   ├── __init__.py
+        │   ├── PostCreateView.py
+        │   ├── PostView.py
+        │   └── SearchView.py
+        ├── reader
+        │   ├── __init__.py
+        │   └── ReaderEditView.py
+        └── user
+            ├── __init__.py
+            ├── LoginView.py
+            ├── LogoutView.py
+            └── SignUpView.py
+
+68 directories, 217 files

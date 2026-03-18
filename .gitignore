@@ -1,17 +1,68 @@
-*.pyc
-.idea
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# =========================
+# Virtual Environment
+# =========================
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Django
+# =========================
+db.sqlite3
+media/
+staticfiles/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Testing / Coverage
+# =========================
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Project Specific
+# =========================
 run_manage_py_with_test.py
-.vscode
 blog-model.code-workspace
 
-# Environment variables
-.env
-.env*
-.env.local
-.env.development
-.env.productionvenv/
-venv/
-
-# Local artifacts
-.DS_Store
+# =========================
+# Misc
+# =========================
 core
+.st*/

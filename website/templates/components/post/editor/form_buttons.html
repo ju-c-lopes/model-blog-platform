@@ -1,0 +1,16 @@
+<div class="form-buttons">
+    {% if is_creating %}
+        <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
+        <button type="submit" class="btn-submit">🚀 Publish Post</button>
+    {% else %}
+    <a
+        href="{% url 'post_detail' url_slug=post.url_slug %}"
+        class="btn-cancel"
+    >
+        Cancel
+    </a>
+    <button type="submit" class="btn-submit">
+        💾 Update Post
+    </button>
+    {% endif %}
+</div>
