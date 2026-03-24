@@ -8,7 +8,7 @@ Conteúdo
             [ ] ajuste de table
             [ ] overlay popup
             [ ] video upload
-            [ ] contador zerado na edição
+            [X] contador zerado na edição
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
 
