@@ -1,21 +1,9 @@
-// const mediaBtn = document.querySelector(".media-video-btn");
-// const videoButtons = document.querySelector(".video-buttons");
-// mediaBtn.onclick = () => {
-//     videoButtons.style.display = "flex";
-// };
-
-// const closeButton = document.querySelector(".close-btn");
-// if (closeButton && videoButtons) {
-//     closeButton.onclick = () => {
-//         videoButtons.style.display = "none";
-//     };
-// }
-
 function openPopup(popupSelector) {
     const popup = document.querySelector(popupSelector);
     if (!popup) return;
 
     popup.style.display = "flex";
+    document.body.classList.add("popup-open");
 }
 
 function closePopup(popupSelector) {
@@ -23,10 +11,13 @@ function closePopup(popupSelector) {
     if (!popup) return;
 
     popup.style.display = "none";
+    document.body.classList.remove("popup-open");
 }
 
 function bindPopup(triggerSelector, popupSelector, closeSelector) {
     const trigger = document.querySelector(triggerSelector);
+    const popupWrapper = document.querySelector(popupSelector);
+    const popupBox = popupWrapper ? popupWrapper.querySelector(".popup") : null;
     const closeBtn = document.querySelector(closeSelector);
 
     if (trigger) {
@@ -38,6 +29,14 @@ function bindPopup(triggerSelector, popupSelector, closeSelector) {
     if (closeBtn) {
         closeBtn.addEventListener("click", () => {
             closePopup(popupSelector);
+        });
+    }
+
+    if (popupWrapper && popupBox) {
+        popupWrapper.addEventListener("click", (event) => {
+            if (!popupBox.contains(event.target)) {
+                closePopup(popupSelector);
+            }
         });
     }
 }

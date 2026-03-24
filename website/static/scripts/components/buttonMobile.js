@@ -8,8 +8,6 @@ const initializeMenu = () => {
         menuNavigation.style.transform = "translateY(calc(-800px - 4em - 15px))";
         menuNavigation.style.transition = "0.3s ease-out";
     }
-    // Ensure body scroll is enabled on initialization
-    document.body.style.overflowY = "scroll";
 };
 
 const closeMenu = () => {
