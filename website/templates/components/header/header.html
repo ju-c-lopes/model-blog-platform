@@ -11,12 +11,12 @@
     <div class="logo-container">
         {% if request.path is None or request.path == "/" %}
         <a href="/">
-            <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
+            <img class="logo" width="50" height="50" src="{% static 'img/brand/juclops-techxperience-logo.webp' %}" alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
             <h1 class="logo-text">Juclops' TechXperience</h1>
         </a>
         {% else %}
         <a href="/">
-            <img class="logo" width="50" height="50" src="{% static 'img/juclops-techxperience-logo.webp' %}"
+            <img class="logo" width="50" height="50" src="{% static 'img/brand/juclops-techxperience-logo.webp' %}"
             alt="Juclops TechXperience" title="Logo Juclops TechXperience" />
             <span class="logo-text">Juclops' TechXperience</span>
         </a>
@@ -37,7 +37,7 @@
         <div class="search">
             <input type="text" name="search" id="search" placeholder="Buscar postagem..." />
             <button class="search-btn" type="submit">
-                <img src="{% static 'img/lupa.png' %}" alt="Buscar" />
+                <img src="{% static 'img/icons/lupa.png' %}" alt="Buscar" />
             </button>
         </div>
     </form>
@@ -52,14 +52,14 @@
                     {% if request.user.author.image %}
                         <img src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" />
                     {% else %}
-                        <img src="{% static 'img/no-user.jpg' %}" alt="{{ request.user.author.author_name }}" />
+                        <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="{{ request.user.author.author_name }}" />
                     {% endif %}
 
                 {% else %}
                     {% if request.user.reader.image %}
                         <img src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" />
                     {% else %}
-                        <img src="{% static './img/no-user.jpg' %}" alt="{{ request.user.reader.reader_name }}" />
+                        <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="{{ request.user.reader.reader_name }}" />
                     {% endif %}
                 {% endif %}
             </div>
@@ -100,7 +100,7 @@
     <!-- GUEST SECTION -->
     <div class="mobile-guest-section">
         <div class="mobile-guest-header">
-            <img src="{% static './img/no-user.jpg' %}" alt="Guest User" class="mobile-guest-image" />
+            <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="Guest User" class="mobile-guest-image" />
             <div class="mobile-guest-info">
                 <div class="mobile-guest-name">Welcome, Guest!</div>
                 <div class="mobile-guest-subtitle">Join our community</div>
@@ -125,7 +125,7 @@
                 {% if request.user.author.image or request.user.reader.image %}
                     <img class="header-login--img" {% if request.user.author %} src="/media/{{ request.user.author.image }}" alt="{{ request.user.author.author_name }}" {% else %} src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" {% endif %}/>
                 {% else %}
-                    <img class="header-login--img" src="{% static './img/no-user.jpg' %}" alt="User profile" />
+                    <img class="header-login--img" src="{% static 'img/placeholders/no-user.jpg' %}" alt="User profile" />
                 {% endif %}
                 <span class="profile-name">
                     {% if request.user.author %}
@@ -167,7 +167,7 @@
     {% else %}
     <div class="header-login desktop-only">
         <div class="not-logged">
-            <img class="header-login--img no-user--img" width="40" height="40" src="{% static './img/no-user.jpg' %}" alt />
+            <img class="header-login--img no-user--img" width="40" height="40" src="{% static 'img/placeholders/no-user.jpg' %}" alt />
             <div class="register profile-dropdown">
                 {% if request.path != "/sign-up/" %}
                 <a class="login-link" href="{% url 'sign_up' %}">Cadastre-se</a>
@@ -179,6 +179,6 @@
     </div>
 </nav>
 {% block scripts %}
-<script src="{% static './scripts/buttonMobile.js' %}"></script>
-<script src="{% static './scripts/buttonDropDown.js' %}"></script>
+<script src="{% static './scripts/components/buttonMobile.js' %}"></script>
+<script src="{% static './scripts/components/buttonDropDown.js' %}"></script>
 {% endblock %}

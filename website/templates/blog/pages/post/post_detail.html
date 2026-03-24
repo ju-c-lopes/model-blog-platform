@@ -3,17 +3,8 @@
 {% load static %}
 
 {% block head-css %}
-<link rel="stylesheet" href="{% static 'css/post.css' %}" type="text/css" media="all" />
-<link rel="stylesheet" type="text/css" href="{% static './css/author-page.css' %}" media="all" />
-<!-- <style>
-/* Reaction icon styles */
-.reaction-btn{ background:transparent; border:0; padding:0; cursor:pointer; }
-.reaction-icon{ font-size:20px; opacity:0.45; transition:opacity .15s, transform .12s; }
-.reaction-icon.active{ opacity:1; transform:scale(1.05); }
-.reaction-icon.like.active{ color: #0d6efd; } /* blue for like */
-.reaction-icon.love.active{ color: #e0245e; } /* red for love */
-.reaction-count{ font-size:0.95rem; color:#333; }
-</style> -->
+<link rel="stylesheet" href="{% static 'css/post/post.css' %}" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/author/author-page.css' %}" media="all" />
 {% endblock %}
 
 {% block title %}{{ post.title }}{% endblock %}
@@ -21,74 +12,28 @@
 {% block content %}
 <div class="container mt-5 mb-5">
     <main class="content">
-        <div class="post-container">
-            <article class="post-detail">
-                <div id="reading-bar"></div>
-                <h1 class="post-title">{{ post.title }}</h1>
+        <div class="head-card">
+            <div id="reading-bar"></div>
+            <h1 class="post-title">
+                {{ post.title }}
+            </h1>
+            <div class="post-meta">
+                {% include 'components/card-author/card-author.html' with author=post.author %}
+                <span class="post-date">
+                    Published on {{ post.published_date }}
+                </span><br />
+                {% if post.updated_date and post.updated_date != post.published_date %}
+                <span class="post-date">
+                    Updated on {{ post.updated_date }}
+                </span><br />
+                {% endif %}
                 <span class="reading-time">
                     ⏱ {{ post.reading_time }} min de leitura
                 </span>
-                <div class="head-card">
-                    <div class="post-meta">
-                        <div class="post-author-presentation-card">
-                            <div class="post-author-card-top">
-                                <!-- Imagem do autor -->
-                                {% if not post.author.image %}
-                                <img src="{% static './img/no-user.jpg' %}" width="50" height="50" alt="autor {{ post.author.author_name }} sem foto" />
-                                {% else %}
-                                <img src="/media/{{ post.author.image }}" width="50" height="50" alt="Foto do autor {{ post.author.author_name }}" />
-                                {% endif %}
-                                <div class="post-card-top-right">
-                                    <!-- nome do autor H2 -->
-                                    <a href="{% url 'author' post.author.author_url_slug %}">
-                                        <h2 class="post-author-name-h2">{{ post.author.author_name }}</h2>
-                                    </a>
-                                    {% if author_connected %}
-                                        <a href="{% url 'edit_author' request.user.author.author_url_slug %}">Editar perfil</a>
-                                    {% endif %}
-                                </div>
-                                <!-- Resumo da formaçao do autor -->
-                                    {% for graduation in post.author.graduations.all %}
-                                        {% if not graduation.concluded %}
-                                            {% for i, level in graduations_level %}
-                                                {% if graduation.graduation_level == i %}
-                                                <p>{{ level }} em {{ graduation.course }} na {{ graduation.school }}</p>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% elif forloop.counter == post.author.graduations.all|length %}
-                                            <p>
-                                            {% for i, level in graduations_level %}
-                                                {% if graduation.graduation_level == i %}
-                                                {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
-                                                {% endif %}
-                                            {% endfor %}
-                                            </p>
-                                        {% else %}
-                                            <p>
-                                            {% for i, level in graduations_level %}
-                                                {% if graduation.graduation_level == i %}
-                                                {{ level  }} em {{ graduation.course }} na {{ graduation.school }} em {{ graduation.year_graduation }}.
-                                                {% endif %}
-                                            {% endfor %}
-                                            </p>
-                                        {% endif %}
-                                    {% endfor %}
-                            </div>
-
-                            <div class="post-author-social-media">
-                                {% for social_media in post.author.social_media.all %}
-                                    {% for i, social in social_media_index %}
-                                        {% if social_media.social_media == i %}
-                                            <a class="post-{{ social|lower }}" href="{{ social_media.social_media_profile }}"><img src="{% static './img/'|add:social|lower|add:'.png' %}" width="20" height="20" alt="{{ social|lower }}" /></a>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                            <span class="post-date">Published on {{ post.published_date }}</span>
-                        </div>
-                    </div>
-                </div>
-
+            </div>
+        </div>
+        <div class="post-container">
+            <article class="post-detail">
                 <div class="post-content mt-4">
                     {{ post.text|safe }}
                 </div>
@@ -103,14 +48,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="reaction-section" data-like-url="{% url 'post_toggle_like' url_slug=post.url_slug %}" data-love-url="{% url 'post_toggle_love' url_slug=post.url_slug %}" data-img-activate-like="{% static './img/activate-like.png' %}" data-img-deactivate-like="{% static './img/deactivate-like.png' %}" data-img-activate-love="{% static './img/activate-love.png' %}" data-img-deactivate-love="{% static './img/deactivate-love.png' %}">
+                <div class="reaction-section"
+                    data-like-url="{% url 'post_toggle_like' url_slug=post.url_slug %}"
+                    data-love-url="{% url 'post_toggle_love' url_slug=post.url_slug %}"
+                    data-img-activate-like="{% static 'img/reactions/activate-like.png' %}"
+                    data-img-deactivate-like="{% static 'img/reactions/deactivate-like.png' %}"
+                    data-img-activate-love="{% static 'img/reactions/activate-love.png' %}"
+                    data-img-deactivate-love="{% static 'img/reactions/deactivate-love.png' %}">
                     <div class="reaction-div align-items-center">
                         <button id="like-btn" class="reaction-btn" aria-label="Like">
                             <span id="like-icon" class="reaction-icon like {% if user_liked %}active{% endif %}">
                                 {% if user_liked %}
-                                <img width="40" src="{% static './img/activate-like.png' %}" alt="" class="like-btn">
+                                <img width="40" src="{% static 'img/reactions/activate-like.png' %}" alt="" class="like-btn">
                                 {% else %}
-                                <img width="40" src="{% static './img/deactivate-like.png' %}" alt="" class="like-btn">
+                                <img width="40" src="{% static 'img/reactions/deactivate-like.png' %}" alt="" class="like-btn">
                                 {% endif %}
                             </span>
                         </button>
@@ -120,9 +71,9 @@
                         <button id="love-btn" class="reaction-btn" aria-label="Love">
                             <span id="love-icon" class="reaction-icon love {% if user_loved %}active{% endif %}">
                                 {% if user_loved %}
-                                <img width="40" src="{% static './img/activate-love.png' %}" alt="" class="love-btn">
+                                <img width="40" src="{% static 'img/reactions/activate-love.png' %}" alt="" class="love-btn">
                                 {% else %}
-                                <img width="40" src="{% static './img/deactivate-love.png' %}" alt="" class="love-btn">
+                                <img width="40" src="{% static 'img/reactions/deactivate-love.png' %}" alt="" class="love-btn">
                                 {% endif %}
                             </span>
                         </button>
@@ -148,7 +99,7 @@
 
 <div id="signup-modal">
     <div class="signup-modal-content">
-        <h4>Faça seu cadastro</h4>
+        <p>Faça seu cadastro</p>
         <p>Para reagir a posts, crie uma conta ou faça login.</p>
         <div class="signup-modal-buttons">
             <a href="{% url 'login' %}" class="btn btn-primary">Entrar</a>
@@ -159,7 +110,7 @@
 </div>
 
 <form style="display:none">{% csrf_token %}</form>
-<script src="{% static 'scripts/post_reactions.js' %}" nonce="{{ request.csp_nonce }}"></script>
+<script src="{% static 'scripts/components/post_reactions.js' %}" nonce="{{ request.csp_nonce }}"></script>
             </article>
         </div>
     </div>

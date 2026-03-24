@@ -6,6 +6,7 @@
         <button
             type="button"
             class="media-btn media-image-btn"
+            title="Add an image from your device"
         >
             <i>🖼️</i> Add Image
         </button>
@@ -18,61 +19,20 @@
         >
             <i>🎥</i> Add Video File
         </button>
-        <div class="video-buttons">
-            <div class="popup">
-                <div class="close-btn">X</div>
-                <div class="popup-buttons">
-                    <button
-                        type="button"
-                        class="media-btn local-btn"
-                        title="Add local video file (max 10MB)"
-                    >
-                        <i>🎥</i> Add Video File
-                    </button>
-                    <button
-                        type="button"
-                        class="media-btn youtube-btn"
-                        title="Add YouTube video by URL"
-                    >
-                        <i>📺</i> Add YouTube Video
-                    </button>
-                    <div class="youtube-form">
-                        <input
-                            type="text"
-                            id="youtube-url"
-                            placeholder="Enter YouTube URL"
-                        />
-                        <button type="button" class="media-btn insert-url-btn">
-                            >
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button type="button" class="media-btn table-btn">
+
+        <!-- Table insert section -->
+        <button
+            type="button"
+            class="media-btn table-btn"
+            title="Insert a table with specified rows and columns"
+        >
             <i>📊</i> Insert Table
         </button>
-        <div class="table-buttons">
-            <div class="popup popup-table">
-                <div class="close-btn close-tb-btn">X</div>
-                <div class="table-form">
-                    <div class="input-table">
-                        <div class="input-cols">
-                            <label for=id_col_table>Colunas</label>
-                            <input type="number" name="id_col_table" id="id_col_table" min="1" max="10">
-                        </div>
-                        <div class="input-rows">
-                            <label for=id_row_table>Linhas</label>
-                            <input type="number" name="id_row_table" id="id_row_table" min="1" max="20">
-                        </div>
-                    </div>
-                    <button type="button" class="media-btn insert-tb-btn">
-                        >
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
+
+    {% include 'components/post/editor/popup/popup.html' with popup_type='video' %}
+    {% include 'components/post/editor/popup/popup.html' with popup_type='table' %}
+
     <div
         class="help-text media-help-text"
         style="margin-top: 0.5rem; font-size: 0.85rem; color: #6c757d"
@@ -89,14 +49,12 @@
         id="image-upload"
         class="hidden-input"
         accept="image/*"
-        onchange="handleImageUpload(event)"
     />
     <input
         type="file"
         id="video-upload"
         class="hidden-input"
         accept="video/*"
-        onchange="handleVideoUpload(event)"
     />
 
     <!-- Media preview area -->
@@ -107,7 +65,3 @@
     >
     </div>
 </div>
-{% load static %}
-{% block scripts %}
-<script src="{% static 'scripts/insertTable.js' %}"></script>
-{% endblock %}

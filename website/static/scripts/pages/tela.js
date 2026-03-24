@@ -5,7 +5,7 @@ const ratio = window.devicePixelRatio;
 let tela = document.querySelector(".screen-size");
 
 tela.innerHTML += `
-    <p style="margin-top=400px;">Largura: ${larguraTela}</p>
-    <p>Altura: ${alturaTela}</p>
-    <p>Device Pixel Ratio: ${ratio}</p>
+    <p style="color: #6c6c6c;">Largura: ${larguraTela}</p>
+    <p style="color: #6c6c6c;">Altura: ${alturaTela}</p>
+    <p style="color: #6c6c6c;">Device Pixel Ratio: ${ratio}</p>
 `;
