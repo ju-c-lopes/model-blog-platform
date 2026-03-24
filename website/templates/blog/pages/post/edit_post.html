@@ -3,8 +3,14 @@
     {% if is_creating %} Create New Post {% else %} Edit Post {% endif %}
 {% endblock %}
 {% block head-css %}
-<link rel="stylesheet" href="{% static 'css/post.css' %}" />
-<link rel="stylesheet" href="{% static 'css/edit_post.css' %}" />
+<link 
+    rel="stylesheet"
+    href="{% static 'css/post/edit_post.css' %}"
+/>
+<link 
+    rel="stylesheet"
+    href="{% static 'css/post/post.css' %}"
+/>
 <link
     rel="stylesheet"
     href="{% static 'vendor/quill/quill.snow.css' %}"
@@ -30,6 +36,25 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<!-- 1. Vendor -->
 <script src="{% static 'vendor/quill/quill.js' %}"></script>
-<script src="{% static 'scripts/edit_post.js' %}"></script>
+
+<!-- 2. Core -->
+<script src="{% static 'scripts/editor/editor-utils.js' %}"></script>
+<script src="{% static 'scripts/editor/quill-init.js' %}"></script>
+
+<!-- 3. UI / Components -->
+<script src="{% static 'scripts/editor/popup.js' %}"></script>
+<script src="{% static 'scripts/editor/media-preview.js' %}"></script>
+<script src="{% static 'scripts/editor/counters.js' %}"></script>
+<script src="{% static 'scripts/editor/slug.js' %}"></script>
+
+<!-- 4. Features -->
+<script src="{% static 'scripts/editor/image-upload.js' %}"></script>
+<script src="{% static 'scripts/editor/video-upload.js' %}"></script>
+<script src="{% static 'scripts/editor/youtube.js' %}"></script>
+<script src="{% static 'scripts/editor/insertTable.js' %}"></script>
+
+<!-- 5. Orquestrador -->
+<script src="{% static 'scripts/editor/edit_post.js' %}"></script>
 {% endblock %}

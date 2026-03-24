@@ -42,7 +42,7 @@ class Author(models.Model):
             links.append({
                 "name": name,
                 "url": social.social_media_profile,
-                "icon": f"img/{name}.png"
+                "icon": f"img/icons/{name}.png"
             })
 
         return links

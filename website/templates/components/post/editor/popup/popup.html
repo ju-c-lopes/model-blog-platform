@@ -1,0 +1,21 @@
+{% if popup_type == 'video' %}
+<!-- Video Popup -->
+<div class="video-buttons">
+    <div class="popup">
+        <div class="close-btn">X</div>
+
+        <!-- Component: Content form for video -->
+        {% include 'components/post/editor/popup/popup_video.html' %}
+    </div>
+</div>
+{% elif popup_type == 'table' %}
+<!-- Table Popup -->
+<div class="table-buttons">
+    <div class="popup popup-table">
+        <div class="close-btn close-tb-btn">X</div>
+
+        <!-- Component: Content form for table -->
+        {% include 'components/post/editor/popup/popup_table.html' %}
+    </div>
+</div>
+{% endif %}

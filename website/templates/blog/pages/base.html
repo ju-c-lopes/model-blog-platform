@@ -14,10 +14,6 @@
 
         <link rel="canonical" href="{{ request.build_absolute_uri }}" />
 
-        <!-- <link
-            href="{% static 'vendor/bootstrap/bootstrap.min.css' %}"
-            rel="stylesheet"
-        /> -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -28,18 +24,18 @@
         <link
             rel="icon"
             type="image/x-icon"
-            href="{% static 'img/favicon.ico' %}"
+            href="{% static 'img/brand/favicon.ico' %}"
         />
         <link
             rel="stylesheet"
             type="text/css"
-            href="{% static 'css/base.css' %}"
+            href="{% static 'css/base/base.css' %}"
             media="all"
         />
         <link
             rel="stylesheet"
             type="text/css"
-            href="{% static 'css/header.css' %}"
+            href="{% static 'css/base/header.css' %}"
             media="all"
         />
         {% block head-css %}{% endblock %}
@@ -55,13 +51,10 @@
         </div>
         <div class="screen-size"></div>
         <footer>{% include "components/footer/footer.html" %}</footer>
-        <script
-            src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"
-        ></script>
         {% block scripts %}{% endblock %}
         <script
             nonce="{{ request.csp_nonce }}"
-            src="{% static 'scripts/tela.js' %}"
+            src="{% static 'scripts/pages/tela.js' %}"
         ></script>
     </body>
 </html>

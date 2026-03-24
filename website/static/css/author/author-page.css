@@ -234,11 +234,11 @@
 @media screen and (min-width: 1025px) {
   .author-presentation-card {
     margin: 0 1vh 0 1vh;
-    background: linear-gradient(180deg, #5F7C8A, #869CA6);
+    /* background: linear-gradient(180deg, #5F7C8A, #869CA6); */
     border: none;
     border-radius: 10px;
-    box-shadow: 3px 3px 10px #6b6b6b;
-    width: 33%;
+    /* box-shadow: 3px 3px 10px #6b6b6b; */
+    width: auto;
     padding: 1em;
   }
   .author-card-top {
