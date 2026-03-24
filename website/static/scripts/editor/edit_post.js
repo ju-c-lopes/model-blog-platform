@@ -10,42 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initVideoUpload();
     initYoutube();
     initTable();
-
-    // const imageBtn = document.querySelector(".media-image-btn");
-    // const imageInput = document.getElementById("image-upload");
-    // const videoUploadBtn = document.querySelector(".local-btn");
-    // const videoInput = document.getElementById("video-upload");
-    // const youtubeBtn = document.querySelector(".youtube-btn");
-    // const insertUrlBtn = document.querySelector(".insert-url-btn");
-
-    console.log({
-        imageBtn,
-        imageInput,
-        videoUploadBtn,
-        videoInput
-    });
-    
-    // if (imageBtn && imageInput) {
-    //     imageBtn.addEventListener("click", () => {
-    //         imageInput.click();
-    //     });
-    //     imageInput.addEventListener("change", handleImageUpload);
-    // }
-    // if (videoUploadBtn && videoInput) {
-    //     console.log("Clicking Video Upload button")
-    //     videoUploadBtn.addEventListener("click", () => {
-    //         videoInput.click();
-    //     })
-    //     videoInput.addEventListener("change", handleVideoUpload);
-    // }
-
-    // if (youtubeBtn) {
-    //     youtubeBtn.addEventListener("click", insertYouTubeVideo);
-    // }
-
-    // if (insertUrlBtn) {
-    //     insertUrlBtn.addEventListener("click", insertUrl);
-    // }
 });
 
 // -- Update form submit handler to inject iframes before saving payload --
