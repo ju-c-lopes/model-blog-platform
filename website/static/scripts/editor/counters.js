@@ -26,6 +26,7 @@ function updateCharCounter(inputId, counterId, maxLength) {
 function initCounters() {
     updateCharCounter("id_title", "title-counter", 60);
     updateCharCounter("id_meta_description", "meta-counter", 160);
+    updateCharCounter("id_url_slug", "slug-counter", 70);
 }
 
 window.initCounters = initCounters;

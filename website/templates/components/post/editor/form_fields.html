@@ -32,7 +32,17 @@
             {{ form.url_slug }}
 
             {% if form.url_slug.help_text %}
-                <div class="help-text">{{ form.url_slug.help_text }}</div>
+                <div class="help-text">
+                    {{ form.url_slug.help_text }}
+                    <span class="info-icon" id="slug-info">ⓘ</span>
+                    <div class="info-tooltip" id="slug-tooltip">
+                        <p>URLs curtas e descritivas costumam ser mais legíveis para usuários e buscadores.</p>
+                        <p>Prefira editar a URL para refletir o tema principal do post em poucas palavras, sem repetir o título completo.</p>
+                        <p>Conectores como "de", "ou", "e", e outros semelhantes podem ser omitidos nas URLs para mantê-las mais curtas e descritivas.</p>
+                    </div>
+                </div>
+
+                <div class="char-counter" id="slug-counter">0/70</div>
             {% endif %}
 
             {% if form.url_slug.errors %}
