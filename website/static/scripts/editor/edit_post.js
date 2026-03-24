@@ -3,6 +3,7 @@ console.log("Edit Post JS loaded");
 document.addEventListener("DOMContentLoaded", () => {
     initCounters();
     initSlug();
+    initSlugTooltip();
     initQuillEditor();
     initPopup();
     initImageUpload();

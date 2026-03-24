@@ -90,6 +90,40 @@
     color: #dc3545;
 }
 
+.info-icon {
+    cursor: pointer;
+    margin-left: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.info-tooltip {
+    display: none;
+    position: absolute;
+    background: #222;
+    color: #fff;
+    padding: 0.6rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 0.8rem;
+    max-width: 250px;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.info-tooltip.show {
+    display: block;
+}
+
+.info-tooltip::after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #222 transparent;
+}
+
 /* Rich Text Editor Styles */
 .editor-container {
     border: 2px solid #e9ecef;

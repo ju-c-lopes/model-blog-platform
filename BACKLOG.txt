@@ -3,6 +3,12 @@ BACKLOG
 Conteúdo
 [x] Ajuste do card do autor
 [ ] * Refatoração Views, Urls, Scripts, CSS
+    [ ] Scripts
+        [ ] editor
+            [ ] ajuste de table
+            [ ] overlay popup
+            [ ] video upload
+            [ ] contador zerado na edição
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
 
@@ -17,12 +23,16 @@ Series
 [ ] Navegação entre posts da série
 
 SEO
+[ ] sitemap
+[ ] Robots
+[ ] Meta robots
 [ ] Breadcrumbs
 [ ] Open Graph
 [ ] Canonical
 [ ] Tempo de leitura
 
 Experiencia
+[ ] Politica de cookies
 [ ] Hangman 404
 
 Testes
