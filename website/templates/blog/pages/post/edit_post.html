@@ -3,6 +3,10 @@
     {% if is_creating %} Create New Post {% else %} Edit Post {% endif %}
 {% endblock %}
 {% block head-css %}
+<link
+    rel="stylesheet"
+    href="{% static 'vendor/quill/quill.snow.css' %}"
+/>
 <link 
     rel="stylesheet"
     href="{% static 'css/post/edit_post.css' %}"
@@ -10,10 +14,6 @@
 <link 
     rel="stylesheet"
     href="{% static 'css/post/post.css' %}"
-/>
-<link
-    rel="stylesheet"
-    href="{% static 'vendor/quill/quill.snow.css' %}"
 />
 {% endblock %} {% block content %}
 <div class="post-form-container">
