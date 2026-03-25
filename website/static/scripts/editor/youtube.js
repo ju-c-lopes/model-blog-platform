@@ -49,23 +49,11 @@ function sendYoutubeUrl(url) {
         return;
     }
 
-    const linkHtml = `
-        <div class="youtube-link-wrapper"
-            data-video-id="${videoId}"
-            contenteditable="false"
-            style="margin:1rem 0; text-align:left;">
+    const youtubeHtml = buildYouTubeContentHtml(videoId);
 
-            📺 <a href="https://www.youtube.com/watch?v=${videoId}"
-                target="_blank"
-                rel="noopener noreferrer">
-                View on YouTube
-            </a>
-
-        </div>
-        `;
-    
-    insertIntoEditor(injectYouTubeIframes(linkHtml, videoId));
     console.log("Inserted YouTube link wrapper into editor.");
+
+    insertIntoEditor(youtubeHtml);
     showMediaPreview("YouTube Link", `Video ID: ${videoId}`);
 
     // Clear and hide the form
@@ -81,20 +69,64 @@ function sendYoutubeUrl(url) {
     );
 }
 
-// -- New helper: inject iframe tags into HTML payload before submit --
-function injectYouTubeIframes(html, vid) {
-    if (!vid) return html; // if no video ID provided, return original HTML
-    // Use DOMParser to safely manipulate HTML string
-    try {
-        html += `
-            <div class="youtube-video-container" style="position: relative; margin: 1.5rem 0; padding-bottom: 56.25%; overflow: hidden; border-radius: 8px;"><iframe src="https://www.youtube.com/embed/${vid}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+function buildYouTubeLinkHtml(videoId) {
+    return `
+        <div class="youtube-link-wrapper"
+            data-video-id="${videoId}"
+            contenteditable="false"
+            style="margin:1rem 0; text-align:left;">
+
+            📺 <a href="https://www.youtube.com/watch?v=${videoId}"
+                target="_blank"
+                rel="noopener noreferrer">
+                View on YouTube
+            </a>
+
+        </div>
         `;
-        console.log("Processed HTML:", html);
-        return html;
-    } catch (err) {
-        console.error("injectYouTubeIframes error:", err);
-        return html; // fallback: return original html
-    }
+}
+
+// -- New helper: inject iframe tags into HTML payload before submit --
+function buildYouTubeEmbedHtml(videoId) {
+    return `
+            <div class="youtube-video-container"
+                style="
+                    position: relative;
+                    margin: 1.5rem 0;
+                    padding-bottom: 56.25%;
+                    overflow: hidden;
+                    border-radius: 8px;"
+            >
+                <iframe
+                    src="https://www.youtube.com/embed/${videoId}"
+                    title="YouTube video player"
+                    style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;"
+                    frameborder="0"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                ></iframe>
+            </div>
+        `;
+}
+
+function buildYouTubeContentHtml(videoId) {
+    const linkHtml = buildYouTubeLinkHtml(videoId);
+    const embedHtml = buildYouTubeEmbedHtml(videoId);
+
+    return linkHtml + embedHtml;
 }
 
 function initYoutube() {
@@ -111,4 +143,3 @@ function initYoutube() {
 }
 
 window.initYoutube = initYoutube;
-window.injectYouTubeIframes = injectYouTubeIframes;
