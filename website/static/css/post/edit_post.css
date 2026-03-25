@@ -199,7 +199,6 @@ body.popup-open {
     align-items: center;
     z-index: 100;
 }
-
 .close-btn {
     position: absolute;
     top: 10px;
@@ -215,7 +214,6 @@ body.popup-open {
     cursor: pointer;
     outline: none;
 }
-
 .youtube-form {
     display: none;
     background: #e8f1f5;
@@ -233,12 +231,10 @@ body.popup-open {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
-
 .youtube-video-container:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
 }
-
 .youtube-video-container iframe {
     position: absolute !important;
     top: 0 !important;
@@ -248,7 +244,6 @@ body.popup-open {
     border: none !important;
     border-radius: 8px !important;
 }
-
 /* Media Upload Section */
 .media-upload-section,
 #rich-editor-container,
@@ -276,7 +271,6 @@ label.textarea--editor {
     gap: 1rem;
     flex-wrap: wrap;
 }
-
 .media-btn {
     background-color: #264d60;
     color: white;
@@ -290,11 +284,9 @@ label.textarea--editor {
     align-items: center;
     gap: 0.5rem;
 }
-
 .media-btn:hover {
     background-color: #1a3a4a;
 }
-
 .media-btn i {
     font-size: 1rem;
 }
@@ -312,12 +304,12 @@ label.textarea--editor {
 #id_text {
     display: none;
 }
-.popup-table {
+/* .popup-table {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
+} */
 .table-form {
     display:flex;
     flex-direction: row;
@@ -337,7 +329,6 @@ label.textarea--editor {
     justify-content: space-between;
     gap: 0.5rem;
 }
-
 /* Form Action Buttons */
 .form-buttons {
     margin-top: 2rem;
@@ -345,7 +336,6 @@ label.textarea--editor {
     justify-content: space-between;
     align-items: center;
 }
-
 .btn-submit {
     background: linear-gradient(135deg, #264d60 0%, #1a3a4a 100%);
     color: white;
@@ -358,12 +348,10 @@ label.textarea--editor {
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(38, 77, 96, 0.2);
 }
-
 .btn-submit:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(38, 77, 96, 0.3);
 }
-
 .btn-cancel {
     background-color: #6c757d;
     color: white;
@@ -375,7 +363,6 @@ label.textarea--editor {
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
-
 .btn-cancel:hover {
     background-color: #5a6268;
     color: white;
@@ -397,12 +384,10 @@ label.textarea--editor {
     margin-top: 0.25rem;
     font-size: 0.85rem;
 }
-
 /* Hidden Elements */
 .hidden-input {
     display: none;
 }
-
 /* Media Preview Styles */
 .media-preview {
     margin-top: 1rem;
@@ -415,7 +400,6 @@ label.textarea--editor {
     display: none;
     flex-direction: column;
 }
-
 .preview-item {
     display: flex;
     align-items: center;
@@ -425,11 +409,9 @@ label.textarea--editor {
     background-color: #f8f9fa;
     border-radius: 4px;
 }
-
 .preview-item:last-child {
     margin-bottom: 0;
 }
-
 .remove-btn {
     background-color: #dc3545;
     color: white;
@@ -439,7 +421,6 @@ label.textarea--editor {
     cursor: pointer;
     font-size: 0.8rem;
 }
-
 .remove-btn:hover {
     background-color: #c82333;
 }
@@ -449,39 +430,38 @@ label.textarea--editor {
     .form-grid {
         grid-template-columns: 1fr;
     }
-
     .post-form-container {
         background: linear-gradient(0deg, rgba(190, 202, 207, 1), rgba(38, 77, 96, 1)) no-repeat;
         margin: 1rem;
         padding: 1.5rem;
     }
-
     .form-title {
         color: var(--light-blue);
         font-size: 2rem;
     }
-
     .media-buttons {
         justify-content: center;
     }
-
     .form-buttons {
         flex-direction: column;
         gap: 1rem;
     }
 }
-.post-table {
+table,
+.ql-editor table{
     width: 100%;
     border-collapse: collapse;
     margin: 1.5rem 0;
 }
-
-.post-table th,
-.post-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+td,
+.ql-editor table td {
+    border: 1px solid #444;
+    padding: 0.5rem;
+    text-align: left;
+}
+td[data-row="1"],
+.ql-editor table td[data-row="1"] {
+    font-weight: 900;
+    background: lightblue;
 }
 
-.post-table th {
-    background: #f5f5f5;
-}

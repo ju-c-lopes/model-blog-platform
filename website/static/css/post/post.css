@@ -136,6 +136,25 @@
         border: none;
         border-radius: 8px;
     }
+    .post-content table,
+    .ql-editor table{
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+    .post-content td,
+    .ql-editor table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        text-align: left;
+    }
+    .post-content td[data-row="1"],
+    .ql-editor table td[data-row="1"] {
+        font-weight: 900;
+        background: lightblue;
+    }
+
+
     .post-content img {
         max-width: 100%;
         height: auto;

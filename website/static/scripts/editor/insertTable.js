@@ -1,17 +1,21 @@
 function buildTable(rows, cols) {
-    let table = "<table class='post-table' data-responsive='true'>";
+    let table = "<table><tbody>";
 
     for (let r = 0; r < rows; r++) {
         table += "<tr>";
 
         for (let c = 0; c < cols; c++) {
-            table += r === 0 ? "<th>Header</th>" : "<td>Data</td>";
+            if (r === 0) {
+                table += `<td>Header ${c + 1}</td>`;
+            } else {
+                table += "<td>Data</td>";
+            }
         }
 
         table += "</tr>";
     }
 
-    table += "</table>";
+    table += "</tbody></table>";
     return table;
 }
 
