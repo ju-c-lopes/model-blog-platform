@@ -6,9 +6,10 @@ Conteúdo
     [ ] Scripts
         [ ] editor
             [ ] ajuste de table
-            [ ] overlay popup
+            [X] overlay popup
             [ ] video upload
             [X] contador zerado na edição
+            [ ] semântica funções do youtube
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
 
