@@ -3,13 +3,13 @@ BACKLOG
 Conteúdo
 [x] Ajuste do card do autor
 [ ] * Refatoração Views, Urls, Scripts, CSS
-    [ ] Scripts
+    [X] Scripts
         [ ] editor
-            [ ] ajuste de table
+            [X] ajuste de table
             [X] overlay popup
-            [ ] video upload
+            [X] video upload  (technical commitment)
             [X] contador zerado na edição
-            [ ] semântica funções do youtube
+            [X] semântica funções do youtube
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
 

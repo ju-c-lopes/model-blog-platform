@@ -262,6 +262,23 @@
         flex-direction: column;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+    .post-content table,
+    .ql-editor table{
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+    .post-content td,
+    .ql-editor table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        text-align: left;
+    }
+    .post-content td[data-row="1"],
+    .ql-editor table td[data-row="1"] {
+        font-weight: 900;
+        background: lightblue;
+    }
     .post-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -394,6 +411,23 @@
         color: #444;
         border-radius: 10px;
         padding: 1em;
+    }
+    .post-content table,
+    .ql-editor table{
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+    .post-content td,
+    .ql-editor table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        text-align: left;
+    }
+    .post-content td[data-row="1"],
+    .ql-editor table td[data-row="1"] {
+        font-weight: 900;
+        background: lightblue;
     }
     /* Post list/card styles for mobile */
     .post-card {
