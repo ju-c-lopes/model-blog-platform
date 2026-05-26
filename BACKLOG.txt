@@ -1,5 +1,7 @@
 BACKLOG
 
+# OBSERVAÇÃO IMPORTANTE: Antes de dar continuidade a qualquer ação, precisamos verificar um ponto de falha, quando o reader edita seu perfil e deixa o campo de redifinição de senha em branco, sua senha é atualizada com conteúdo em branco. Isso provavelmente acontece também com author. Eu imaginava que, ele salvando com esses campos em branco, não atualizasse a senha, assim como outros campos que não foram explicitamente informados. Qual seria a solução ideal?
+
 # Arquitetura (clean architecture — em progresso)
 # Camadas já iniciadas: models/, forms/, views/ por domínio, static/scripts por feature.
 # Próximo: application/services (casos de uso), views finas, testes alinhados à URL real.
@@ -73,8 +75,11 @@ Conteúdo
                 [X] Consolidar/remover duplicatas (helpers legados, test_author_view_helpers_more)
                 [X] Atualizar test_quick_imports se novos módulos (services, formsets)
 
-        [ ] Fase 6 — Reader edit (opcional, após autor estável)
-            [ ] Aplicar mesmo padrão em ReaderEditView (serviço + view fina)
+        [X] Fase 6 — Reader edit (após autor estável)
+            [X] Aplicar mesmo padrão em ReaderEditView (serviço + view fina)
+            [X] Model Reader: reader_name + related_name reader (migration 0002)
+            [X] Template edit-reader alinhado ao padrão table + form_errors
+            [X] Testes test_reader_edit_view / test_reader_profile_editor
 
 Autores
 [X] Página de edição do autor (Fases 1–4)

@@ -10,6 +10,12 @@
 │   │   └── settings.py
 │   ├── urls.py
 │   └── wsgi.py
+├── .continue
+│   └── agents
+│       ├── new-config-1.yaml
+│       ├── new-config-2.yaml
+│       └── new-config.yaml
+├── .coverage
 ├── coverage-badge.svg
 ├── coverage.svg
 ├── coverage.xml
@@ -21,6 +27,12 @@
 │   └── old_password_checks.md
 ├── .env
 ├── .env.example
+├── fix_imports.py
+├── fix_reader_model_tests.py
+├── fix_templatetags_test.py
+├── fix_tests.py
+├── .gemini
+│   └── GEMINI.md
 ├── generate_tree.sh
 ├── .github
 │   ├── instructions
@@ -31,14 +43,18 @@
 ├── .gitignore
 ├── htmlcov
 │   ├── class_index.html
+│   ├── coverage_html_cb_dd2e7eb5.js
 │   ├── coverage_html.js
+│   ├── favicon_32_cb_c827f16f.png
 │   ├── favicon_32.png
 │   ├── function_index.html
 │   ├── .gitignore
 │   ├── index.html
+│   ├── keybd_closed_cb_900cfef5.png
 │   ├── keybd_closed.png
 │   ├── keybd_open.png
 │   ├── status.json
+│   ├── style_cb_9ff733b0.css
 │   └── style.css
 ├── manage.py
 ├── media
@@ -50,7 +66,9 @@
 │   ├── cartoon1619879740885_J5PHJh5.jpg
 │   ├── cartoon1619879740885.jpg
 │   ├── cartoon1619879740885_XGRnMYw.jpg
-│   └── IMG_-kxo7l8.jpg
+│   ├── IMG_-kxo7l8.jpg
+│   └── readers
+│       └── usuario-teste.png
 ├── poetry.lock
 ├── .pre-commit-config.yaml
 ├── pyproject.toml
@@ -81,6 +99,7 @@
     ├── apps.py
     ├── forms
     │   ├── author
+    │   │   ├── author_edit_formsets.py
     │   │   ├── EditAuthorForm.py
     │   │   ├── GraduationForm.py
     │   │   ├── __init__.py
@@ -109,6 +128,7 @@
     ├── middleware.py
     ├── migrations
     │   ├── 0001_initial.py
+    │   ├── 0002_reader_reader_name_and_related_name.py
     │   └── __init__.py
     ├── models
     │   ├── author
@@ -128,54 +148,91 @@
     │       ├── __init__.py
     │       ├── ReaderModel.py
     │       └── UserModel.py
+    ├── services
+    │   ├── author
+    │   │   ├── author_profile_editor.py
+    │   │   └── __init__.py
+    │   ├── __init__.py
+    │   └── reader
+    │       ├── __init__.py
+    │       └── reader_profile_editor.py
     ├── static
     │   ├── css
-    │   │   ├── author-page.css
-    │   │   ├── base.css
-    │   │   ├── edit-author-page.css
-    │   │   ├── edit_post.css
-    │   │   ├── edit-reader-page.css
-    │   │   ├── error.css
-    │   │   ├── header.css
-    │   │   ├── home.css
-    │   │   ├── login.css
-    │   │   ├── post.css
-    │   │   ├── search.css
-    │   │   └── sign-up.css
+    │   │   ├── author
+    │   │   │   ├── author-page.css
+    │   │   │   └── edit-author-page.css
+    │   │   ├── base
+    │   │   │   ├── base.css
+    │   │   │   └── header.css
+    │   │   ├── components
+    │   │   ├── exceptions
+    │   │   │   └── error.css
+    │   │   ├── pages
+    │   │   │   ├── home.css
+    │   │   │   ├── login.css
+    │   │   │   └── sign-up.css
+    │   │   ├── post
+    │   │   │   ├── edit_post.css
+    │   │   │   ├── post.css
+    │   │   │   └── search.css
+    │   │   └── reader
+    │   │       └── edit-reader-page.css
     │   ├── img
-    │   │   ├── activate-like.png
-    │   │   ├── activate-love.png
-    │   │   ├── deactivate-like.png
-    │   │   ├── deactivate-love.png
-    │   │   ├── facebook.png
-    │   │   ├── favicon.ico
-    │   │   ├── github.png
-    │   │   ├── hide.png
-    │   │   ├── instagram.png
-    │   │   ├── juclops-techxperience-logo.webp
-    │   │   ├── linkedin.png
-    │   │   ├── lupa.png
-    │   │   ├── no-user.jpg
-    │   │   ├── pass-valid.gif
-    │   │   ├── view.png
-    │   │   └── x.png
+    │   │   ├── brand
+    │   │   │   ├── favicon.ico
+    │   │   │   └── juclops-techxperience-logo.webp
+    │   │   ├── icons
+    │   │   │   ├── facebook.png
+    │   │   │   ├── github.png
+    │   │   │   ├── hide.png
+    │   │   │   ├── instagram.png
+    │   │   │   ├── linkedin.png
+    │   │   │   ├── lupa.png
+    │   │   │   ├── view.png
+    │   │   │   └── x.png
+    │   │   ├── misc
+    │   │   │   └── pass-valid.gif
+    │   │   ├── placeholders
+    │   │   │   └── no-user.jpg
+    │   │   └── reactions
+    │   │       ├── activate-like.png
+    │   │       ├── activate-love.png
+    │   │       ├── deactivate-like.png
+    │   │       └── deactivate-love.png
     │   ├── scripts
-    │   │   ├── buttonAlterImage.js
-    │   │   ├── buttonDropDown.js
-    │   │   ├── buttonGraduationPlus.js
-    │   │   ├── buttonJobPlus.js
-    │   │   ├── buttonMobile.js
-    │   │   ├── buttonSave.js
-    │   │   ├── buttonShowHide.js
-    │   │   ├── buttonSocialExclude.js
-    │   │   ├── buttonSocialPlus.js
-    │   │   ├── checkPass.js
-    │   │   ├── edit_post.js
-    │   │   ├── insertTable.js
-    │   │   ├── post-editor.js
-    │   │   ├── post_reactions.js
-    │   │   ├── readingBar.js
-    │   │   └── tela.js
+    │   │   ├── components
+    │   │   │   ├── buttonDropDown.js
+    │   │   │   ├── buttonMobile.js
+    │   │   │   ├── buttonSave.js
+    │   │   │   ├── buttonShowHide.js
+    │   │   │   ├── post_reactions.js
+    │   │   │   └── readingBar.js
+    │   │   ├── core
+    │   │   ├── editor
+    │   │   │   ├── counters.js
+    │   │   │   ├── editor-utils.js
+    │   │   │   ├── edit_post.js
+    │   │   │   ├── image-upload.js
+    │   │   │   ├── insertTable.js
+    │   │   │   ├── media-preview.js
+    │   │   │   ├── popup.js
+    │   │   │   ├── post-editor.js
+    │   │   │   ├── quill-init.js
+    │   │   │   ├── slug.js
+    │   │   │   ├── table.js
+    │   │   │   ├── video-upload.js
+    │   │   │   └── youtube.js
+    │   │   ├── forms
+    │   │   │   ├── author-edit-formsets.js
+    │   │   │   ├── buttonAlterImage.js
+    │   │   │   ├── buttonGraduationPlus.js
+    │   │   │   ├── buttonJobPlus.js
+    │   │   │   ├── buttonSocialExclude.js
+    │   │   │   ├── buttonSocialPlus.js
+    │   │   │   ├── checkPass.js
+    │   │   │   └── formset-dynamic.js
+    │   │   └── pages
+    │   │       └── tela.js
     │   └── vendor
     │       ├── bootstrap
     │       │   ├── bootstrap.bundle.min.js
@@ -197,7 +254,6 @@
     │   │       │   ├── 403.html
     │   │       │   ├── 404.html
     │   │       │   └── 500.html
-    │   │       ├── header.html
     │   │       ├── home-page
     │   │       │   └── homepage.html
     │   │       ├── login
@@ -214,6 +270,9 @@
     │   │       └── sign-up
     │   │           └── sign-up.html
     │   ├── components
+    │   │   ├── author-edit
+    │   │   │   ├── form_errors.html
+    │   │   │   └── formset_errors.html
     │   │   ├── card-author
     │   │   │   └── card-author.html
     │   │   ├── footer
@@ -226,7 +285,11 @@
     │   │       │   ├── form_buttons.html
     │   │       │   ├── form_fields.html
     │   │       │   ├── form_header.html
-    │   │       │   └── media_upload.html
+    │   │       │   ├── media_upload.html
+    │   │       │   └── popup
+    │   │       │       ├── popup.html
+    │   │       │       ├── popup_table.html
+    │   │       │       └── popup_video.html
     │   │       └── presentation
     │   └── scripts
     │       └── button-menu.html
@@ -286,4 +349,4 @@
             ├── LogoutView.py
             └── SignUpView.py
 
-68 directories, 217 files
+94 directories, 254 files

@@ -28,20 +28,25 @@ class ProfileReaderPostMore2Test(TestCase):
         user.refresh_from_db()
         self.assertEqual(user.author.author_name, "NewName")
 
-    def test_check_reader_form_save_branch(self):
+    def test_reader_edit_post_updates_name(self):
         user = User.objects.create_user(
             username="r_save", email="rs@test.com", password="p"
         )
-        reader = Reader.objects.create(user=user)
-        post = SimpleNamespace(
-            POST={"username": user.username, "reader_name": "NewR"}, FILES={}, user=user
+        Reader.objects.create(user=user, reader_name="Old")
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse("reader-edit"),
+            {
+                "username": user.username,
+                "email": user.email,
+                "password": "",
+                "confirm_pass": "",
+                "reader_name": "NewR",
+            },
         )
-        from website.views.reader.ReaderEditView import check_reader_form
-
-        ok = check_reader_form(post, reader)
-        self.assertTrue(ok)
-        reader.refresh_from_db()
-        self.assertEqual(reader.reader_name, "NewR")
+        self.assertEqual(response.status_code, 302)
+        user.reader.refresh_from_db()
+        self.assertEqual(user.reader.reader_name, "NewR")
 
     def test_edit_post_permission_and_owner(self):
         # author A creates post
