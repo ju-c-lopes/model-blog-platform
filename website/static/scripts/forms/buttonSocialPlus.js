@@ -1,35 +1,49 @@
-const socialPlus = document.querySelector(".social-button-plus");
-var newSocialFields = document.querySelectorAll(".plus-field");
+document.addEventListener("DOMContentLoaded", function () {
+    const addBtn = document.getElementById("add-social");
+    const container = document.querySelector(".social-list");
+    const template = document.getElementById("social-empty-template");
+    const totalFormsInput = document.querySelector(
+        'input[name^="social"][name$="-TOTAL_FORMS"]'
+    );
 
-checkMaxNodes()
-socialPlus.addEventListener('click', () => {
-    for (let i = 0; i < 1; i++) {
-        newSocialFields[i].style.display = 'flex';
-        newSocialFields[i].style.height = 'auto';
-        newSocialFields[i].classList.remove('plus-field');
-        newSocialFields[i + 1].style.display = 'flex';
-        newSocialFields[i + 1].style.height = 'auto';
-        newSocialFields[i + 1].classList.remove('plus-field');
-        newSocialFields = document.querySelectorAll(".plus-field");
+    function normalizeBlock(el) {
+        if (!el) return;
+        el.querySelectorAll("select").forEach((s) =>
+            s.classList.add("custom-select")
+        );
+        el.querySelectorAll('input[type="text"], input[type="number"], input[type="url"]').forEach(
+            (i) => i.classList.add("form-control")
+        );
+        el.querySelectorAll('input[type="checkbox"]').forEach((cb) =>
+            cb.classList.add("form-check-input")
+        );
+
+        el.querySelectorAll("select").forEach((s) => {
+            if (!s.closest(".select-wrapper")) {
+                const wrap = document.createElement("div");
+                wrap.className = "select-wrapper";
+                s.parentNode.insertBefore(wrap, s);
+                wrap.appendChild(s);
+            }
+        });
     }
-    checkMaxNodes();
+
+    // normalize existing blocks
+    document.querySelectorAll(".social-item").forEach(normalizeBlock);
+
+    if (!addBtn || !container || !template || !totalFormsInput) return;
+
+    addBtn.addEventListener("click", function () {
+        const index = parseInt(totalFormsInput.value, 10);
+        let newHtml = template.innerHTML.replace(/__prefix__/g, index);
+        container.insertAdjacentHTML("beforeend", newHtml);
+        totalFormsInput.value = index + 1;
+
+        const blocks = container.querySelectorAll(".social-item");
+        const el = blocks[blocks.length - 1];
+        normalizeBlock(el);
+
+        const firstInput = el.querySelector("input, select, textarea");
+        if (firstInput) firstInput.focus();
+    });
 });
-
-function checkMaxNodes() {
-    if (newSocialFields.length == 0) {
-        socialPlus.style.display = 'none';
-        document.querySelector(".plus-button-field").style.margin = "0";
-        document.querySelector(".save-button").style.marginTop = "1vh";
-    }
-}
-
-const optionSelected = document.querySelectorAll(".op-selected");
-const optionToDisable = document.querySelectorAll(".plus-options");
-
-for (let disable of optionToDisable) {
-    for (let mediaSelected of optionSelected)  {
-        if (mediaSelected.text == disable.text) {
-            disable.setAttribute("disabled", "");
-        }
-    }
-};

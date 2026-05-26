@@ -4,10 +4,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from website.models.AuthorModel import Author
-from website.models.ReaderModel import Reader
-from website.views.author import AuthorView
-
+from website.models.author.AuthorModel import Author
+from website.models.user.ReaderModel import Reader
 User = get_user_model()
 
 
@@ -55,51 +53,14 @@ class ProfileAndAuthorViewTests(TestCase):
         author.refresh_from_db()
         self.assertEqual(author.author_name, "New Name")
 
-    def test_create_social_media_and_exclude(self):
-        user = User.objects.create_user(
-            username="suser", email="s@test.com", password="p"
-        )
-        author = Author.objects.create(user=user, author_name="S", author_url_slug="s")
-
-        class PostDict(dict):
-            def getlist(self, k):
-                return self.get(k, [])
-
-        req = SimpleNamespace(
-            POST=PostDict(
-                {"social_media": ["1", "2"], "social_media_profile": ["p1", "p2"]}
-            ),
-            FILES={},
-            user=user,
-        )
-        AuthorView.create_social_media(req, {"username": user.username})
-        author.refresh_from_db()
-        self.assertGreaterEqual(author.social_media.count(), 2)
-
-        # exclude one
-        req2 = SimpleNamespace(
-            POST=PostDict(
-                {
-                    "username": user.username,
-                    "author_name": author.author_name,
-                    "social_media": ["1", "2"],
-                    "social_media_profile": ["p1", "p2"],
-                    "exclude-social": ["1"],
-                }
-            ),
-            FILES={},
-            user=user,
-        )
-        AuthorView.exclude_social_media(req2, author)
-        author.refresh_from_db()
-        self.assertLessEqual(author.social_media.count(), 1)
-
     def test_edit_author_wrapper_redirects_when_no_author(self):
+        from website.views.author.AuthorEditView import edit_author
+
         user = User.objects.create_user(
             username="noauth", email="n@test.com", password="p"
         )
         req = SimpleNamespace(user=user)
-        res = AuthorView.edit_author(req)
+        res = edit_author(req)
         self.assertEqual(res.status_code, 302)
         self.assertEqual(res["Location"], "/")
 
@@ -132,7 +93,7 @@ class ProfileAndAuthorViewTests(TestCase):
         user = User.objects.create_user(
             username="read", email="r@test.com", password="p"
         )
-        Reader.objects.create(user=user, reader_name="R")
+        Reader.objects.create(user=user)
 
         class PostDict(dict):
             def getlist(self, k):

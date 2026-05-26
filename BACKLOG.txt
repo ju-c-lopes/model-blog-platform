@@ -1,5 +1,16 @@
 BACKLOG
 
+# Arquitetura (clean architecture — em progresso)
+# Camadas já iniciadas: models/, forms/, views/ por domínio, static/scripts por feature.
+# Próximo: application/services (casos de uso), views finas, testes alinhados à URL real.
+[x] Models separados por domínio (author, post, user)
+[x] Forms separados por domínio
+[x] Views separadas por domínio (parcial)
+[x] Static scripts modularizados (editor, forms, components)
+[ ] Application layer (services / use cases)
+[ ] Views finas (orquestração HTTP apenas)
+[ ] Testes alinhados à arquitetura atual (ver seção Testes)
+
 Conteúdo
 [x] Ajuste do card do autor
 [ ] * Refatoração Views, Urls, Scripts, CSS
@@ -10,11 +21,65 @@ Conteúdo
             [X] video upload  (technical commitment)
             [X] contador zerado na edição
             [X] semântica funções do youtube
+    [ ] Views
+        [ ] editor do autor (ver plano abaixo)
+
+# --- Plano: refatoração AuthorEditView (editor do autor) ---
+# Fonte de verdade na URL: AuthorEditUrl → AuthorEditView.edit_author_profile
+# Legado a remover: edit_author_profile e helpers em AuthorView.py
+# Template: blog/pages/edit-author/edit-author.html (formsets Django)
+# Scripts: website/static/scripts/forms/* (padronizar com formset-dynamic.js)
+# CSS: website/static/css/author/edit-author-page.css
+
+[ ] Fase 0 — Baseline
+    [ ] Inventariar comportamento atual (GET, POST ok/erro, senha, imagem, formsets)
+    [ ] Confirmar assets estáticos carregados na rota /nossa-equipe/<slug>/edit
+    [ ] Rodar testes no container e registrar estado (muitos ainda apontam AuthorView legado)
+
+[X] Fase 1 — View + application layer + segurança (prioridade)
+    [X] Extrair formsets → website/forms/author/author_edit_formsets.py
+    [X] Criar serviço → website/services/author/author_profile_editor.py
+        [X] build_forms(request, author)  → build_bundle
+        [X] validate(bundle) / save(bundle) com transaction.atomic  → bundle_is_valid / save_bundle
+        [X] get_success_url(author)  → success_url
+    [X] Enxugar AuthorEditView (orquestração: auth, GET/POST, messages, render/redirect)
+    [X] @login_required + verificação request.user == author.user
+    [ ] Unificar fluxo de senha (UserChangeForm OU serviço — não duplicar)
+    [X] Remover de AuthorView.py: edit_author_profile, edit_author, check_request_post,
+        update_social_media, create_social_media, exclude_social_media, check_user_form,
+        check_author_form, set_graduation
+    [X] Wrapper edit_author mantido (sem rota dedicada; templates usam slug)
+
+[ ] Fase 2 — URLs e nomenclatura
+    [ ] Revisar AuthorEditUrl / includes em nossa-equipe/
+    [ ] Padronizar nomes de contexto (snake_case: user_form, author_form, *_formset)
+
+[ ] Fase 3 — Scripts (espelhar padrão do editor)
+    [ ] Criar website/static/scripts/forms/formset-dynamic.js (util compartilhado)
+    [ ] Corrigir seletores TOTAL_FORMS (graduation/job — hoje ambíguos)
+    [ ] Remover código morto comentado em buttonGraduationPlus.js
+    [ ] Refatorar buttonSocialPlus / buttonJobPlus / buttonGraduationPlus
+
+[ ] Fase 4 — Template e CSS
+    [ ] Corrigir path CSS no template (css/author/edit-author-page.css)
+    [ ] Erros por formset no template
+    [ ] Includes opcionais para blocos repetidos (social/job/graduation)
+
+[ ] Fase 5 — Testes (acoplado à Fase 1)
+    [X] Migrar imports de AuthorView → AuthorEditView nos testes de edição
+    [X] Teste de permissão: usuário A não edita slug de B (test_author_edit_view)
+    [ ] Testes de integração: Client + login + POST com os 3 formsets
+    [X] Consolidar/remover duplicatas (helpers legados, test_author_view_helpers_more)
+    [X] Atualizar test_quick_imports se novos módulos (services, formsets)
+
+[ ] Fase 6 — Reader edit (opcional, após autor estável)
+    [ ] Aplicar mesmo padrão em ReaderEditView (serviço + view fina)
+
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
 
 Autores
-[ ] Página de edição do autor
+[ ] Página de edição do autor (depende Fases 1–4 acima)
 [ ] Template da página do autor
 [ ] Template da página de equipe
 
@@ -37,7 +102,10 @@ Experiencia
 [ ] Hangman 404
 
 Testes
-[ ] Validar e reajustar testes
+[ ] Validar e reajustar testes (dívida: escritos antes da refatoração de arquitetura)
+    [ ] Prioridade: suite author edit → AuthorEditView + AuthorEditUrl
+    [ ] Remover ou adaptar testes de helpers removidos de AuthorView
+    [ ] Manter testes de view_author_page em AuthorView
 
 Produção
 [ ] Subir o projeto

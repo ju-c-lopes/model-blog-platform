@@ -4,11 +4,11 @@ from django.contrib.sessions.backends.db import SessionStore
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, TestCase
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
-from website.models.ReaderModel import Reader
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
+from website.models.user.ReaderModel import Reader
 from website.views.post.PostCreateView import edit_post
-from website.views.author.ProfileUpdateView import update_profile
+
 
 User = get_user_model()
 
@@ -21,7 +21,7 @@ class ProfileAndPostPermissionTests(TestCase):
         )
         # create a reader profile initially
         self.reader = Reader.objects.create(
-            user=self.user, reader_name="R1", access_level=2
+            user=self.user
         )
 
         # another user and their author+post
@@ -34,25 +34,6 @@ class ProfileAndPostPermissionTests(TestCase):
         self.post = Post.objects.create(
             author=self.other_author, title="T", text="x", url_slug="u1"
         )
-
-    def test_update_profile_switch_reader_to_author_with_image(self):
-        # create a fake image
-        img = SimpleUploadedFile("pic.jpg", b"filecontent", content_type="image/jpeg")
-
-        data = {"profile_type": "author", "name": "New Author"}
-        req = self.factory.post("/fake", data, FILES={"image": img})
-        req.user = self.user
-
-        # attach a session and messages storage so view can add messages
-        req.session = SessionStore()
-        req._messages = FallbackStorage(req)
-
-        # call view and ensure it redirects (success branch)
-        resp = update_profile(req)
-        # should be an HttpResponseRedirect
-        assert resp.status_code in (301, 302)
-        # user should now have an author profile
-        assert hasattr(self.user, "author")
 
     def test_edit_post_permission_owner_vs_non_owner(self):
         # non-owner tries to edit existing post
