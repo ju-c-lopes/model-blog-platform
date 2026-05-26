@@ -12,6 +12,7 @@ MODULES = [
     "website.forms.author.EditAuthorForm",
     "website.forms.author.author_edit_formsets",
     "website.services.author.author_profile_editor",
+    "website.services.reader.reader_profile_editor",
     "website.forms.post.PostForm",
     "website.templatetags.get_type",
     "website.manager",

@@ -42,19 +42,14 @@ class ProfileReaderPostViewsTest(TestCase):
         user.refresh_from_db()
         self.assertTrue(hasattr(user, "reader"))
 
-    def test_reader_edit_check_user_form_conflict(self):
-        u1 = User.objects.create_user(username="r1", email="r1@test.com", password="p")
-        u2 = User.objects.create_user(username="r2", email="r2@test.com", password="p")
-        reader = Reader.objects.create(user=u1)
-
-        # simulate POST where username conflicts with u2
-        post = SimpleNamespace(
-            POST={"username": u2.username, "reader_name": "X"}, FILES={}, user=u1
+    def test_reader_edit_get_for_logged_in_reader(self):
+        user = User.objects.create_user(
+            username="r1", email="r1@test.com", password="p"
         )
-        from website.views.reader.ReaderEditView import check_user_form
-
-        ok = check_user_form(post, reader)
-        self.assertIsInstance(ok, bool)
+        Reader.objects.create(user=user, reader_name="Reader")
+        self.client.force_login(user)
+        response = self.client.get(reverse("reader-edit"))
+        self.assertEqual(response.status_code, 200)
 
     def test_post_create_requires_author_profile(self):
         user = User.objects.create_user(

@@ -93,18 +93,7 @@ class ProfileAndAuthorViewTests(TestCase):
         user = User.objects.create_user(
             username="read", email="r@test.com", password="p"
         )
-        Reader.objects.create(user=user)
-
-        class PostDict(dict):
-            def getlist(self, k):
-                return [self.get(k)] if self.get(k) else []
-
-        req = SimpleNamespace(
-            POST=PostDict({"username": user.username, "reader_name": "New Reader"}),
-            FILES={},
-            user=user,
-        )
-        from website.views.reader.ReaderEditView import check_request_post as rcp
-
-        rdata = rcp(req)
-        self.assertEqual(rdata["username"], user.username)
+        Reader.objects.create(user=user, reader_name="Reader")
+        self.client.force_login(user)
+        response = self.client.get(reverse("reader-edit"))
+        self.assertEqual(response.status_code, 200)

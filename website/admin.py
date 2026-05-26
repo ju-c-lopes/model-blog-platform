@@ -27,7 +27,7 @@ class UserAdmin(BaseUserAdmin):
         "get_profile_type",
         "get_profile_name",
     )
-    list_select_related = ("author", "reader_profile")
+    list_select_related = ("author", "reader")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
@@ -63,7 +63,7 @@ class UserAdmin(BaseUserAdmin):
         try:
             if hasattr(obj, "author"):
                 return "Author"
-            elif hasattr(obj, "reader_profile"):
+            elif hasattr(obj, "reader"):
                 return "Reader"
             else:
                 return "No Profile"
@@ -77,8 +77,8 @@ class UserAdmin(BaseUserAdmin):
         if hasattr(obj, "author"):
             return obj.author.author_name or obj.username
 
-        if hasattr(obj, "reader_profile"):
-            return obj.reader_profile.reader_name or obj.username
+        if hasattr(obj, "reader"):
+            return obj.reader.reader_name or obj.username
 
         return obj.username
 

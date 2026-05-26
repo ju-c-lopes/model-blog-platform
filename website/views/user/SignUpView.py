@@ -88,8 +88,7 @@ def create_reader(request, user):
     reader_name = request.POST.get("nome", None)
     reader = Reader(
         user=user,
-        reader_name=reader_name,
-        access_level=2,
+        reader_name=reader_name or "",
     )
     reader.save()
     return reader

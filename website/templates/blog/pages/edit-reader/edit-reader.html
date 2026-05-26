@@ -1,52 +1,97 @@
-{% extends 'blog/pages/base.html' %} {% load static %} {% block head-css %}
+{% extends 'blog/pages/base.html' %}
+{% load csp %}
+{% load static %}
+
+{% block head-css %}
 <link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static './css/edit-author-page.css' %}"
-  media="all"
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'css/reader/edit-reader-page.css' %}"
+    media="all"
 />
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <div class="row text-center edit-user-display">
-  <p class="edit-user">
-    Editando o usuário<br /><span>{{ request.user.reader.reader_name }}</span>.
-  </p>
+    <p class="edit-user">
+        Editando o usuário<br />
+        <span>{{ request.user.reader.reader_name|default:request.user.username }}</span>.
+    </p>
 </div>
+
 <div class="display-message-error">
-  {% if messages %} {% for message in messages %}
-  <span class="text-error-message">{{ message }}</span>
-  {% endfor %} {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <span class="text-error-message">{{ message }}</span>
+        {% endfor %}
+    {% endif %}
 </div>
+
 <div>
-  <div class="row text-center" id="main-form-div">
-    <form action="" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <fieldset class="reader-form">
-        <table class="form-table">
-          {% for form in userForm %}
-          <tr>
-            <td><label for="username">{{ form.label }}</label></td>
-            <td>{{ form }}</td>
-          </tr>
-          {% endfor %} {% for form in readerForm %}
-          <tr>
-            <td>
-              <label for="{{ form.label.lower }}">{{ form.label }}</label>
-            </td>
-            <td>{{ form }}</td>
-          </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="2">
-              <button type="submit" class="btn btn-primary w-100 save-button">
+    <div class="row text-center" id="main-form-div">
+        <form
+            class="edit-form"
+            action=""
+            method="POST"
+            enctype="multipart/form-data"
+        >{% csrf_token %}
+            <fieldset class="reader-form">
+                <h2 class="visually-hidden">Dados da conta</h2>
+                {% include "components/author-edit/form_errors.html" with form=user_form %}
+                {% include "components/author-edit/form_errors.html" with form=reader_form %}
+                <table class="form-table">
+                    {% for field in user_form %}
+                        <tr>
+                            <td>
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+                            </td>
+                            <td>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <ul class="form-errors list-unstyled text-error-message">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for field in reader_form %}
+                        <tr>
+                            <td>
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+                            </td>
+                            <td>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <ul class="form-errors list-unstyled text-error-message">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary w-100 save-button">
                 Salvar
-              </button>
-            </td>
-          </tr>
-        </table>
-      </fieldset>
-    </form>
-  </div>
+            </button>
+        </form>
+    </div>
 </div>
-{% endblock %} {% block scripts %}
-<script src="{% static './scripts/buttonSave.js' %}"></script>
+{% endblock %}
+
+{% block scripts %}
+<script
+    nonce="{{ request.csp_nonce }}"
+    src="{% static 'scripts/components/buttonSave.js' %}"
+></script>
 {% endblock %}
