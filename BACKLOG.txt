@@ -7,8 +7,8 @@ BACKLOG
 [x] Forms separados por domínio
 [x] Views separadas por domínio (parcial)
 [x] Static scripts modularizados (editor, forms, components)
-[ ] Application layer (services / use cases)
-[ ] Views finas (orquestração HTTP apenas)
+[x] Application layer (services / use cases) — author_profile_editor
+[x] Views finas (orquestração HTTP apenas) — AuthorEditView
 [ ] Testes alinhados à arquitetura atual (ver seção Testes)
 
 Conteúdo
@@ -22,7 +22,7 @@ Conteúdo
             [X] contador zerado na edição
             [X] semântica funções do youtube
     [ ] Views
-        [ ] editor do autor (ver plano abaixo)
+        [X] editor do autor (fases 1–4; ver plano abaixo)
 
 # --- Plano: refatoração AuthorEditView (editor do autor) ---
 # Fonte de verdade na URL: AuthorEditUrl → AuthorEditView.edit_author_profile
@@ -50,20 +50,20 @@ Conteúdo
         check_author_form, set_graduation
     [X] Wrapper edit_author mantido (sem rota dedicada; templates usam slug)
 
-[ ] Fase 2 — URLs e nomenclatura
-    [ ] Revisar AuthorEditUrl / includes em nossa-equipe/
-    [ ] Padronizar nomes de contexto (snake_case: user_form, author_form, *_formset)
+[X] Fase 2 — URLs e nomenclatura
+    [X] Revisar AuthorEditUrl / includes em nossa-equipe/
+    [X] Padronizar nomes de contexto (snake_case: user_form, author_form, *_formset)
 
-[ ] Fase 3 — Scripts (espelhar padrão do editor)
-    [ ] Criar website/static/scripts/forms/formset-dynamic.js (util compartilhado)
-    [ ] Corrigir seletores TOTAL_FORMS (graduation/job — hoje ambíguos)
-    [ ] Remover código morto comentado em buttonGraduationPlus.js
-    [ ] Refatorar buttonSocialPlus / buttonJobPlus / buttonGraduationPlus
+[X] Fase 3 — Scripts (espelhar padrão do editor)
+    [X] Criar website/static/scripts/forms/formset-dynamic.js (util compartilhado)
+    [X] Corrigir seletores TOTAL_FORMS (graduation/job — hoje ambíguos)
+    [X] Remover código morto comentado em buttonGraduationPlus.js
+    [X] Refatorar buttonSocialPlus / buttonJobPlus / buttonGraduationPlus (deprecated; author-edit-formsets.js)
 
-[ ] Fase 4 — Template e CSS
-    [ ] Corrigir path CSS no template (css/author/edit-author-page.css)
-    [ ] Erros por formset no template
-    [ ] Includes opcionais para blocos repetidos (social/job/graduation)
+[X] Fase 4 — Template e CSS
+    [X] Corrigir path CSS no template (css/author/edit-author-page.css)
+    [X] Erros por formset no template
+    [X] Includes opcionais para blocos repetidos (form_errors, formset_errors)
 
 [ ] Fase 5 — Testes (acoplado à Fase 1)
     [X] Migrar imports de AuthorView → AuthorEditView nos testes de edição
@@ -79,7 +79,7 @@ Conteúdo
 [ ] Ajuste do template de exibicao do post
 
 Autores
-[ ] Página de edição do autor (depende Fases 1–4 acima)
+[X] Página de edição do autor (Fases 1–4)
 [ ] Template da página do autor
 [ ] Template da página de equipe
 
