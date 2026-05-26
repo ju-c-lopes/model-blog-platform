@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
-from website.models.ReaderModel import Reader
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
+from website.models.user.ReaderModel import Reader
 
 User = get_user_model()
 
@@ -19,7 +19,7 @@ class ViewSmokeTests(TestCase):
         self.reader_user = User.objects.create_user(
             username="reader", email="r@test.com", password="pass"
         )
-        Reader.objects.create(user=self.reader_user, reader_name="Reader")
+        Reader.objects.create(user=self.reader_user)
 
         # create posts
         for i in range(8):

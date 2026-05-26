@@ -4,9 +4,9 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
-from website.models.ReaderModel import Reader
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
+from website.models.user.ReaderModel import Reader
 
 User = get_user_model()
 
@@ -32,7 +32,7 @@ class ProfileReaderPostMore2Test(TestCase):
         user = User.objects.create_user(
             username="r_save", email="rs@test.com", password="p"
         )
-        reader = Reader.objects.create(user=user, reader_name="OldR")
+        reader = Reader.objects.create(user=user)
         post = SimpleNamespace(
             POST={"username": user.username, "reader_name": "NewR"}, FILES={}, user=user
         )

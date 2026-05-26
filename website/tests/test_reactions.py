@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
 
 User = get_user_model()
 

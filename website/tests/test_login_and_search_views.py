@@ -6,8 +6,8 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.backends.db import SessionStore
 from django.test import RequestFactory, TestCase
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
 from website.views.user.LoginView import login_user
 from website.views.post.SearchView import search_posts
 
