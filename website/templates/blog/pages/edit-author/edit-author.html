@@ -6,7 +6,7 @@
 <link
     rel="stylesheet"
     type="text/css"
-    href="{% static './css/edit-author-page.css' %}"
+    href="{% static 'css/author/edit-author-page.css' %}"
     media="all"
 />
 {% endblock %}
@@ -20,13 +20,15 @@
 </div>
 
 <div class="display-message-error">
-    {% if messages %} {% for message in messages %}
-        <span class="text-error-message">{{ message }}</span>
-    {% endfor %} {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <span class="text-error-message">{{ message }}</span>
+        {% endfor %}
+    {% endif %}
 </div>
 
 <div>
-  <div class="row text-center" id="main-form-div">
+    <div class="row text-center" id="main-form-div">
         <form
             class="edit-form"
             action=""
@@ -34,28 +36,44 @@
             enctype="multipart/form-data"
         >{% csrf_token %}
             <fieldset class="author-form">
+                <h2 class="visually-hidden">Dados da conta</h2>
+                {% include "components/author-edit/form_errors.html" with form=user_form %}
                 <table class="form-table">
-                    {% for form in userForm %}
+                    {% for field in user_form %}
                         <tr>
                             <td>
-                                <label for="username">
-                                    {{ form.label }}
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
                                 </label>
                             </td>
                             <td>
-                                {{ form }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <ul class="form-errors list-unstyled text-error-message">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
-                    {% for form in authorForm %}
+                    {% for field in author_form %}
                         <tr>
                             <td>
-                                <label for="{{ form.label.lower }}">
-                                    {{ form.label }}
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
                                 </label>
                             </td>
                             <td>
-                                {{ form }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <ul class="form-errors list-unstyled text-error-message">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -63,9 +81,10 @@
                 <hr />
             </fieldset>
 
-            <fieldset class="social-media">
+            <fieldset class="social-media" data-formset-prefix="social">
                 <h2>Redes Sociais</h2>
-                
+                {% include "components/author-edit/formset_errors.html" with formset=social_formset %}
+
                 {{ social_formset.management_form }}
                 <template id="social-empty-template">
                     <table class="form-table social-item select-wrapper">
@@ -75,40 +94,36 @@
                 </template>
 
                 <div class="social-list">
-                {% for sform in social_formset %}
-                    <table class="form-table social-item select-wrapper">
-                        {{ sform.id }}
-                        <tr>
-                            <td>
-                                {{ sform.social_media.label_tag }}
-                            </td>
-                            <td>
-                                {{ sform.social_media }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                {{ sform.social_media_profile.label_tag }}
-                            </td>
-                            <td>
-                                {{ sform.social_media_profile }}
-                            </td>
-                        </tr>
-
-                        {% if sform.DELETE %}
-                        <tr class="form-check">
-                            <td>
-                                <label for="{{ sform.DELETE.id_for_label }}">
-                                    Remover
-                                </label>
-                                {{ sform.DELETE }}
-                            </td>
-                        </tr>
-                        {% endif %}
-                    </table>
-                    <hr />
-                {% endfor %}
+                    {% for sform in social_formset %}
+                        <table class="form-table social-item select-wrapper">
+                            {{ sform.id }}
+                            <tr>
+                                <td>{{ sform.social_media.label_tag }}</td>
+                                <td>
+                                    {{ sform.social_media }}
+                                    {{ sform.social_media.errors }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ sform.social_media_profile.label_tag }}</td>
+                                <td>
+                                    {{ sform.social_media_profile }}
+                                    {{ sform.social_media_profile.errors }}
+                                </td>
+                            </tr>
+                            {% if sform.DELETE %}
+                            <tr class="form-check">
+                                <td>
+                                    <label for="{{ sform.DELETE.id_for_label }}">
+                                        Remover
+                                    </label>
+                                    {{ sform.DELETE }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                        <hr />
+                    {% endfor %}
                 </div>
 
                 <button
@@ -120,8 +135,9 @@
                 </button>
             </fieldset>
 
-            <fieldset class="jobs">
+            <fieldset class="jobs" data-formset-prefix="job">
                 <h2>Experiência Profissional</h2>
+                {% include "components/author-edit/formset_errors.html" with formset=job_formset %}
 
                 {{ job_formset.management_form }}
                 <template id="job-empty-template">
@@ -132,138 +148,91 @@
                 </template>
 
                 <div class="job-list">
-                {% for jform in job_formset %}
-                    <table class="form-table job-item select-wrapper">
-                        {{ jform.id }}
-                        <tr>
-                            <td>
-                                {{ jform.occupation.label_tag }}
-                            </td>
-                            <td>
-                                {{ jform.occupation }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                {{ jform.month_begin.label_tag }}
-                            </td>
-                            <td>
-                                {{ jform.month_begin }}
-                                {{ jform.year_begin }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                {{ jform.month_end.label_tag }}
-                            </td>
-                            <td>
-                                {{ jform.month_end }}
-                                {{ jform.year_end }}
-                            </td>
-                        </tr>
-
-                        <tr class="form-check">
-                            <td>
-                                {{ jform.current_job.label_tag }}
-                                {{ jform.current_job }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                {{ jform.roles_description.label_tag }}
-                            </td>
-                            <td>
-                                {{ jform.roles_description }}
-                            </td>
-                        </tr>
-
-                        {% if jform.DELETE %}
-                        <tr class="form-check">
-                            <td>
-                                <label for="{{ jform.DELETE.id_for_label }}">
-                                    Remover
-                                </label>
-                                {{ jform.DELETE }}
-                            </td>
-                        </tr>
-                        {% endif %}
-                    </table>
-                    <hr />
-                {% endfor %}
-                </div>
-
-                <button
-                    type="button"
-                    id="add-job"
-                    class="job-button-plus"
-                >
-                    +
-                </button>
-            </fieldset>
-
-            <fieldset class="graduations">
-                <h2>Tipo de Formação</h2>
-
-                {# management form obrigatório para o formset #}
-                {{ graduation_formset.management_form }}
-                    {# template oculto com o empty_form (contém __prefix__) usado pelo JS #}
-                    <template id="graduation-empty-template">
-                        <table class="form-table graduation-item select-wrapper">
-                            {{ graduation_formset.empty_form.as_table }}
+                    {% for jform in job_formset %}
+                        <table class="form-table job-item select-wrapper">
+                            {{ jform.id }}
+                            <tr>
+                                <td>{{ jform.occupation.label_tag }}</td>
+                                <td>{{ jform.occupation }}{{ jform.occupation.errors }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ jform.month_begin.label_tag }}</td>
+                                <td>
+                                    {{ jform.month_begin }}{{ jform.year_begin }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ jform.month_end.label_tag }}</td>
+                                <td>
+                                    {{ jform.month_end }}{{ jform.year_end }}
+                                </td>
+                            </tr>
+                            <tr class="form-check">
+                                <td>
+                                    {{ jform.current_job.label_tag }}
+                                    {{ jform.current_job }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ jform.roles_description.label_tag }}</td>
+                                <td>{{ jform.roles_description }}</td>
+                            </tr>
+                            {% if jform.DELETE %}
+                            <tr class="form-check">
+                                <td>
+                                    <label for="{{ jform.DELETE.id_for_label }}">
+                                        Remover
+                                    </label>
+                                    {{ jform.DELETE }}
+                                </td>
+                            </tr>
+                            {% endif %}
                         </table>
                         <hr />
-                    </template>
+                    {% endfor %}
+                </div>
+
+                <button type="button" id="add-job" class="job-button-plus">+</button>
+            </fieldset>
+
+            <fieldset class="graduations" data-formset-prefix="graduation">
+                <h2>Tipo de Formação</h2>
+                {% include "components/author-edit/formset_errors.html" with formset=graduation_formset %}
+
+                {{ graduation_formset.management_form }}
+                <template id="graduation-empty-template">
+                    <table class="form-table graduation-item select-wrapper">
+                        {{ graduation_formset.empty_form.as_table }}
+                    </table>
+                    <hr />
+                </template>
 
                 <div class="graduation-list">
                     {% for gform in graduation_formset %}
                         <table class="form-table graduation-item select-wrapper">
                             {{ gform.id }}
                             <tr>
-                                <td>
-                                    {{ gform.graduation_level.label_tag }}
-                                </td>
-                                <td class="wrapper">
-                                    {{ gform.graduation_level }}
-                                </td>
+                                <td>{{ gform.graduation_level.label_tag }}</td>
+                                <td class="wrapper">{{ gform.graduation_level }}</td>
                             </tr>
-
                             <tr>
-                                <td>
-                                    {{ gform.course.label_tag }}
-                                </td>
-                                <td>
-                                    {{ gform.course }}
-                                </td>
+                                <td>{{ gform.course.label_tag }}</td>
+                                <td>{{ gform.course }}</td>
                             </tr>
-
                             <tr>
-                                <td>
-                                    {{ gform.school.label_tag }}
-                                </td>
-                                <td>
-                                    {{ gform.school }}
-                                </td>
+                                <td>{{ gform.school.label_tag }}</td>
+                                <td>{{ gform.school }}</td>
                             </tr>
-
                             <tr>
-                                <td>
-                                    {{ gform.year_graduation.label_tag }}
-                                </td>
-                                <td>
-                                    {{ gform.year_graduation }}
-                                </td>
+                                <td>{{ gform.year_graduation.label_tag }}</td>
+                                <td>{{ gform.year_graduation }}</td>
                             </tr>
-
                             <tr class="form-check">
                                 <td>
                                     {{ gform.concluded.label_tag }}
                                     {{ gform.concluded }}
                                 </td>
                             </tr>
-
                             {% if gform.DELETE %}
                             <tr class="form-check">
                                 <td>
@@ -279,19 +248,12 @@
                     {% endfor %}
                 </div>
 
-                <button
-                    type="button"
-                    id="add-graduation"
-                    class="graduation-button-plus"
-                >
+                <button type="button" id="add-graduation" class="graduation-button-plus">
                     +
                 </button>
             </fieldset>
 
-            <button
-                type="submit"
-                class="btn btn-primary w-100 save-button"
-            >
+            <button type="submit" class="btn btn-primary w-100 save-button">
                 Salvar
             </button>
         </form>
@@ -302,21 +264,14 @@
 {% block scripts %}
 <script
     nonce="{{ request.csp_nonce }}"
-    src="{% static 'scripts/forms/buttonSocialPlus.js' %}"
+    src="{% static 'scripts/forms/formset-dynamic.js' %}"
 ></script>
-
 <script
     nonce="{{ request.csp_nonce }}"
-    src="{% static 'scripts/forms/buttonGraduationPlus.js' %}"
+    src="{% static 'scripts/forms/author-edit-formsets.js' %}"
 ></script>
-
 <script
     nonce="{{ request.csp_nonce }}"
-    src="{% static 'scripts/forms/buttonSave.js' %}"
-></script>
-
-<script
-    nonce="{{ request.csp_nonce }}"
-    src="{% static 'scripts/forms/buttonJobPlus.js' %}"
+    src="{% static 'scripts/components/buttonSave.js' %}"
 ></script>
 {% endblock %}

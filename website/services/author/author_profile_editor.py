@@ -129,8 +129,8 @@ def add_validation_messages(request, bundle: AuthorEditBundle) -> None:
 
 def as_template_context(bundle: AuthorEditBundle) -> dict:
     return {
-        "userForm": bundle.user_form,
-        "authorForm": bundle.author_form,
+        "user_form": bundle.user_form,
+        "author_form": bundle.author_form,
         "social_formset": bundle.social_formset,
         "graduation_formset": bundle.graduation_formset,
         "job_formset": bundle.job_formset,

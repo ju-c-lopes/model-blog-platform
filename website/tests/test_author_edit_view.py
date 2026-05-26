@@ -84,7 +84,7 @@ class AuthorEditViewTests(TestCase):
             patch.object(
                 edit_view,
                 "as_template_context",
-                return_value={"userForm": bundle.user_form},
+                return_value={"user_form": bundle.user_form},
             ),
             patch.object(edit_view, "render", return_value=HttpResponse(status=200)),
         ):
