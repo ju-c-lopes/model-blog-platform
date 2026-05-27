@@ -71,5 +71,24 @@ def test_userchangeform_clean_and_save(db):
     )
     assert form2.is_valid()
     user2 = form2.save()
-    # saved user should have changed password (can't compare hash directly but ensure it's set)
-    assert user2.password != "old"
+    assert user2.check_password("new")
+
+    # senha em branco não altera o hash existente
+    u_blank = User.objects.create_user(
+        email="blank@example.com", password="keepme", username="blank"
+    )
+    old_hash = u_blank.password
+    form3 = UserChangeForm(
+        {
+            "username": "blank",
+            "email": "blank@example.com",
+            "password": "",
+            "confirm_pass": "",
+        },
+        instance=u_blank,
+    )
+    assert form3.is_valid()
+    form3.save()
+    u_blank.refresh_from_db()
+    assert u_blank.password == old_hash
+    assert u_blank.check_password("keepme")

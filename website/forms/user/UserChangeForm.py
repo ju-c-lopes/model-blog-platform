@@ -29,7 +29,8 @@ class UserChangeForm(BaseUserChangeForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "password", "confirm_pass")
+        # password/confirm_pass são campos de UI — não mapear direto ao model
+        fields = ("username", "email")
 
     def clean(self):
         cleaned = super().clean()
@@ -42,9 +43,14 @@ class UserChangeForm(BaseUserChangeForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        pw = self.cleaned_data.get("password")
-        if pw:
-            user.set_password(pw)
+        password = self.cleaned_data.get("password")
+        if password:
+            user.set_password(password)
         if commit:
             user.save()
         return user
+
+    def password_will_change(self) -> bool:
+        if not hasattr(self, "cleaned_data"):
+            return False
+        return bool(self.cleaned_data.get("password"))

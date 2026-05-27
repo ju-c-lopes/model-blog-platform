@@ -48,17 +48,8 @@ def bundle_is_valid(bundle: ReaderEditBundle) -> bool:
 
 def save_bundle(bundle: ReaderEditBundle, request) -> None:
     with transaction.atomic():
-        original_password = request.user.password
-        user = bundle.user_form.save(commit=False)
-        password = bundle.user_form.cleaned_data.get("password")
-
-        if password:
-            user.set_password(password)
-        else:
-            user.password = original_password
-        user.save()
-
-        if password:
+        user = bundle.user_form.save()
+        if bundle.user_form.password_will_change():
             try:
                 update_session_auth_hash(request, user)
             except Exception:
