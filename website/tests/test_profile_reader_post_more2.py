@@ -28,11 +28,32 @@ class ProfileReaderPostMore2Test(TestCase):
         user.refresh_from_db()
         self.assertEqual(user.author.author_name, "NewName")
 
+    def test_reader_edit_post_updates_name_without_changing_password(self):
+        user = User.objects.create_user(
+            username="r_save", email="rs@test.com", password="keepme"
+        )
+        Reader.objects.create(user=user)
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse("reader-edit"),
+            {
+                "username": user.username,
+                "email": user.email,
+                "password": "",
+                "confirm_pass": "",
+                "reader_name": "NewR",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        user.refresh_from_db()
+        self.assertEqual(user.reader.reader_name, "NewR")
+        self.assertTrue(user.check_password("keepme"))
+
     def test_reader_edit_post_updates_name(self):
         user = User.objects.create_user(
             username="r_save", email="rs@test.com", password="p"
         )
-        Reader.objects.create(user=user, reader_name="Old")
+        Reader.objects.create(user=user)
         self.client.force_login(user)
         response = self.client.post(
             reverse("reader-edit"),

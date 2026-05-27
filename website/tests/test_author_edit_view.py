@@ -46,6 +46,60 @@ class AuthorEditViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def _author_edit_post_data(self, **overrides):
+        data = {
+            "username": self.owner.username,
+            "email": self.owner.email,
+            "password": "",
+            "confirm_pass": "",
+            "author_name": self.author.author_name,
+            "gender": str(self.author.gender),
+            "social-TOTAL_FORMS": "0",
+            "social-INITIAL_FORMS": "0",
+            "social-MIN_NUM_FORMS": "0",
+            "social-MAX_NUM_FORMS": "1000",
+            "graduation-TOTAL_FORMS": "0",
+            "graduation-INITIAL_FORMS": "0",
+            "graduation-MIN_NUM_FORMS": "0",
+            "graduation-MAX_NUM_FORMS": "1000",
+            "job-TOTAL_FORMS": "0",
+            "job-INITIAL_FORMS": "0",
+            "job-MIN_NUM_FORMS": "0",
+            "job-MAX_NUM_FORMS": "1000",
+        }
+        data.update(overrides)
+        return data
+
+    def test_edit_author_post_updates_name_without_changing_password(self):
+        user = User.objects.create_user(
+            email="keep@example.com", password="keepme", username="keepauth"
+        )
+        author = Author.objects.create(
+            user=user, author_name="Old Name", author_url_slug="keepauth"
+        )
+        self.client.force_login(user)
+        url = reverse("edit_author", kwargs={"slug": author.author_url_slug})
+        response = self.client.post(
+            url,
+            {
+                **self._author_edit_post_data(
+                    username=user.username,
+                    email=user.email,
+                    author_name="New Name",
+                ),
+                "gender": str(author.gender),
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response["Location"],
+            reverse("author", kwargs={"slug": author.author_url_slug}),
+        )
+        user.refresh_from_db()
+        author.refresh_from_db()
+        self.assertEqual(author.author_name, "New Name")
+        self.assertTrue(user.check_password("keepme"))
+
     def test_edit_author_profile_post_success_path(self):
         req = self.factory.post("/", {})
         req.user = self.owner

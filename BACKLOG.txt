@@ -47,7 +47,7 @@ Conteúdo
                     [X] get_success_url(author)  → success_url
                 [X] Enxugar AuthorEditView (orquestração: auth, GET/POST, messages, render/redirect)
                 [X] @login_required + verificação request.user == author.user
-                [ ] Unificar fluxo de senha (UserChangeForm OU serviço — não duplicar)
+                [X] Unificar fluxo de senha (UserChangeForm — senha vazia não altera hash)
                 [X] Remover de AuthorView.py: edit_author_profile, edit_author, check_request_post,
                     update_social_media, create_social_media, exclude_social_media, check_user_form,
                     check_author_form, set_graduation

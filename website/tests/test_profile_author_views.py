@@ -93,7 +93,7 @@ class ProfileAndAuthorViewTests(TestCase):
         user = User.objects.create_user(
             username="read", email="r@test.com", password="p"
         )
-        Reader.objects.create(user=user, reader_name="Reader")
+        Reader.objects.create(user=user)
         self.client.force_login(user)
         response = self.client.get(reverse("reader-edit"))
         self.assertEqual(response.status_code, 200)

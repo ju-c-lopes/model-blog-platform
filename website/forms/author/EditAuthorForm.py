@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from website.models import GENDER_CHOICE
 from website.models.author.AuthorModel import Author
 
 User = get_user_model()
@@ -12,7 +13,7 @@ class EditAuthorForm(forms.ModelForm):
     )
     gender = forms.ChoiceField(
         label="Gênero",
-        choices=(("M", "Masculino"), ("F", "Feminino")),
+        choices=GENDER_CHOICE,
         widget=forms.Select(attrs={"class": "custom-select"}),
     )
     image = forms.FileField(
