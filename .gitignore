@@ -41,8 +41,6 @@ staticfiles/
 coverage.xml
 htmlcov/
 .pytest_cache/
-tests/
-test_*.py
 
 # =========================
 # IDE / Editor
