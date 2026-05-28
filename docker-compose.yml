@@ -10,19 +10,16 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     environment:
+      - HOME=/app
       - PYTHONPATH=/app/
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
     volumes:
       - .:/app
-    #user: "${UID:-1000}:${GID:-1000}"
+    user: "${UID:-1000}:${GID:-1000}"
     working_dir: /app
     env_file:
       - ./.env
     ports:
       - "8000:8000"
-    command: >
-      bash -c "
-        echo 'Container is ready. You can now run: docker exec -it python_app bash' &&
-        tail -f /dev/null
-      "
+    command: ["tail", "-f", "/dev/null"]
