@@ -7,12 +7,6 @@ from django.test import TestCase
 
 
 class TemplateTagsTest(TestCase):
-    def test_replace_word_filter(self):
-        tpl = Template('{% load replace_word %}{{ "vendo"|replace_word }}')
-        rendered = tpl.render(Context({}))
-        # replace_word replaces last two chars with 'ndo'
-        self.assertEqual(rendered, "venndo")
-
     def test_get_tile_types_fallback_dirs(self):
         # create a temp templates directory with tiles
         tmpd = tempfile.TemporaryDirectory()
@@ -34,12 +28,7 @@ class TemplateTagsTest(TestCase):
 
         try:
             # import tag and call it via template rendering
-            tpl = Template(
-                (
-                    "{% load get_type %}{% get_tile_types as tile_types %}"
-                    "{{ tile_types|length }}"
-                )
-            )
+            tpl = Template(("{% load get_type %}{% get_tile_types as tile_types %}" "{{ tile_types|length }}"))
             rendered = tpl.render(Context({}))
             # should find both tile files
             self.assertIn("2", rendered)

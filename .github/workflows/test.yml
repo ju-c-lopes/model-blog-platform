@@ -28,15 +28,12 @@ jobs:
                   pip install -r requirements-dev.txt
 
             - name: Run tests and collect coverage
-              run: pytest --cov=.
+              run: pytest --cov=website
 
             - name: Generate coverage badge
-              id: coverage_badge
-              uses: tj-actions/coverage-badge-py@v2
-              with:
-                  green: 85
-                  yellow: 60
-                  output: coverage.svg
+              run: |
+                  pip install "setuptools<81" "coverage-badge==1.1.2"
+                  coverage-badge -o coverage.svg -f
 
             - name: Upload coverage badge artifact
               uses: actions/upload-artifact@v4
@@ -48,7 +45,7 @@ jobs:
         name: Commit and PR Badge
         needs: test
         runs-on: ubuntu-latest
-        if: github.actor != 'github-actions[bot]'
+        if: github.actor != 'github-actions[bot]' && github.ref == 'refs/heads/main'
         steps:
             - uses: actions/checkout@v4
 
@@ -61,10 +58,10 @@ jobs:
             - name: Commit and create PR with coverage badge
               uses: peter-evans/create-pull-request@v6
               with:
-                  commit-message: "chore: Atualiza badge de coverage"
+                  commit-message: "chore: update coverage badge"
                   branch: "update-coverage-badge-${{ github.run_number }}"
-                  title: "Atualiza badge de coverage"
-                  body: "Este PR atualiza o badge de coverage automaticamente."
+                  title: "Update coverage badge"
+                  body: "Automated coverage badge update."
                   add-paths: coverage.svg
-                  author: GitHub Actions <actions@github.com>
                   base: main
+                  delete-branch: true

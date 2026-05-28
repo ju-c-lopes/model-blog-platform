@@ -28,11 +28,17 @@ ALLOWED_TAGS = [
     "h4",
     "h5",
     "h6",
+    "table",
+    "tbody",
+    "tr",
+    "td",
 ]
 
 ALLOWED_ATTRIBUTES = {
     "a": ["href", "title", "rel", "target"],
     "img": ["src", "alt", "title", "width", "height"],
+    "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen"],
+    "td": ["colspan", "rowspan", "data-row", "data-col"],
 }
 
 ALLOWED_PROTOCOLS = ["http", "https", "mailto", "data"]

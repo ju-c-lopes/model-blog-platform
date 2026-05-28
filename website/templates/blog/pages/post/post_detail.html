@@ -1,0 +1,118 @@
+{% extends 'blog/pages/base.html' %}
+{% load csp %}
+{% load static %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/post/post.css' %}" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/author/author-page.css' %}" media="all" />
+{% endblock %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <main class="content">
+        <div class="head-card">
+            <div id="reading-bar"></div>
+            <h1 class="post-title">
+                {{ post.title }}
+            </h1>
+            <div class="post-meta">
+                {% include 'components/card-author/card-author.html' with author=post.author %}
+                <span class="post-date">
+                    Published on {{ post.published_date }}
+                </span><br />
+                {% if post.updated_date and post.updated_date != post.published_date %}
+                <span class="post-date">
+                    Updated on {{ post.updated_date }}
+                </span><br />
+                {% endif %}
+                <span class="reading-time">
+                    ⏱ {{ post.reading_time }} min de leitura
+                </span>
+            </div>
+        </div>
+        <div class="post-container">
+            <article class="post-detail">
+                <div class="post-content mt-4">
+                    {{ post.text|safe }}
+                </div>
+
+                <div class="post-footer mt-2">
+                    <div class="justify-content-between">
+                        <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Posts</a>
+                        <div class="align-items-center">
+                            {% if request.user.is_authenticated and request.user.author == post.author %}
+                            <a href="{% url 'edit_post' url_slug=post.url_slug %}" class="btn btn-primary">Edit Post</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="reaction-section"
+                    data-like-url="{% url 'post_toggle_like' url_slug=post.url_slug %}"
+                    data-love-url="{% url 'post_toggle_love' url_slug=post.url_slug %}"
+                    data-img-activate-like="{% static 'img/reactions/activate-like.png' %}"
+                    data-img-deactivate-like="{% static 'img/reactions/deactivate-like.png' %}"
+                    data-img-activate-love="{% static 'img/reactions/activate-love.png' %}"
+                    data-img-deactivate-love="{% static 'img/reactions/deactivate-love.png' %}">
+                    <div class="reaction-div align-items-center">
+                        <button id="like-btn" class="reaction-btn" aria-label="Like">
+                            <span id="like-icon" class="reaction-icon like {% if user_liked %}active{% endif %}">
+                                {% if user_liked %}
+                                <img width="40" src="{% static 'img/reactions/activate-like.png' %}" alt="" class="like-btn">
+                                {% else %}
+                                <img width="40" src="{% static 'img/reactions/deactivate-like.png' %}" alt="" class="like-btn">
+                                {% endif %}
+                            </span>
+                        </button>
+                        <span id="likes-count" class="reaction-count">{{ post.likes.count }}</span>
+                    </div>
+                    <div class="reaction-div align-items-center">
+                        <button id="love-btn" class="reaction-btn" aria-label="Love">
+                            <span id="love-icon" class="reaction-icon love {% if user_loved %}active{% endif %}">
+                                {% if user_loved %}
+                                <img width="40" src="{% static 'img/reactions/activate-love.png' %}" alt="" class="love-btn">
+                                {% else %}
+                                <img width="40" src="{% static 'img/reactions/deactivate-love.png' %}" alt="" class="love-btn">
+                                {% endif %}
+                            </span>
+                        </button>
+                        <span id="loves-count" class="reaction-count">{{ post.loves.count }}</span>
+                    </div>
+                </div>
+            </article>
+            <aside>
+                <!-- Espaço para futuros anúncios ou widgets -->
+                <div class="widget">
+                    <h5>Links Úteis</h5>
+                    <ul>
+                        <li><a href="#">Link 1</a></li>
+                        <li><a href="#">Link 2</a></li>
+                        <li><a href="#">Link 3</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+</div>
+
+
+<div id="signup-modal">
+    <div class="signup-modal-content">
+        <p>Faça seu cadastro</p>
+        <p>Para reagir a posts, crie uma conta ou faça login.</p>
+        <div class="signup-modal-buttons">
+            <a href="{% url 'login' %}" class="btn btn-primary">Entrar</a>
+            <a href="{% url 'sign_up' %}" class="btn btn-outline-secondary">Criar conta</a>
+            <button id="close-signup-modal" class="btn btn-link">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<form style="display:none">{% csrf_token %}</form>
+<script src="{% static 'scripts/components/post_reactions.js' %}" nonce="{{ request.csp_nonce }}"></script>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}

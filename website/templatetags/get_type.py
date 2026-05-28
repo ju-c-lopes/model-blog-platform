@@ -28,7 +28,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def get_tile_types():
+def get_type():
     """Return a list of available tile template names (stem without .html).
 
     It first tries to read files from the package's `templates/tiles/`
@@ -59,13 +59,14 @@ def get_tile_types():
                 p = Path(d) / "tiles"
                 if p.exists() and p.is_dir():
                     for f in sorted(p.iterdir()):
-                        if (
-                            f.is_file()
-                            and f.suffix == ".html"
-                            and f.name.startswith("tile_")
-                        ):
+                        if f.is_file() and f.suffix == ".html" and f.name.startswith("tile_"):
                             types.append(f.stem)
             except Exception:
                 continue
 
     return types
+
+
+@register.simple_tag(name="get_tile_types")
+def get_tile_types():
+    return get_type()
