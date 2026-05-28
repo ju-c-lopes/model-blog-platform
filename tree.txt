@@ -4,21 +4,10 @@
 ├── BACKLOG.txt
 ├── blogModel
 │   ├── asgi.py
-│   ├── __init__.py
 │   ├── settings
-│   │   ├── __init__.py
 │   │   └── settings.py
 │   ├── urls.py
 │   └── wsgi.py
-├── .continue
-│   └── agents
-│       ├── new-config-1.yaml
-│       ├── new-config-2.yaml
-│       └── new-config.yaml
-├── .coverage
-├── coverage-badge.svg
-├── coverage.svg
-├── coverage.xml
 ├── db.sqlite3
 ├── docker-compose.yml
 ├── Dockerfile
@@ -31,8 +20,6 @@
 ├── fix_reader_model_tests.py
 ├── fix_templatetags_test.py
 ├── fix_tests.py
-├── .gemini
-│   └── GEMINI.md
 ├── generate_tree.sh
 ├── .github
 │   ├── instructions
@@ -41,21 +28,6 @@
 │       ├── cov.yml
 │       └── test.yml
 ├── .gitignore
-├── htmlcov
-│   ├── class_index.html
-│   ├── coverage_html_cb_dd2e7eb5.js
-│   ├── coverage_html.js
-│   ├── favicon_32_cb_c827f16f.png
-│   ├── favicon_32.png
-│   ├── function_index.html
-│   ├── .gitignore
-│   ├── index.html
-│   ├── keybd_closed_cb_900cfef5.png
-│   ├── keybd_closed.png
-│   ├── keybd_open.png
-│   ├── status.json
-│   ├── style_cb_9ff733b0.css
-│   └── style.css
 ├── manage.py
 ├── media
 │   ├── 12613461_0dsLiav.png
@@ -74,20 +46,6 @@
 ├── pyproject.toml
 ├── pytest.ini
 ├── README.md
-├── reports
-│   └── coverage
-│       ├── class_index.html
-│       ├── coverage_html.js
-│       ├── coverage.xml
-│       ├── favicon_32.png
-│       ├── function_index.html
-│       ├── index.html
-│       ├── keybd_closed.png
-│       ├── keybd_open.png
-│       ├── manage_py.html
-│       ├── status.json
-│       └── style.css
-├── requirements-bkp.txt
 ├── requirements-dev.txt
 ├── requirements.txt
 ├── .stfolder
@@ -102,65 +60,51 @@
     │   │   ├── author_edit_formsets.py
     │   │   ├── EditAuthorForm.py
     │   │   ├── GraduationForm.py
-    │   │   ├── __init__.py
     │   │   ├── JobForm.py
     │   │   └── SocialMediaForm.py
-    │   ├── __init__.py
     │   ├── post
-    │   │   ├── __init__.py
     │   │   ├── PostForm.py
     │   │   └── SearchForm.py
     │   └── user
     │       ├── EditReaderForm.py
-    │       ├── __init__.py
     │       ├── LoginForm.py
     │       ├── ProfileUpdateForm.py
     │       ├── RegistrationForm.py
     │       ├── UserChangeForm.py
     │       └── UserCreationForm.py
-    ├── __init__.py
     ├── management
-    │   ├── commands
-    │   │   ├── create_test_user.py
-    │   │   └── __init__.py
-    │   └── __init__.py
+    │   └── commands
+    │       └── create_test_user.py
     ├── manager.py
     ├── middleware.py
     ├── migrations
     │   ├── 0001_initial.py
     │   ├── 0002_reader_reader_name_and_related_name.py
-    │   └── __init__.py
+    │   └── 0003_post_likes_loves.py
     ├── models
     │   ├── author
     │   │   ├── AuthorModel.py
     │   │   ├── AuthorSocialMediaModel.py
     │   │   ├── GraduationsModel.py
-    │   │   ├── __init__.py
     │   │   └── JobsModel.py
-    │   ├── __init__.py
     │   ├── post
-    │   │   ├── __init__.py
     │   │   ├── PostModel.py
     │   │   ├── PostReactionModel.py
     │   │   ├── PostViewModel.py
     │   │   └── SeriesModel.py
     │   └── user
-    │       ├── __init__.py
     │       ├── ReaderModel.py
     │       └── UserModel.py
     ├── services
     │   ├── author
-    │   │   ├── author_profile_editor.py
-    │   │   └── __init__.py
-    │   ├── __init__.py
+    │   │   └── author_profile_editor.py
     │   └── reader
-    │       ├── __init__.py
     │       └── reader_profile_editor.py
     ├── static
     │   ├── css
     │   │   ├── author
     │   │   │   ├── author-page.css
-    │   │   │   └── edit-author-page.css
+    │   │   │   └── edit.css
     │   │   ├── base
     │   │   │   ├── base.css
     │   │   │   └── header.css
@@ -168,15 +112,17 @@
     │   │   ├── exceptions
     │   │   │   └── error.css
     │   │   ├── pages
-    │   │   │   ├── home.css
-    │   │   │   ├── login.css
-    │   │   │   └── sign-up.css
+    │   │   │   └── home.css
     │   │   ├── post
     │   │   │   ├── edit_post.css
     │   │   │   ├── post.css
     │   │   │   └── search.css
-    │   │   └── reader
-    │   │       └── edit-reader-page.css
+    │   │   ├── reader
+    │   │   │   └── edit.css
+    │   │   ├── README.md
+    │   │   └── user
+    │   │       ├── login.css
+    │   │       └── sign-up.css
     │   ├── img
     │   │   ├── brand
     │   │   │   ├── favicon.ico
@@ -294,33 +240,26 @@
     │   └── scripts
     │       └── button-menu.html
     ├── templatetags
-    │   ├── get_type.py
-    │   └── __init__.py
+    │   └── get_type.py
     ├── urls
     │   ├── author
     │   │   ├── AuthorEditUrl.py
     │   │   ├── AuthorUrl.py
-    │   │   ├── __init__.py
     │   │   └── TeamUrl.py
     │   ├── exception
-    │   │   ├── ErrorUrl.py
-    │   │   └── __init__.py
+    │   │   └── ErrorUrl.py
     │   ├── HomeUrl.py
-    │   ├── __init__.py
     │   ├── post
-    │   │   ├── __init__.py
     │   │   ├── PostUrl.py
     │   │   └── SearchUrl.py
     │   ├── reader
-    │   │   ├── __init__.py
     │   │   └── ReaderEditUrl.py
     │   └── user
-    │       ├── __init__.py
     │       ├── LoginUrl.py
     │       ├── LogoutUrl.py
+    │       ├── ProfileUpdateUrl.py
     │       └── SignUpUrl.py
     ├── utils
-    │   ├── __init__.py
     │   ├── sanitizer.py
     │   └── youtube_validator.py
     ├── validators.py
@@ -328,25 +267,20 @@
         ├── author
         │   ├── AuthorEditView.py
         │   ├── AuthorView.py
-        │   ├── __init__.py
         │   └── TeamView.py
         ├── exception
-        │   ├── ErrorView.py
-        │   └── __init__.py
+        │   └── ErrorView.py
         ├── HomeView.py
-        ├── __init__.py
         ├── post
-        │   ├── __init__.py
         │   ├── PostCreateView.py
         │   ├── PostView.py
         │   └── SearchView.py
         ├── reader
-        │   ├── __init__.py
         │   └── ReaderEditView.py
         └── user
-            ├── __init__.py
             ├── LoginView.py
             ├── LogoutView.py
+            ├── ProfileUpdateView.py
             └── SignUpView.py
 
-94 directories, 254 files
+89 directories, 193 files
