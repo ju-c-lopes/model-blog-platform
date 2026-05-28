@@ -6,10 +6,10 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.backends.db import SessionStore
 from django.test import RequestFactory, TestCase
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
-from website.views.LoginView import login_user
-from website.views.SearchView import search_posts
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
+from website.views.post.SearchView import search_posts
+from website.views.user.LoginView import login_user
 
 User = get_user_model()
 
@@ -24,17 +24,15 @@ class LoginViewTests(TestCase):
 
     def test_login_success_redirects(self):
         # create user
-        user = User.objects.create_user(
-            email="u1@example.com", username="u1", password="pw"
-        )
+        user = User.objects.create_user(email="u1@example.com", username="u1", password="pw")
         data = {"email": "u1@example.com", "password": "pw"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
         # patch authenticate and check_password to ensure branch
         with (
-            patch("website.views.LoginView.authenticate", return_value=user),
-            patch("website.views.LoginView.check_password", return_value=True),
+            patch("website.views.user.LoginView.authenticate", return_value=user),
+            patch("website.views.user.LoginView.check_password", return_value=True),
         ):
             resp = login_user(req)
 
@@ -50,7 +48,7 @@ class LoginViewTests(TestCase):
         def fake_render(req_in, template, context=None, status=200):
             return SimpleNamespace(status_code=status, context=context)
 
-        with patch("website.views.LoginView.render", fake_render):
+        with patch("website.views.user.LoginView.render", fake_render):
             resp = login_user(req)
 
         assert resp.status_code == 200
@@ -63,36 +61,26 @@ class SearchViewTests(TestCase):
         self.factory = RequestFactory()
 
     def test_search_returns_results_and_counts(self):
-        user = User.objects.create_user(
-            email="a@example.com", username="a", password="pw"
-        )
-        author = Author.objects.create(
-            user=user, author_name="AuthorX", author_url_slug="ax"
-        )
+        user = User.objects.create_user(email="a@example.com", username="a", password="pw")
+        author = Author.objects.create(user=user, author_name="AuthorX", author_url_slug="ax")
         # create matching posts
         Post.objects.create(author=author, title="FindMe", text="abc", url_slug="p1")
-        Post.objects.create(
-            author=author, title="FindMe two", text="def", url_slug="p2"
-        )
+        Post.objects.create(author=author, title="FindMe two", text="def", url_slug="p2")
 
         req = self.factory.get("/search", {"query": "FindMe"})
 
         def fake_render(req_in, template, context=None):
             return SimpleNamespace(status_code=200, context=context)
 
-        with patch("website.views.SearchView.render", fake_render):
+        with patch("website.views.post.SearchView.render", fake_render):
             resp = search_posts(req)
 
         assert resp.status_code == 200
         assert resp.context["results_count"] == 2
 
     def test_search_page_not_integer_returns_first_page(self):
-        user = User.objects.create_user(
-            email="b@example.com", username="b", password="pw"
-        )
-        author = Author.objects.create(
-            user=user, author_name="AuthorY", author_url_slug="ay"
-        )
+        user = User.objects.create_user(email="b@example.com", username="b", password="pw")
+        author = Author.objects.create(user=user, author_name="AuthorY", author_url_slug="ay")
         # one matching post
         Post.objects.create(author=author, title="OnlyOne", text="x", url_slug="o1")
 
@@ -102,7 +90,7 @@ class SearchViewTests(TestCase):
             return SimpleNamespace(status_code=200, context=context)
 
         resp = None
-        with patch("website.views.SearchView.render", fake_render):
+        with patch("website.views.post.SearchView.render", fake_render):
             resp = search_posts(req)
 
         assert resp.status_code == 200

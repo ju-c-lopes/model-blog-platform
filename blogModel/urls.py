@@ -26,15 +26,17 @@ urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("", include("website.urls.HomeUrl")),
-        path("nossa-equipe/", include("website.urls.TeamUrl")),
-        path("login/", include("website.urls.LoginUrl")),
-        path("cadastre-se/", include("website.urls.SignUpUrl")),
-        path("editar-leitor/", include("website.urls.ReaderEditUrl")),
-        path("atualizar-perfil/", include("website.urls.ProfileUpdateUrl")),
-        path("logout/", include("website.urls.LogoutUrl")),
-        path("post/", include("website.urls.PostUrl")),
-        path("error/", include("website.urls.ErrorUrl")),
-        path("search/", include("website.urls.SearchUrl")),
+        path("nossa-equipe/", include("website.urls.author.TeamUrl")),
+        path("nossa-equipe/", include("website.urls.author.AuthorUrl")),
+        path("nossa-equipe/", include("website.urls.author.AuthorEditUrl")),
+        path("login/", include("website.urls.user.LoginUrl")),
+        path("cadastre-se/", include("website.urls.user.SignUpUrl")),
+        path("atualizar-perfil/", include("website.urls.user.ProfileUpdateUrl")),
+        path("editar-leitor/", include("website.urls.reader.ReaderEditUrl")),
+        path("logout/", include("website.urls.user.LogoutUrl")),
+        path("post/", include("website.urls.post.PostUrl")),
+        path("error/", include("website.urls.exception.ErrorUrl")),
+        path("search/", include("website.urls.post.SearchUrl")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

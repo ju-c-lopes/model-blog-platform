@@ -1,0 +1,15 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+{% block head-css %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'css/author/author-page.css' %}"
+    media="all"
+/>
+{% endblock %}
+{% block content %}
+{% for author in authors %}
+    {% include "components/card-author/card-author.html" with author=author tag="div" %}
+{% endfor %}
+{% endblock %}

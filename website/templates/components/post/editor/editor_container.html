@@ -1,0 +1,22 @@
+<!-- Rich Text Editor Container -->
+<div class="editor-container">
+    <!-- Hidden textarea for form submission -->
+    <div class="header-content-area">
+    <label class="textarea--editor" for="id_text">{{ form.text.label }}</label>
+    {% if form.text.help_text %}
+        <div class="rich-help-text">
+            {{ form.text.help_text }}
+        </div>
+    {% endif %}
+    </div>
+    <div id="rich-editor-container"></div>
+    <textarea class="textarea--editor" name="text" id="id_text">{{ form.text.value|default:'' }}</textarea>
+
+    {% if form.text.errors %}
+        <ul class="errorlist">
+            {% for error in form.text.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

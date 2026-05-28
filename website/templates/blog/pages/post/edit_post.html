@@ -1,0 +1,60 @@
+{% extends 'blog/pages/base.html' %} {% load static %}
+{% block title %}
+    {% if is_creating %} Create New Post {% else %} Edit Post {% endif %}
+{% endblock %}
+{% block head-css %}
+<link
+    rel="stylesheet"
+    href="{% static 'vendor/quill/quill.snow.css' %}"
+/>
+<link
+    rel="stylesheet"
+    href="{% static 'css/post/edit_post.css' %}"
+/>
+<link
+    rel="stylesheet"
+    href="{% static 'css/post/post.css' %}"
+/>
+{% endblock %} {% block content %}
+<div class="post-form-container">
+
+    {% include 'components/post/editor/form_header.html' with is_creating=is_creating %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+
+        {% include 'components/post/editor/form_fields.html' with form=form %}
+
+        <!-- Rich Text Editor -->
+        <div class="form-group full-width">
+            {% include 'components/post/editor/media_upload.html' with form=form %}
+
+            {% include 'components/post/editor/editor_container.html' with form=form %}
+        </div>
+
+        {% include 'components/post/editor/form_buttons.html' with is_creating=is_creating post=post %}
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<!-- 1. Vendor -->
+<script src="{% static 'vendor/quill/quill.js' %}"></script>
+
+<!-- 2. Core -->
+<script src="{% static 'scripts/editor/editor-utils.js' %}"></script>
+<script src="{% static 'scripts/editor/quill-init.js' %}"></script>
+
+<!-- 3. UI / Components -->
+<script src="{% static 'scripts/editor/popup.js' %}"></script>
+<script src="{% static 'scripts/editor/media-preview.js' %}"></script>
+<script src="{% static 'scripts/editor/counters.js' %}"></script>
+<script src="{% static 'scripts/editor/slug.js' %}"></script>
+
+<!-- 4. Features -->
+<script src="{% static 'scripts/editor/image-upload.js' %}"></script>
+<script src="{% static 'scripts/editor/video-upload.js' %}"></script>
+<script src="{% static 'scripts/editor/youtube.js' %}"></script>
+<script src="{% static 'scripts/editor/insertTable.js' %}"></script>
+
+<!-- 5. Orquestrador -->
+<script src="{% static 'scripts/editor/edit_post.js' %}"></script>
+{% endblock %}

@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from website.models.AuthorModel import Author
-from website.models.PostModel import Post
+from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
 
 User = get_user_model()
 
@@ -11,16 +11,10 @@ User = get_user_model()
 class ReactionToggleTests(TestCase):
     def setUp(self):
         # create user and author
-        self.user = User.objects.create_user(
-            username="tester", email="t@test.com", password="pass"
-        )
-        self.author_user = User.objects.create_user(
-            username="author", email="a@test.com", password="pass"
-        )
+        self.user = User.objects.create_user(username="tester", email="t@test.com", password="pass")
+        self.author_user = User.objects.create_user(username="author", email="a@test.com", password="pass")
         self.author = Author.objects.create(user=self.author_user, author_name="Author")
-        self.post = Post.objects.create(
-            author=self.author, title="T", url_slug="t-slug", text="body"
-        )
+        self.post = Post.objects.create(author=self.author, title="T", url_slug="t-slug", text="body")
 
     def test_like_then_switch_to_love_decrements_like_counter(self):
         self.client.force_login(self.user)
@@ -72,9 +66,7 @@ class ReactionToggleTests(TestCase):
         self.assertEqual(self.post.likes.count(), 0)
 
     def test_multiple_users_counts_and_switching(self):
-        user2 = User.objects.create_user(
-            username="tester2", email="t2@test.com", password="pass"
-        )
+        user2 = User.objects.create_user(username="tester2", email="t2@test.com", password="pass")
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
         url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
         # user1 likes

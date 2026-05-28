@@ -11,7 +11,7 @@ class Custom404Middleware:
 
         # If the response status code is 404, render our custom 404 page
         if response.status_code == 404:
-            return render(request, "errors/404.html", status=404)
+            return render(request, "blog/pages/errors/404.html", status=404)
 
         return response
 

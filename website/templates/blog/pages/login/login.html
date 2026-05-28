@@ -1,0 +1,90 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+{% block head-css %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'css/user/login.css' %}"
+    media="all"
+/>
+{% endblock %}
+{% block content %}
+<div class="column login-div">
+    <h1>Entre com sua conta</h1>
+    <div height="40" class="messages">
+        {% for message in messages %}-
+        <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not remember %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <div class="form-fieldset">
+                {% for f in form %}
+                <div class="form-field">
+                    {% if forloop.counter == 2 %}
+                    <label for="{{ f.label.lower }}">{{ f.label }}</label>
+                    {{ f }}
+                    <button class="show-hide-btn" type="button">
+                        <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
+                    </button>
+                    {% else %}
+                    <label for="{{ f.label.lower }}">{{ f.label }}</label>
+                    {{ f }}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button class="btn btn-primary mt-4 btn-entry" type="submit">
+                    Entrar
+                </button>
+            </div>
+
+            {% for message in messages %}
+                {% if message is not None and email_not_found %}
+                <input
+                    type="hidden"
+                    name="remember"
+                    value="1"
+                />
+                <button type="submit" class="bt-remember">
+                    Não lembro meu email.
+                </button>
+
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+    </form>
+    {% else %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="remember">
+            <input
+                type="hidden"
+                name="remember"
+                value="1"
+            />
+            <div>
+                <label for="nome">Usuário: </label>
+                <input
+                    type="text"
+                    name="nome"
+                    id="nome"
+                    placeholder="Digite o usuário cadastrado."
+                />
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">
+                Lembrar
+            </button>
+        </fieldset>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'scripts/components/buttonShowHide.js' %}"></script>
+{% endblock %}

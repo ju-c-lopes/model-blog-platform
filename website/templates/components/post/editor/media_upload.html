@@ -1,0 +1,67 @@
+<!-- Media Upload Section -->
+<div class="media-upload-section">
+    <p class="media-title-section">📎 Add Media</p>
+    <div class="media-buttons">
+        <!-- Image insert section -->
+        <button
+            type="button"
+            class="media-btn media-image-btn"
+            title="Add an image from your device"
+        >
+            <i>🖼️</i> Add Image
+        </button>
+
+        <!-- Video insert section -->
+        <button
+            type="button"
+            class="media-btn media-video-btn"
+            title="Add local video file or YouTube URL"
+        >
+            <i>🎥</i> Add Video File
+        </button>
+
+        <!-- Table insert section -->
+        <button
+            type="button"
+            class="media-btn table-btn"
+            title="Insert a table with specified rows and columns"
+        >
+            <i>📊</i> Insert Table
+        </button>
+    </div>
+
+    {% include 'components/post/editor/popup/popup.html' with popup_type='video' %}
+    {% include 'components/post/editor/popup/popup.html' with popup_type='table' %}
+
+    <div
+        class="help-text media-help-text"
+        style="margin-top: 0.5rem; font-size: 0.85rem; color: #6c757d"
+    >
+        💡 <strong>Media tips:</strong> <br />• Use
+        <strong>📺 Add YouTube Video</strong> for YouTube links <br />• Use
+        <strong>🎥 Add Video File</strong> for local files (max 10MB) <br />•
+        YouTube videos are embedded securely and load faster
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input
+        type="file"
+        id="image-upload"
+        class="hidden-input"
+        accept="image/*"
+    />
+    <input
+        type="file"
+        id="video-upload"
+        class="hidden-input"
+        accept="video/*"
+    />
+
+    <!-- Media preview area -->
+    <div
+        id="media-preview"
+        class="media-preview"
+        style="display: none"
+    >
+    </div>
+</div>

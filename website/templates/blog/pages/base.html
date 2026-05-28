@@ -1,0 +1,60 @@
+{% load csp %}{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% block head-meta %}{% endblock %}
+        {% if "/post/" in request.path and "/post/edit/" not in request.path and "/post/create/" not in request.path %}
+        <meta name="description" content="{{ post.meta_description }}" />
+        {% else %}
+        <meta name="description" content="Blog - Juclops Techxperience">
+        {% endif %}
+
+        <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Sixtyfour&display=swap"
+            rel="stylesheet"
+        />
+
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="{% static 'img/brand/favicon.ico' %}"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/base/base.css' %}"
+            media="all"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/base/header.css' %}"
+            media="all"
+        />
+        {% block head-css %}{% endblock %}
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body class="container-fluid vh-100">
+        <!-- Page's header with menu and login options -->
+        <header class="row-header row">{% include "components/header/header.html" %}</header>
+
+        <div class="d-flex flex-column">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="screen-size"></div>
+        <footer>{% include "components/footer/footer.html" %}</footer>
+        {% block scripts %}{% endblock %}
+        <script
+            nonce="{{ request.csp_nonce }}"
+            src="{% static 'scripts/pages/tela.js' %}"
+        ></script>
+    </body>
+</html>
