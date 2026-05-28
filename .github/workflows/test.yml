@@ -31,12 +31,9 @@ jobs:
               run: pytest --cov=website
 
             - name: Generate coverage badge
-              id: coverage_badge
-              uses: tj-actions/coverage-badge-py@v2
-              with:
-                  green: 85
-                  yellow: 60
-                  output: coverage.svg
+              run: |
+                  pip install "setuptools<81" "coverage-badge==1.1.2"
+                  coverage-badge -o coverage.svg -f
 
             - name: Upload coverage badge artifact
               uses: actions/upload-artifact@v4
