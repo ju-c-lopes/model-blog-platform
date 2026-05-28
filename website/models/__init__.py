@@ -41,5 +41,5 @@ STATUS_MAP = {
     4: {
         "M": ("Doutorado", "Doutorando"),
         "F": ("Doutorada", "Doutoranda"),
-    }
+    },
 }

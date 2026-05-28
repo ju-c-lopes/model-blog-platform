@@ -7,15 +7,15 @@ from django.forms.models import BaseInlineFormSet
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
-from website.forms.author.EditAuthorForm import EditAuthorForm
 from website.forms.author.author_edit_formsets import (
     GRADUATION_FORMSET_PREFIX,
-    GraduationFormSet,
     JOB_FORMSET_PREFIX,
-    JobFormSet,
     SOCIAL_FORMSET_PREFIX,
+    GraduationFormSet,
+    JobFormSet,
     SocialMediaFormSet,
 )
+from website.forms.author.EditAuthorForm import EditAuthorForm
 from website.forms.user.UserChangeForm import UserChangeForm
 from website.models import ACADEMIC_LEVEL
 from website.models.author.AuthorModel import Author
@@ -44,9 +44,7 @@ def build_bundle(request, author: Author) -> AuthorEditBundle:
     if request.method == "POST":
         return AuthorEditBundle(
             user_form=UserChangeForm(request.POST, instance=request.user),
-            author_form=EditAuthorForm(
-                request.POST, request.FILES, instance=author
-            ),
+            author_form=EditAuthorForm(request.POST, request.FILES, instance=author),
             social_formset=SocialMediaFormSet(
                 request.POST,
                 request.FILES,
@@ -70,12 +68,8 @@ def build_bundle(request, author: Author) -> AuthorEditBundle:
     return AuthorEditBundle(
         user_form=UserChangeForm(instance=request.user),
         author_form=EditAuthorForm(instance=author),
-        social_formset=SocialMediaFormSet(
-            instance=author, prefix=SOCIAL_FORMSET_PREFIX
-        ),
-        graduation_formset=GraduationFormSet(
-            instance=author, prefix=GRADUATION_FORMSET_PREFIX
-        ),
+        social_formset=SocialMediaFormSet(instance=author, prefix=SOCIAL_FORMSET_PREFIX),
+        graduation_formset=GraduationFormSet(instance=author, prefix=GRADUATION_FORMSET_PREFIX),
         job_formset=JobFormSet(instance=author, prefix=JOB_FORMSET_PREFIX),
     )
 

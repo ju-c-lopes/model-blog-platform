@@ -77,19 +77,11 @@ class PostForm(forms.ModelForm):
 
         # Check if the slug already exists (excluding the current instance if editing)
         if self.instance.pk:
-            if (
-                Post.objects.filter(url_slug=url_slug)
-                .exclude(pk=self.instance.pk)
-                .exists()
-            ):
-                raise forms.ValidationError(
-                    "This URL slug is already in use. Please choose a different one."
-                )
+            if Post.objects.filter(url_slug=url_slug).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("This URL slug is already in use. Please choose a different one.")
         else:
             if Post.objects.filter(url_slug=url_slug).exists():
-                raise forms.ValidationError(
-                    "This URL slug is already in use. Please choose a different one."
-                )
+                raise forms.ValidationError("This URL slug is already in use. Please choose a different one.")
 
         return url_slug
 
@@ -97,9 +89,7 @@ class PostForm(forms.ModelForm):
         """Validate meta description length"""
         meta_description = self.cleaned_data.get("meta_description")
         if meta_description and len(meta_description) > 160:
-            raise forms.ValidationError(
-                "Meta description must be 160 characters or less."
-            )
+            raise forms.ValidationError("Meta description must be 160 characters or less.")
         return meta_description
 
     def clean_text(self):

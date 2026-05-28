@@ -296,7 +296,7 @@ label.textarea--editor {
 .header-content-area {
     display: flex;
     flex-direction: row;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 .rich-help-text {
     color: #565656 !important;
@@ -464,4 +464,3 @@ td[data-row="1"],
     font-weight: 900;
     background: lightblue;
 }
-

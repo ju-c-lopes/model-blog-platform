@@ -12,20 +12,14 @@ User = get_user_model()
 class ViewSmokeTests(TestCase):
     def setUp(self):
         # create an author user and reader user
-        self.author_user = User.objects.create_user(
-            username="author", email="a@test.com", password="pass"
-        )
+        self.author_user = User.objects.create_user(username="author", email="a@test.com", password="pass")
         self.author = Author.objects.create(user=self.author_user, author_name="Auth")
-        self.reader_user = User.objects.create_user(
-            username="reader", email="r@test.com", password="pass"
-        )
+        self.reader_user = User.objects.create_user(username="reader", email="r@test.com", password="pass")
         Reader.objects.create(user=self.reader_user)
 
         # create posts
         for i in range(8):
-            Post.objects.create(
-                author=self.author, title=f"T{i}", url_slug=f"slug-{i}", text="txt"
-            )
+            Post.objects.create(author=self.author, title=f"T{i}", url_slug=f"slug-{i}", text="txt")
 
     def test_home_pagination_first_page(self):
         url = reverse("home")

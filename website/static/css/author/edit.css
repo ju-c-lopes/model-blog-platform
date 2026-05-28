@@ -145,7 +145,7 @@
 }
 
 @media screen and (min-width: 769px) {
-    
+
     .edit-form {
         display: flex;
         flex-direction: column;
@@ -153,14 +153,14 @@
         padding: 20px 80px;
         width: 100% !important;
     }
-    
+
     .edit-form fieldset {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
     }
-    
+
     /* Botões estilo padrão (ajuste cores) */
     .btn-exclude-social {
        position: absolute;
@@ -197,22 +197,22 @@
         width: 70px;
         height: 70px;
     }
-    
+
     .save-button {
         margin-top: 2em;
     }
-    
+
     .graduation-item {
         display: flex;
         flex-direction: column;
     }
-    
+
     .graduation-item tr {
         display: flex;
         flex-direction: row;
         gap: 1em;
     }
-    
+
     .form-check,
     .form-check td,
     .form-check td label {
@@ -223,43 +223,43 @@
         margin: 0;
         padding: 0;
     }
-    
+
     input[type="checkbox"] {
         margin-right: 1em;
         width: 1em;
     }
-    
+
     /* ajustes visuais para graduation formset */
     .graduation-list .graduation-item {
         margin-bottom: 1rem;
         padding-bottom: 0.5rem;
     }
-    
+
     #main-form-div {
         display: flex !important;
         justify-content: center !important;
     }
-    
+
     .form-table {
         width: 70%;
         border-collapse: separate;
         border-spacing: 0 0.5rem;
     }
-    
+
     .form-table tbody {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
         border-bottom: #cfcfcf 2px solid;
     }
-    
+
     .form-table tbody tr {
         display: flex;
         flex-direction: row;
         gap: 4rem;
         padding: 20px 0;
     }
-    
+
     .form-table td:first-child {
         width: 34%;
         text-align: right;
@@ -268,14 +268,14 @@
         vertical-align: middle;
         font-size: 0.95rem;
     }
-    
+
     .form-table td {
         font-size: 1.5em !important;
         vertical-align: middle;
         padding: 0.15rem 0;
         width: 60%;
     }
-    
+
     input::file-selector-button {
         color: #fff;
         background-color: #007bff;
@@ -286,7 +286,7 @@
         padding: 15px 25px;
         margin-right: 15px !important;
     }
-    
+
     .form-control,
     select.custom-select {
         width: 100%;
@@ -300,19 +300,19 @@
         color: #222;
         box-sizing: border-box;
     }
-    
+
     .select-wrapper {
         position: relative;
         display: block;
     }
-    
+
     /* garante que selects dentro de td.wrapper ocupem todo o espaço */
     td.wrapper select,
     td.wrapper .custom-select {
         width: 100%;
         display: block;
     }
-    
+
     /* linhas horizontais sutis */
     .graduation-item + hr {
         border: 0;
@@ -320,7 +320,7 @@
         background: rgba(255,255,255,0.04);
         margin: 0.75rem 0;
     }
-    
+
     /* checkbox styling pequeno */
     .form-check input[type="checkbox"] {
         width: 18px;
@@ -375,4 +375,3 @@
     /* remove seta no IE */
     select.custom-select::-ms-expand { display: none; }
 }
-

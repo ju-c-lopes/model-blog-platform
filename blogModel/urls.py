@@ -31,6 +31,7 @@ urlpatterns = (
         path("nossa-equipe/", include("website.urls.author.AuthorEditUrl")),
         path("login/", include("website.urls.user.LoginUrl")),
         path("cadastre-se/", include("website.urls.user.SignUpUrl")),
+        path("atualizar-perfil/", include("website.urls.user.ProfileUpdateUrl")),
         path("editar-leitor/", include("website.urls.reader.ReaderEditUrl")),
         path("logout/", include("website.urls.user.LogoutUrl")),
         path("post/", include("website.urls.post.PostUrl")),

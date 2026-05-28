@@ -31,9 +31,7 @@ class Migration(migrations.Migration):
                 ("password", models.CharField(max_length=128, verbose_name="password")),
                 (
                     "last_login",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
                 ),
                 (
                     "is_superuser",
@@ -45,15 +43,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "first_name",
-                    models.CharField(
-                        blank=True, max_length=150, verbose_name="first name"
-                    ),
+                    models.CharField(blank=True, max_length=150, verbose_name="first name"),
                 ),
                 (
                     "last_name",
-                    models.CharField(
-                        blank=True, max_length=150, verbose_name="last name"
-                    ),
+                    models.CharField(blank=True, max_length=150, verbose_name="last name"),
                 ),
                 (
                     "is_staff",
@@ -73,22 +67,16 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
                 ),
                 ("username", models.TextField(max_length=45, unique=True)),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=254, unique=True, verbose_name="Email Address"
-                    ),
+                    models.EmailField(max_length=254, unique=True, verbose_name="Email Address"),
                 ),
                 (
                     "phone_number",
-                    phonenumber_field.modelfields.PhoneNumberField(
-                        blank=True, max_length=128, region=None
-                    ),
+                    phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, region=None),
                 ),
                 (
                     "groups",
@@ -139,17 +127,13 @@ class Migration(migrations.Migration):
                 ("author_url_slug", models.SlugField(max_length=70, unique=True)),
                 (
                     "access_level",
-                    models.IntegerField(
-                        choices=[(1, "Author"), (2, "Reader")], default=2
-                    ),
+                    models.IntegerField(choices=[(1, "Author"), (2, "Reader")], default=2),
                 ),
                 ("history", models.TextField(blank=True, max_length=2000)),
                 ("created_at", models.DateField(auto_now_add=True)),
                 (
                     "image",
-                    models.ImageField(
-                        blank=True, default=None, null=True, upload_to=""
-                    ),
+                    models.ImageField(blank=True, default=None, null=True, upload_to=""),
                 ),
                 (
                     "review",
@@ -315,15 +299,11 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 (
                     "image",
-                    models.ImageField(
-                        blank=True, default=None, null=True, upload_to="readers"
-                    ),
+                    models.ImageField(blank=True, default=None, null=True, upload_to="readers"),
                 ),
                 (
                     "saved_posts",
-                    models.ManyToManyField(
-                        blank=True, related_name="saved_by_readers", to="website.post"
-                    ),
+                    models.ManyToManyField(blank=True, related_name="saved_by_readers", to="website.post"),
                 ),
                 (
                     "user",
@@ -353,15 +333,11 @@ class Migration(migrations.Migration):
                 ("viewed_at", models.DateTimeField(auto_now_add=True)),
                 (
                     "post",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="website.post"
-                    ),
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="website.post"),
                 ),
                 (
                     "reader",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="website.reader"
-                    ),
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="website.reader"),
                 ),
             ],
         ),
@@ -383,9 +359,7 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 (
                     "cover_image",
-                    models.ImageField(
-                        blank=True, null=True, upload_to="series_covers/"
-                    ),
+                    models.ImageField(blank=True, null=True, upload_to="series_covers/"),
                 ),
                 (
                     "author",
@@ -426,9 +400,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "reaction",
-                    models.CharField(
-                        choices=[("like", "Like"), ("love", "Love")], max_length=10
-                    ),
+                    models.CharField(choices=[("like", "Like"), ("love", "Love")], max_length=10),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 (

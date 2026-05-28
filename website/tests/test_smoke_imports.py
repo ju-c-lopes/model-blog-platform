@@ -25,9 +25,7 @@ def test_import_website_modules():
                 module_name = "website." + mod_rel.replace(os.sep, ".")
 
             # skip obvious heavy or test-only files
-            if any(
-                x in module_name for x in (".tests", ".migrations", "tests.", "test_")
-            ):
+            if any(x in module_name for x in (".tests", ".migrations", "tests.", "test_")):
                 continue
 
             try:
@@ -37,6 +35,4 @@ def test_import_website_modules():
                 errors[module_name] = str(e)
 
     # sanity check: we should have imported at least some modules
-    assert (
-        imported > 10
-    ), f"Imported too few modules: {imported}; errors: {list(errors.keys())[:5]}"
+    assert imported > 10, f"Imported too few modules: {imported}; errors: {list(errors.keys())[:5]}"

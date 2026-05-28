@@ -6,24 +6,16 @@ User = get_user_model()
 
 
 class UserChangeForm(BaseUserChangeForm):
-    username = forms.CharField(
-        label="Nome do Usuário", widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-    email = forms.EmailField(
-        label="Email", widget=forms.EmailInput(attrs={"class": "form-control"})
-    )
+    username = forms.CharField(label="Nome do Usuário", widget=forms.TextInput(attrs={"class": "form-control"}))
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"class": "form-control"}))
     password = forms.CharField(
         label="Senha",
-        widget=forms.PasswordInput(
-            attrs={"placeholder": "Digite a nova senha", "class": "form-control"}
-        ),
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite a nova senha", "class": "form-control"}),
         required=False,
     )
     confirm_pass = forms.CharField(
         label="Confirme a senha",
-        widget=forms.PasswordInput(
-            attrs={"placeholder": "Repita a nova senha", "class": "form-control"}
-        ),
+        widget=forms.PasswordInput(attrs={"placeholder": "Repita a nova senha", "class": "form-control"}),
         required=False,
     )
 

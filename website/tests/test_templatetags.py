@@ -28,12 +28,7 @@ class TemplateTagsTest(TestCase):
 
         try:
             # import tag and call it via template rendering
-            tpl = Template(
-                (
-                    "{% load get_type %}{% get_tile_types as tile_types %}"
-                    "{{ tile_types|length }}"
-                )
-            )
+            tpl = Template(("{% load get_type %}{% get_tile_types as tile_types %}" "{{ tile_types|length }}"))
             rendered = tpl.render(Context({}))
             # should find both tile files
             self.assertIn("2", rendered)

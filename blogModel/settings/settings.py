@@ -31,17 +31,11 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", None)
 if not SECRET_KEY and DEBUG is not True:
     print(SECRET_KEY, DEBUG)
-    raise RuntimeError(
-        "DJANGO_SECRET_KEY environment variable must be set in production"
-    )
+    raise RuntimeError("DJANGO_SECRET_KEY environment variable must be set in production")
 
 # Warn / fail if SECRET_KEY is weak in production
 if SECRET_KEY:
-    _weak_key = (
-        len(SECRET_KEY) < 50
-        or SECRET_KEY.startswith("django-insecure-")
-        or len(set(SECRET_KEY)) < 5
-    )
+    _weak_key = len(SECRET_KEY) < 50 or SECRET_KEY.startswith("django-insecure-") or len(set(SECRET_KEY)) < 5
     if _weak_key and DEBUG is not True:
         raise RuntimeError(
             "DJANGO_SECRET_KEY is too weak for production. Generate a secure, random value (>=50 chars)."
@@ -144,9 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # framework so we can call `validate_password()` from views/forms while
 # preserving the original learning-oriented rules. The custom validator is
 # implemented in `website.validators.LegacyPasswordValidator`.
-AUTH_PASSWORD_VALIDATORS.insert(
-    1, {"NAME": "website.validators.LegacyPasswordValidator"}
-)
+AUTH_PASSWORD_VALIDATORS.insert(1, {"NAME": "website.validators.LegacyPasswordValidator"})
 
 # Prefer Argon2 for password hashing when available. Requires argon2-cffi in
 # the environment (already added to requirements.txt).
@@ -199,7 +191,11 @@ if DEBUG:
             "style-src": ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com"),
             "font-src": ("'self'", "https://fonts.gstatic.com"),
             "img-src": ("'self'", "data:", "blob:"),
-            "frame-src": ("'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com",),
+            "frame-src": (
+                "'self'",
+                "https://www.youtube.com",
+                "https://www.youtube-nocookie.com",
+            ),
             "media-src": (
                 "'self'",
                 "blob:",
@@ -250,9 +246,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
     # SSL redirect (only if you terminate SSL at Django or trust proxy)
-    SECURE_SSL_REDIRECT = (
-        False if DEBUG else True
-    )  # os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+    SECURE_SSL_REDIRECT = False if DEBUG else True  # os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
     # XSS / clickjacking

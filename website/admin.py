@@ -102,11 +102,7 @@ class SocialMediaInline(admin.TabularInline):
 
 class AuthorAdmin(admin.ModelAdmin):
 
-    inlines = [
-        JobInline,
-        GraduationInline,
-        SocialMediaInline
-    ]
+    inlines = [JobInline, GraduationInline, SocialMediaInline]
 
 
 class PostAdmin(admin.ModelAdmin):

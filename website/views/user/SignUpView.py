@@ -46,20 +46,19 @@ def sign_up_user(request):
                 create_author(request, user)
             else:
                 create_reader(request, user)
-            messages.success(
-                request, f"O usuário {user.username} foi registrado com sucesso."
-            )
+            messages.success(request, f"O usuário {user.username} foi registrado com sucesso.")
             return redirect("login")
         else:
-            messages.error(
-                request, "A senha digitada não confere ou não satisfaz as regras."
-            )
+            messages.error(request, "A senha digitada não confere ou não satisfaz as regras.")
 
     context = {
         "form": user_form,
     }
     return render(
-        request, template_name="blog/pages/sign-up/sign-up.html", context=context, status=200
+        request,
+        template_name="blog/pages/sign-up/sign-up.html",
+        context=context,
+        status=200,
     )
 
 

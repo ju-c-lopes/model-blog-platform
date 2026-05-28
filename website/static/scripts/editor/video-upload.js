@@ -53,7 +53,7 @@ function handleVideoUpload(event) {
                     🎥 Vídeo local inserido: ${file.name}
                 </div>
             `;
-            
+
             insertIntoEditor(placeholderHtml);
             showMediaPreview("Video", file.name);
             closePopup(".video-buttons");

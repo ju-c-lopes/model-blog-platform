@@ -7,17 +7,17 @@
     rel="stylesheet"
     href="{% static 'vendor/quill/quill.snow.css' %}"
 />
-<link 
+<link
     rel="stylesheet"
     href="{% static 'css/post/edit_post.css' %}"
 />
-<link 
+<link
     rel="stylesheet"
     href="{% static 'css/post/post.css' %}"
 />
 {% endblock %} {% block content %}
 <div class="post-form-container">
-    
+
     {% include 'components/post/editor/form_header.html' with is_creating=is_creating %}
 
     <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}

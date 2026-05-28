@@ -1,14 +1,13 @@
 from django.db import models
-from website.models import STATUS_MAP, ACADEMIC_LEVEL
+
+from website.models import ACADEMIC_LEVEL, STATUS_MAP
 
 
 class Graduation(models.Model):
     graduation_level = models.IntegerField(choices=ACADEMIC_LEVEL)
     school = models.TextField(max_length=100, blank=True)
     course = models.CharField(max_length=200, blank=True)
-    author = models.ForeignKey(
-        "Author", related_name="graduations", on_delete=models.CASCADE
-    )
+    author = models.ForeignKey("Author", related_name="graduations", on_delete=models.CASCADE)
     year_graduation = models.PositiveIntegerField(blank=True, null=True)
     concluded = models.BooleanField(default=False)
 

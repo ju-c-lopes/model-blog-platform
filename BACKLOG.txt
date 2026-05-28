@@ -22,6 +22,10 @@ Conteúdo
     [ ] Rodar testes no container e registrar estado (muitos ainda apontam AuthorView legado)
 
 [ ] * Refatoração Views, Urls, Scripts, CSS
+    [X] CSS — organização por domínio (website/static/css/README.md)
+        [X] base/, author/, reader/, post/, user/, pages/, exceptions/
+        [X] Renomear edit-author-page.css → author/edit.css, edit-reader-page.css → reader/edit.css
+        [X] Mover login/sign-up para user/; corrigir refs quebradas (errors, search, profile-update)
     [X] Scripts
         [ ] editor
             [X] ajuste de table
@@ -37,7 +41,7 @@ Conteúdo
         # Legado a remover: edit_author_profile e helpers em AuthorView.py
         # Template: blog/pages/edit-author/edit-author.html (formsets Django)
         # Scripts: website/static/scripts/forms/* (padronizar com formset-dynamic.js)
-        # CSS: website/static/css/author/edit-author-page.css
+        # CSS: website/static/css/author/edit.css (ver css/README.md)
 
             [X] Fase 1 — View + application layer + segurança (prioridade)
                 [X] Extrair formsets → website/forms/author/author_edit_formsets.py
@@ -64,14 +68,16 @@ Conteúdo
                 [X] Refatorar buttonSocialPlus / buttonJobPlus / buttonGraduationPlus (deprecated; author-edit-formsets.js)
 
             [X] Fase 4 — Template e CSS
-                [X] Corrigir path CSS no template (css/author/edit-author-page.css)
+                [X] Corrigir path CSS no template (css/author/edit.css)
                 [X] Erros por formset no template
                 [X] Includes opcionais para blocos repetidos (form_errors, formset_errors)
 
-            [ ] Fase 5 — Testes (acoplado à Fase 1)
+            [X] Fase 5 — Testes / CI
                 [X] Migrar imports de AuthorView → AuthorEditView nos testes de edição
                 [X] Teste de permissão: usuário A não edita slug de B (test_author_edit_view)
-                [ ] Testes de integração: Client + login + POST com os 3 formsets
+                [X] ProfileUpdateView + URL update-profile; patches Login/Search; get_tile_types
+                [X] Post likes/loves M2M + migration 0003; suite 67 passed, cobertura ≥80%
+                [ ] Testes de integração: Client + login + POST com os 3 formsets (opcional)
                 [X] Consolidar/remover duplicatas (helpers legados, test_author_view_helpers_more)
                 [X] Atualizar test_quick_imports se novos módulos (services, formsets)
 

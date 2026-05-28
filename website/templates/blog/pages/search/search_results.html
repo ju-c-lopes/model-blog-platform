@@ -1,8 +1,14 @@
-{% extends 'blog/pages/base.html' %} {% load static %} {% block title %}Search
-Results{% endblock %} {% block css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}" />
-<link rel="stylesheet" href="{% static 'css/search.css' %}" />
-{% endblock %} {% block content %}
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}" />
+<link rel="stylesheet" href="{% static 'css/post/search.css' %}" />
+{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-8 mx-auto">

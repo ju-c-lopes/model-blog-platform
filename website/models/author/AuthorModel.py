@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 
-from website.models import ROLE_CHOICE, GENDER_CHOICE
+from website.models import GENDER_CHOICE, ROLE_CHOICE
 from website.models.user.UserModel import User
 
 
@@ -39,11 +39,13 @@ class Author(models.Model):
         for social in self.social_media.all():
             name = social.get_social_media_display().lower()
 
-            links.append({
-                "name": name,
-                "url": social.social_media_profile,
-                "icon": f"img/icons/{name}.png"
-            })
+            links.append(
+                {
+                    "name": name,
+                    "url": social.social_media_profile,
+                    "icon": f"img/icons/{name}.png",
+                }
+            )
 
         return links
 

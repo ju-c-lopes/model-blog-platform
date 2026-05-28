@@ -61,7 +61,7 @@ function sendYoutubeUrl(url) {
     if (input) input.value = "";
     const youtubeForm = document.querySelector(".youtube-form");
     if (youtubeForm) youtubeForm.style.display = "none";
-    
+
     closePopup(".video-buttons");
 
     console.log(

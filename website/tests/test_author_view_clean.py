@@ -1,7 +1,8 @@
+from unittest.mock import patch
+
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.test import RequestFactory, TestCase
-from unittest.mock import patch
 
 import website.views.author.AuthorView as av
 from website.models.author.AuthorModel import Author
@@ -12,15 +13,9 @@ User = get_user_model()
 class AuthorViewCleanTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.owner = User.objects.create_user(
-            email="owner@example.com", password="pw", username="owner"
-        )
-        self.other = User.objects.create_user(
-            email="other@example.com", password="pw", username="other"
-        )
-        self.author = Author.objects.create(
-            user=self.owner, author_name="Owner", author_url_slug="owner"
-        )
+        self.owner = User.objects.create_user(email="owner@example.com", password="pw", username="owner")
+        self.other = User.objects.create_user(email="other@example.com", password="pw", username="other")
+        self.author = Author.objects.create(user=self.owner, author_name="Owner", author_url_slug="owner")
 
     def test_view_author_page_owner_and_non_owner(self):
         captured = {}

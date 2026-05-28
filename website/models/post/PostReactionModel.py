@@ -1,6 +1,5 @@
-from django.db import models
 from django.conf import settings
-from website.models.post.PostModel import Post
+from django.db import models
 
 
 class PostReaction(models.Model):
@@ -13,21 +12,11 @@ class PostReaction(models.Model):
         (LOVE, "Love"),
     ]
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    post = models.ForeignKey(
-        "Post",
-        on_delete=models.CASCADE,
-        related_name="reactions"
-    )
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="reactions")
 
-    reaction = models.CharField(
-        max_length=10,
-        choices=REACTION_CHOICES
-    )
+    reaction = models.CharField(max_length=10, choices=REACTION_CHOICES)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

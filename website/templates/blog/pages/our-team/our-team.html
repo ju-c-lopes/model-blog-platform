@@ -8,8 +8,8 @@
     media="all"
 />
 {% endblock %}
-{% block content %} 
+{% block content %}
 {% for author in authors %}
     {% include "components/card-author/card-author.html" with author=author tag="div" %}
-{% endfor %} 
+{% endfor %}
 {% endblock %}

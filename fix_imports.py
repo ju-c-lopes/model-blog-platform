@@ -1,4 +1,3 @@
-import os
 import glob
 
 replacements = {
@@ -12,15 +11,15 @@ replacements = {
     "from website.views.AuthorEditView import": "from website.views.author.AuthorEditView import",
 }
 
-for filepath in glob.glob('website/tests/**/*.py', recursive=True):
-    with open(filepath, 'r') as f:
+for filepath in glob.glob("website/tests/**/*.py", recursive=True):
+    with open(filepath, "r") as f:
         content = f.read()
-    
+
     modified = content
     for old, new in replacements.items():
         modified = modified.replace(old, new)
-        
+
     if content != modified:
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             f.write(modified)
         print(f"Updated {filepath}")
