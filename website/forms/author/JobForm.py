@@ -1,4 +1,5 @@
 from django import forms
+
 from website.models.author.JobsModel import Job
 
 
@@ -21,7 +22,5 @@ class JobForm(forms.ModelForm):
             "start_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "end_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "current_job": forms.CheckboxInput(attrs={"class": "form-check-input"}),
-            "roles_description": forms.Textarea(
-                attrs={"class": "form-control", "rows": 3}
-            ),
+            "roles_description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }

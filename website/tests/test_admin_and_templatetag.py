@@ -74,9 +74,7 @@ def test_userchangeform_clean_and_save(db):
     assert user2.check_password("new")
 
     # senha em branco não altera o hash existente
-    u_blank = User.objects.create_user(
-        email="blank@example.com", password="keepme", username="blank"
-    )
+    u_blank = User.objects.create_user(email="blank@example.com", password="keepme", username="blank")
     old_hash = u_blank.password
     form3 = UserChangeForm(
         {

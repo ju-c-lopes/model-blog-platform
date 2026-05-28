@@ -1,0 +1,84 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+from website.forms.user.ProfileUpdateForm import ProfileUpdateForm
+from website.models.author.AuthorModel import Author
+from website.models.user.ReaderModel import Reader
+from website.views.user.SignUpView import treat_accentuation
+
+
+@login_required
+def update_profile(request):
+    user = request.user
+    current_profile_type = None
+
+    if hasattr(user, "author"):
+        current_profile_type = "author"
+    elif hasattr(user, "reader"):
+        current_profile_type = "reader"
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(user=user, data=request.POST, files=request.FILES)
+        if form.is_valid():
+            new_profile_type = form.cleaned_data["profile_type"]
+            name = form.cleaned_data["name"]
+            image = form.cleaned_data.get("image")
+
+            if current_profile_type and current_profile_type != new_profile_type:
+                if current_profile_type == "author":
+                    user.author.delete()
+                    user.is_staff = False
+                else:
+                    user.reader.delete()
+
+                current_profile_type = None
+
+            if new_profile_type == "author":
+                if current_profile_type == "author":
+                    author = user.author
+                    author.author_name = name
+                    if image:
+                        if author.image:
+                            author.image.delete(save=False)
+                        author.image = image
+                    author.save()
+                else:
+                    user.is_staff = True
+                    user.save()
+
+                    author_name_replaced = treat_accentuation(name)
+                    slug = "-".join(author_name_replaced.split()).lower()
+
+                    Author.objects.create(
+                        user=user,
+                        author_name=name,
+                        author_url_slug=slug,
+                        access_level=1,
+                        image=image,
+                    )
+                messages.success(request, "Perfil de Autor atualizado com sucesso!")
+            else:
+                if current_profile_type == "reader":
+                    reader = user.reader
+                    reader.reader_name = name
+                    if image:
+                        if reader.image:
+                            reader.image.delete(save=False)
+                        reader.image = image
+                    reader.save()
+                else:
+                    Reader.objects.create(user=user, reader_name=name, image=image)
+                messages.success(request, "Perfil de Leitor atualizado com sucesso!")
+
+            return redirect("/")
+    else:
+        form = ProfileUpdateForm(user=user)
+
+    context = {
+        "form": form,
+        "has_profile": current_profile_type is not None,
+        "profile_type": current_profile_type,
+        "is_creating": current_profile_type is None,
+    }
+    return render(request, "blog/pages/profile-update/update-profile.html", context)

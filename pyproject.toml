@@ -48,20 +48,23 @@ pytest-django = "^4.12.0"
 black = "^26.1.0"
 coverage = "^7.13.4"
 flake8 = "^7.3.0"
+isort = "^8.0.1"
+ruff = "^0.15.14"
+pre-commit = "^4.6.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 88
+line-length = 119
 target-version = ['py312']
 
 [tool.isort]
 profile = 'black'
 
 [tool.ruff]
-line-length = 88
+line-length = 119
 
 # Exclude generated and non-source trees and package re-export files where
 # star-imports are intentional. This keeps automatic fixes safer and focused
@@ -102,7 +105,7 @@ ignore = ["E203"]
 # and would require a broader refactor; keep the linter focused on safe auto
 # fixes across the repo for now.
 "website/views/AuthorView.py" = ["C901"]
-"website/views/ProfileUpdateView.py" = ["C901"]
+"website/views/user/ProfileUpdateView.py" = ["C901"]
 "website/templatetags/get_type.py" = ["C901"]
 
 # Allow long lines in tests that contain long help text or comments; these

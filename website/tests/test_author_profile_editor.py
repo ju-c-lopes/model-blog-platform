@@ -16,15 +16,9 @@ User = get_user_model()
 class AuthorProfileEditorTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(
-            email="editor@example.com", password="pw", username="editor"
-        )
-        self.other = User.objects.create_user(
-            email="other@example.com", password="pw", username="other"
-        )
-        self.author = Author.objects.create(
-            user=self.user, author_name="Editor", author_url_slug="editor"
-        )
+        self.user = User.objects.create_user(email="editor@example.com", password="pw", username="editor")
+        self.other = User.objects.create_user(email="other@example.com", password="pw", username="other")
+        self.author = Author.objects.create(user=self.user, author_name="Editor", author_url_slug="editor")
 
     def test_get_author_for_edit(self):
         author = get_author_for_edit("editor")

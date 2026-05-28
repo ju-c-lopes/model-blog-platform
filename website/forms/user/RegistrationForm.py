@@ -1,9 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 
 from website.models.author.AuthorModel import Author
 from website.models.user.ReaderModel import Reader
-from website.models.user.UserModel import User
 
 
 class RegistrationAuthorForm(forms.ModelForm):

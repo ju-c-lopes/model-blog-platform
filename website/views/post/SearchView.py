@@ -14,9 +14,7 @@ def search_posts(request):
     if query:
         # Search in title, text, and author name
         results = Post.objects.filter(
-            Q(title__icontains=query)
-            | Q(text__icontains=query)
-            | Q(author__author_name__icontains=query)
+            Q(title__icontains=query) | Q(text__icontains=query) | Q(author__author_name__icontains=query)
         ).order_by("-published_date")
 
     # Pagination

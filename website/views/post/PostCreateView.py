@@ -48,9 +48,7 @@ def edit_post(request, url_slug=None):
                 new_post.updated_date = timezone.now()
                 # Save to DB
                 new_post.save()
-                messages.success(
-                    request, "Your blog post has been created successfully!"
-                )
+                messages.success(request, "Your blog post has been created successfully!")
                 return redirect("post_detail", url_slug=new_post.url_slug)
         else:
             form = PostForm(request.POST, instance=post)
@@ -59,9 +57,7 @@ def edit_post(request, url_slug=None):
                 updated_post = form.save(commit=False)
                 updated_post.updated_date = timezone.now()
                 updated_post.save()
-                messages.success(
-                    request, "Your blog post has been updated successfully!"
-                )
+                messages.success(request, "Your blog post has been updated successfully!")
                 return redirect("post_detail", url_slug=updated_post.url_slug)
     else:
         form = PostForm(instance=post) if post else PostForm()

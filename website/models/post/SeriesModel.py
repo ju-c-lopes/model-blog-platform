@@ -7,11 +7,7 @@ class Series(models.Model):
     description = models.TextField(blank=True)
     author = models.ForeignKey("Author", related_name="series", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    cover_image = models.ImageField(
-        upload_to="series_covers/",
-        blank=True,
-        null=True
-    )
+    cover_image = models.ImageField(upload_to="series_covers/", blank=True, null=True)
 
     def __str__(self):
         return self.title

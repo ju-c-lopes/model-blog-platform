@@ -37,14 +37,7 @@ ALLOWED_TAGS = [
 ALLOWED_ATTRIBUTES = {
     "a": ["href", "title", "rel", "target"],
     "img": ["src", "alt", "title", "width", "height"],
-    "iframe": [
-        "src",
-        "width",
-        "height",
-        "frameborder",
-        "allow",
-        "allowfullscreen"
-    ],
+    "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen"],
     "td": ["colspan", "rowspan", "data-row", "data-col"],
 }
 

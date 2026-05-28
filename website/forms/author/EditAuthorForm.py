@@ -8,9 +8,7 @@ User = get_user_model()
 
 
 class EditAuthorForm(forms.ModelForm):
-    author_name = forms.CharField(
-        label="Nome completo", widget=forms.TextInput(attrs={"class": "form-control"})
-    )
+    author_name = forms.CharField(label="Nome completo", widget=forms.TextInput(attrs={"class": "form-control"}))
     gender = forms.ChoiceField(
         label="Gênero",
         choices=GENDER_CHOICE,

@@ -7,9 +7,7 @@ class ProfileUpdateForm(forms.Form):
         ("reader", "Leitor"),
     ]
 
-    profile_type = forms.ChoiceField(
-        choices=PROFILE_CHOICES, widget=forms.RadioSelect, label="Tipo de Perfil"
-    )
+    profile_type = forms.ChoiceField(choices=PROFILE_CHOICES, widget=forms.RadioSelect, label="Tipo de Perfil")
 
     name = forms.CharField(
         max_length=100,

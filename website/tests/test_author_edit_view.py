@@ -14,15 +14,9 @@ User = get_user_model()
 class AuthorEditViewTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.owner = User.objects.create_user(
-            email="owner@example.com", password="pw", username="owner"
-        )
-        self.other = User.objects.create_user(
-            email="other@example.com", password="pw", username="other"
-        )
-        self.author = Author.objects.create(
-            user=self.owner, author_name="Owner", author_url_slug="owner"
-        )
+        self.owner = User.objects.create_user(email="owner@example.com", password="pw", username="owner")
+        self.other = User.objects.create_user(email="other@example.com", password="pw", username="other")
+        self.author = Author.objects.create(user=self.owner, author_name="Owner", author_url_slug="owner")
 
     def test_edit_requires_login(self):
         url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
@@ -71,12 +65,8 @@ class AuthorEditViewTests(TestCase):
         return data
 
     def test_edit_author_post_updates_name_without_changing_password(self):
-        user = User.objects.create_user(
-            email="keep@example.com", password="keepme", username="keepauth"
-        )
-        author = Author.objects.create(
-            user=user, author_name="Old Name", author_url_slug="keepauth"
-        )
+        user = User.objects.create_user(email="keep@example.com", password="keepme", username="keepauth")
+        author = Author.objects.create(user=user, author_name="Old Name", author_url_slug="keepauth")
         self.client.force_login(user)
         url = reverse("edit_author", kwargs={"slug": author.author_url_slug})
         response = self.client.post(
@@ -116,9 +106,7 @@ class AuthorEditViewTests(TestCase):
             patch.object(edit_view, "messages"),
             patch.object(edit_view, "redirect", return_value=HttpResponse(status=302)),
         ):
-            resp = edit_view.edit_author_profile(
-                req, slug=self.author.author_url_slug
-            )
+            resp = edit_view.edit_author_profile(req, slug=self.author.author_url_slug)
             mock_save.assert_called_once_with(bundle, req)
             self.assertEqual(resp.status_code, 302)
 
@@ -142,16 +130,12 @@ class AuthorEditViewTests(TestCase):
             ),
             patch.object(edit_view, "render", return_value=HttpResponse(status=200)),
         ):
-            resp = edit_view.edit_author_profile(
-                req, slug=self.author.author_url_slug
-            )
+            resp = edit_view.edit_author_profile(req, slug=self.author.author_url_slug)
             mock_msgs.assert_called_once()
             self.assertEqual(resp.status_code, 200)
 
     def test_edit_author_redirects_when_no_author_profile(self):
-        user = User.objects.create_user(
-            email="noauth@example.com", password="pw", username="noauth"
-        )
+        user = User.objects.create_user(email="noauth@example.com", password="pw", username="noauth")
         req = self.factory.get("/")
         req.user = user
         resp = edit_view.edit_author(req, author_slug=None)
@@ -162,8 +146,6 @@ class AuthorEditViewTests(TestCase):
         req = self.factory.get("/")
         req.user = self.owner
 
-        with patch.object(
-            edit_view, "edit_author_profile", return_value=HttpResponse(status=200)
-        ) as mock_edit:
+        with patch.object(edit_view, "edit_author_profile", return_value=HttpResponse(status=200)) as mock_edit:
             edit_view.edit_author(req, author_slug="owner")
             mock_edit.assert_called_once_with(req, "owner")

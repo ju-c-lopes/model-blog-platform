@@ -31,9 +31,7 @@ def build_bundle(request, reader: Reader) -> ReaderEditBundle:
     if request.method == "POST":
         return ReaderEditBundle(
             user_form=UserChangeForm(request.POST, instance=request.user),
-            reader_form=EditReaderForm(
-                request.POST, request.FILES, instance=reader
-            ),
+            reader_form=EditReaderForm(request.POST, request.FILES, instance=reader),
         )
 
     return ReaderEditBundle(

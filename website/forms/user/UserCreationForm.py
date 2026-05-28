@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
+from phonenumber_field.formfields import PhoneNumberField
 
 from website.models.user.UserModel import User
-from phonenumber_field.formfields import PhoneNumberField
 
 
 class UserCreationForm(BaseUserCreationForm):
@@ -18,9 +18,5 @@ class UserCreationForm(BaseUserCreationForm):
             "phone_number",
         )
 
-    password1 = forms.CharField(
-        label="Senha:", widget=forms.PasswordInput, required=True
-    )
-    password2 = forms.CharField(
-        label="Confirme a senha:", widget=forms.PasswordInput, required=True
-    )
+    password1 = forms.CharField(label="Senha:", widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(label="Confirme a senha:", widget=forms.PasswordInput, required=True)
