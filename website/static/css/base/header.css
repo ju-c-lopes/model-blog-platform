@@ -808,6 +808,7 @@
         display: flex;
         align-items: center;
         padding-right: 2vw;
+        width: 250px;
     }
     .profile-trigger {
         display: flex;
@@ -822,8 +823,17 @@
         background: rgba(255, 255, 255, 0.1);
     }
     .profile-name {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         margin: 0 8px;
         font-weight: 500;
+        height: 40px;
+    }
+    .profile-name-text {
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
     }
     .dropdown-arrow {
         font-size: 12px;
@@ -1040,6 +1050,10 @@
     .profile-name {
         margin: 0 8px;
         font-weight: 500;
+    }
+    .profile-name-text {
+        display: flex;
+        flex-wrap: wrap;
     }
     .dropdown-arrow {
         font-size: 12px;

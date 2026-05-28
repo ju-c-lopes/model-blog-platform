@@ -15,13 +15,13 @@ def post_detail(request, url_slug):
     context["author_connected"] = request.user == post.author.user
     context["graduations_level"] = ACADEMIC_LEVEL
     context["social_media_index"] = SOCIAL_MEDIA
-    # whether the current authenticated user already liked/loved this post
-    # if request.user.is_authenticated:
-    #     context["user_liked"] = post.likes.filter(pk=request.user.pk).exists()
-    #     context["user_loved"] = post.loves.filter(pk=request.user.pk).exists()
-    # else:
-    #     context["user_liked"] = False
-    #     context["user_loved"] = False
+    # Keep reaction icons in sync on initial page load.
+    if request.user.is_authenticated:
+        context["user_liked"] = post.likes.filter(pk=request.user.pk).exists()
+        context["user_loved"] = post.loves.filter(pk=request.user.pk).exists()
+    else:
+        context["user_liked"] = False
+        context["user_loved"] = False
     return render(request, "blog/pages/post/post_detail.html", context)
 
 

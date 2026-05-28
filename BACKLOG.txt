@@ -97,6 +97,7 @@ Autores
 Posts
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
+[X] Revisar fluxo de reações like/love pós-refatoração (UI inicial, persistência e testes automatizados)
 
 Series
 [ ] Criar página de series (1 série pode conter vários posts)

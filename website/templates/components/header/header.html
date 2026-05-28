@@ -129,9 +129,9 @@
                 {% endif %}
                 <span class="profile-name">
                     {% if request.user.author %}
-                        {{ request.user.author.author_name }}
+                        <p class="profile-name-text">{{ request.user.author.author_name }}</p>
                     {% else %}
-                        {{ request.user.reader.reader_name }}
+                        <p class="profile-name-text">{{ request.user.reader.reader_name }}</p>
                     {% endif %}
                     <span class="dropdown-arrow">▼</span>
                 </span>
