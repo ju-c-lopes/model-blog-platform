@@ -73,26 +73,38 @@ You can regenerate it with:
 
 ### Run with Docker container
 
+Set `UID` and `GID` in `.env` to match your host user (`id -u` / `id -g`). The compose file runs the app as that user so bind-mounted files are not owned by root.
+
+On `docker compose up`, the entrypoint runs `poetry install` into the bind-mounted `.venv` (no duplicate install during image build).
+
 ```bash
-docker compose up -d
-docker exec -it python_app bash
-cd /app
-poetry run python manage.py migrate
-poetry run python manage.py runserver 0.0.0.0:8000
+docker compose down
+docker compose up -d --build
+docker compose logs -f python-app   # wait for "Installing Poetry dependencies..."
+docker compose exec python-app poetry run python manage.py migrate
+docker compose exec python-app poetry run python manage.py runserver 0.0.0.0:8000
+```
+
+If files were previously created as root inside the container, fix ownership once on the host:
+
+```bash
+sudo chown -R "$(id -u):$(id -g)" .
 ```
 
 ### Run tests and coverage
 
 ```bash
-docker exec -it python_app bash
-cd /app
-poetry run pytest website/tests/
+docker compose exec python-app poetry run pytest website/tests/
 ```
 
-### Run pre-commit checks (host environment)
+### Run pre-commit checks
+
+On the host (recommended) or inside the container (same UID as host when `user:` is set):
 
 ```bash
 pre-commit run --all-files
+# or
+docker compose exec python-app poetry run pre-commit run --all-files
 ```
 
 ---
