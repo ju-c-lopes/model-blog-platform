@@ -30,7 +30,7 @@ class Author(models.Model):
 
     @property
     def current_job(self):
-        return self.jobs.filter(current_job=True).first()
+        return self.get_current_job()
 
     @property
     def social_links(self):
@@ -67,10 +67,11 @@ class Author(models.Model):
         return self.graduations.order_by("-year_graduation").first()
 
     def get_jobs(self):
-        return self.jobs.all().order_by("-year_begin", "-month_begin")
+        # Job.Meta.ordering (-start_date, -pk) replaces legacy year_begin/month_begin.
+        return self.jobs.all()
 
     def get_current_job(self):
-        return self.jobs.filter(current_job=True).order_by("-year_begin", "-month_begin").first()
+        return self.jobs.filter(current_job=True).first()
 
     def get_author_headline(self):
         job = self.get_current_job()
@@ -82,7 +83,7 @@ class Author(models.Model):
             parts.append(graduation.get_display_text())
 
         if job:
-            parts.append(job.title)
+            parts.append(job.occupation)
 
         return "\n".join(parts)
 

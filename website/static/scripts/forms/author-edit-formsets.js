@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         listSelector: ".social-list",
         templateId: "social-empty-template",
         totalFormsSelector: 'input[name^="social"][name$="-TOTAL_FORMS"]',
-        itemSelector: ".social-item",
+        itemSelector: ".formset-item",
     });
 
     window.initFormsetDynamic({
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         listSelector: ".graduation-list",
         templateId: "graduation-empty-template",
         totalFormsSelector: 'input[name^="graduation"][name$="-TOTAL_FORMS"]',
-        itemSelector: ".graduation-item",
+        itemSelector: ".formset-item",
     });
 
     window.initFormsetDynamic({
@@ -24,6 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         listSelector: ".job-list",
         templateId: "job-empty-template",
         totalFormsSelector: 'input[name^="job"][name$="-TOTAL_FORMS"]',
-        itemSelector: ".job-item",
+        itemSelector: ".formset-item",
     });
 });

@@ -13,6 +13,13 @@ class GraduationForm(forms.ModelForm):
             "year_graduation",
             "concluded",
         ]
+        labels = {
+            "graduation_level": "Tipo de formação",
+            "course": "Curso",
+            "school": "Instituição",
+            "year_graduation": "Ano de conclusão",
+            "concluded": "Concluído",
+        }
         widgets = {
             "graduation_level": forms.Select(attrs={"class": "custom-select"}),
             "course": forms.TextInput(attrs={"class": "form-control"}),

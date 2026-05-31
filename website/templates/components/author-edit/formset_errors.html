@@ -1,7 +1,1 @@
-{% if formset.non_form_errors %}
-<ul class="form-errors list-unstyled text-error-message mb-3">
-    {% for error in formset.non_form_errors %}
-        <li>{{ error }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% include "components/forms/formset_errors.html" %}
