@@ -1,17 +1,19 @@
 BACKLOG
 
-# OBSERVAÇÃO IMPORTANTE: Antes de dar continuidade a qualquer ação, precisamos verificar um ponto de falha, quando o reader edita seu perfil e deixa o campo de redifinição de senha em branco, sua senha é atualizada com conteúdo em branco. Isso provavelmente acontece também com author. Eu imaginava que, ele salvando com esses campos em branco, não atualizasse a senha, assim como outros campos que não foram explicitamente informados. Qual seria a solução ideal?
+# RESOLVIDO (2025): Senha em branco no edit reader/author não altera mais o hash.
+# UserChangeForm só chama set_password quando password está preenchido (password_will_change).
+# Testes: test_profile_reader_post_more2 (reader), fluxo author em author_profile_editor (Fase 1).
 
 # Arquitetura (clean architecture — em progresso)
 # Camadas já iniciadas: models/, forms/, views/ por domínio, static/scripts por feature.
-# Próximo: application/services (casos de uso), views finas, testes alinhados à URL real.
+# Próximo: expandir services em outros domínios; revisão geral da suite de testes legada.
 [x] Models separados por domínio (author, post, user)
 [x] Forms separados por domínio
 [x] Views separadas por domínio (parcial)
 [x] Static scripts modularizados (editor, forms, components)
-[x] Application layer (services / use cases) — author_profile_editor
-[x] Views finas (orquestração HTTP apenas) — AuthorEditView
-[ ] Testes alinhados à arquitetura atual (ver seção Testes)
+[x] Application layer (services / use cases) — author_profile_editor, reader_profile_editor
+[x] Views finas (orquestração HTTP apenas) — AuthorEditView, ReaderEditView
+[ ] Testes alinhados à arquitetura atual (ver seção Testes — author/reader edit ok; resto pendente)
 
 Conteúdo
 [x] Ajuste do card do autor
@@ -21,27 +23,30 @@ Conteúdo
     [ ] Confirmar assets estáticos carregados na rota /nossa-equipe/<slug>/edit
     [ ] Rodar testes no container e registrar estado (muitos ainda apontam AuthorView legado)
 
-[ ] * Refatoração Views, Urls, Scripts, CSS
+[X] Refatoração Views, Urls, Scripts, CSS (author + reader edit)
     [X] CSS — organização por domínio (website/static/css/README.md)
-        [X] base/, author/, reader/, post/, user/, pages/, exceptions/
+        [X] base/, shared/, author/, reader/, post/, user/, pages/, exceptions/
         [X] Renomear edit-author-page.css → author/edit.css, edit-reader-page.css → reader/edit.css
         [X] Mover login/sign-up para user/; corrigir refs quebradas (errors, search, profile-update)
+        [X] Camada compartilhada edit-profile (shared/edit-profile.css)
+        [X] Formsets author isolados (author/edit-formsets.css); reader importa só shared
     [X] Scripts
-        [ ] editor
+        [X] editor
             [X] ajuste de table
             [X] overlay popup
             [X] video upload  (technical commitment)
             [X] contador zerado na edição
             [X] semântica funções do youtube
-    [ ] Views
-        [X] editor do autor (fases 1–4; ver plano abaixo)
+        [X] forms — formset-dynamic.js, author-edit-formsets.js
+        [X] buttonSave.js — guards para não quebrar na página reader (sem social-button-plus)
+    [X] Views — editor do autor e reader (fases 1–6; ver plano abaixo)
 
         # --- Plano: refatoração AuthorEditView (editor do autor) ---
         # Fonte de verdade na URL: AuthorEditUrl → AuthorEditView.edit_author_profile
-        # Legado a remover: edit_author_profile e helpers em AuthorView.py
-        # Template: blog/pages/edit-author/edit-author.html (formsets Django)
-        # Scripts: website/static/scripts/forms/* (padronizar com formset-dynamic.js)
-        # CSS: website/static/css/author/edit.css (ver css/README.md)
+        # Template: blog/pages/edit-author/edit-author.html
+        # Partials: website/templates/components/forms/*
+        # CSS: author/edit.css → shared/edit-profile.css + author/edit-formsets.css
+        # Reader: edit-reader.html + reader/edit.css → shared/edit-profile.css
 
             [X] Fase 1 — View + application layer + segurança (prioridade)
                 [X] Extrair formsets → website/forms/author/author_edit_formsets.py
@@ -70,27 +75,33 @@ Conteúdo
             [X] Fase 4 — Template e CSS
                 [X] Corrigir path CSS no template (css/author/edit.css)
                 [X] Erros por formset no template
-                [X] Includes opcionais para blocos repetidos (form_errors, formset_errors)
+                [X] Includes reutilizáveis (form_table, form_field_row, formset_section, formset_item, form_errors)
+                [X] Labels pt-BR nos forms (JobForm, GraduationForm Meta.labels; EditAuthorForm explícito)
+                [X] select-wrapper no <td>; custom-select no widget; textarea com altura própria
+                [X] Job.Meta.ordering; testes test_author_job_ordering
 
             [X] Fase 5 — Testes / CI
                 [X] Migrar imports de AuthorView → AuthorEditView nos testes de edição
                 [X] Teste de permissão: usuário A não edita slug de B (test_author_edit_view)
                 [X] ProfileUpdateView + URL update-profile; patches Login/Search; get_tile_types
-                [X] Post likes/loves M2M + migration 0003; suite 67 passed, cobertura ≥80%
-                [ ] Testes de integração: Client + login + POST com os 3 formsets (opcional)
+                [X] Post likes/loves M2M + migration 0003; suite verde, cobertura ≥80%
+                [X] Testes de integração: Client + login + POST com os 3 formsets (test_edit_author_post_with_all_formsets)
                 [X] Consolidar/remover duplicatas (helpers legados, test_author_view_helpers_more)
                 [X] Atualizar test_quick_imports se novos módulos (services, formsets)
 
         [X] Fase 6 — Reader edit (após autor estável)
             [X] Aplicar mesmo padrão em ReaderEditView (serviço + view fina)
             [X] Model Reader: reader_name + related_name reader (migration 0002)
-            [X] Template edit-reader alinhado ao padrão table + form_errors
+            [X] Template edit-reader alinhado ao padrão table + form_errors + partials compartilhados
+            [X] CSS reader via shared/edit-profile.css (mesmo visual que author, sem formsets)
             [X] Testes test_reader_edit_view / test_reader_profile_editor
+            [X] Documentação README raiz (seção Profile Edit Pages)
 
 Autores
-[X] Página de edição do autor (Fases 1–4)
-[ ] Ajuste do template de edição do author (HTML)
-[ ] Ajuste do template de edição do author (CSS)
+[X] Página de edição do autor (Fases 1–6 + CSS/HTML compartilhados)
+[X] Ajuste do template de edição do author (HTML) — partials components/forms
+[X] Ajuste do template de edição do author (CSS) — shared + edit-formsets; revisão fina opcional
+[X] Página de edição do reader — mesmo padrão visual e forms
 [ ] Template da página de exibição do autor
 [ ] Template da página de equipe
 
@@ -120,8 +131,9 @@ Experiencia
 
 Testes
 [ ] Validar e reajustar testes (dívida: escritos antes da refatoração de arquitetura)
-    [ ] Prioridade: suite author edit → AuthorEditView + AuthorEditUrl
-    [ ] Remover ou adaptar testes de helpers removidos de AuthorView
+    [X] Prioridade: suite author edit → AuthorEditView + AuthorEditUrl
+    [X] Reader edit → ReaderEditView + reader_profile_editor
+    [ ] Remover ou adaptar testes de helpers removidos de AuthorView (restante da suite)
     [ ] Manter testes de view_author_page em AuthorView
 
 Produção

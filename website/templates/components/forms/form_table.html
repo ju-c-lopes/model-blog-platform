@@ -1,0 +1,8 @@
+<table class="form-table">
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+        {% include "components/forms/form_field_row.html" with field=field %}
+    {% endfor %}
+</table>
