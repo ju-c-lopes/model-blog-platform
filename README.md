@@ -30,9 +30,30 @@ The current project baseline includes:
 ## Current Highlights
 
 - Refactored author and reader profile editing into service-oriented flows
+- **Author and reader edit pages** share reusable form partials (`website/templates/components/forms/`) and a common CSS layer (`website/static/css/shared/edit-profile.css`); author-specific formsets (social, jobs, graduation) live in `website/static/css/author/edit-formsets.css`
 - Improved post editor modules (`website/static/scripts/editor`) with media and YouTube embedding
-- Organized static assets by domain (`css/author`, `css/reader`, `css/post`, `css/user`, etc.)
+- Organized static assets by domain (`css/shared`, `css/author`, `css/reader`, `css/post`, `css/user`, etc.)
 - CI-ready test suite with required coverage threshold
+
+---
+
+## Profile Edit Pages (Author & Reader)
+
+These pages were historically the hardest to maintain; they now follow a consistent structure:
+
+| Page | Template | CSS entrypoint | Forms |
+|------|----------|----------------|-------|
+| Author | `website/templates/blog/pages/edit-author/edit-author.html` | `css/author/edit.css` | Account + author profile + inline formsets (social, jobs, graduation) |
+| Reader | `website/templates/blog/pages/edit-reader/edit-reader.html` | `css/reader/edit.css` | Account + reader profile (name, photo) |
+
+Shared building blocks:
+
+- **Templates:** `form_table.html`, `form_field_row.html`, `formset_section.html`, `formset_item.html`
+- **CSS:** `shared/edit-profile.css` (layout, inputs, selects, textarea, responsive breakpoints)
+- **Author-only CSS:** `author/edit-formsets.css` (formset layout, checkboxes, add buttons)
+- **JS:** `formset-dynamic.js` and `author-edit-formsets.js` for dynamic inline formsets on the author page
+
+For CSS organization details, see `website/static/css/README.md`.
 
 ---
 
@@ -73,26 +94,38 @@ You can regenerate it with:
 
 ### Run with Docker container
 
+Set `UID` and `GID` in `.env` to match your host user (`id -u` / `id -g`). The compose file runs the app as that user so bind-mounted files are not owned by root.
+
+On `docker compose up`, the entrypoint runs `poetry install` into the bind-mounted `.venv` (no duplicate install during image build).
+
 ```bash
-docker compose up -d
-docker exec -it python_app bash
-cd /app
-poetry run python manage.py migrate
-poetry run python manage.py runserver 0.0.0.0:8000
+docker compose down
+docker compose up -d --build
+docker compose logs -f python-app   # wait for "Installing Poetry dependencies..."
+docker compose exec python-app poetry run python manage.py migrate
+docker compose exec python-app poetry run python manage.py runserver 0.0.0.0:8000
+```
+
+If files were previously created as root inside the container, fix ownership once on the host:
+
+```bash
+sudo chown -R "$(id -u):$(id -g)" .
 ```
 
 ### Run tests and coverage
 
 ```bash
-docker exec -it python_app bash
-cd /app
-poetry run pytest website/tests/
+docker compose exec python-app poetry run pytest website/tests/
 ```
 
-### Run pre-commit checks (host environment)
+### Run pre-commit checks
+
+On the host (recommended) or inside the container (same UID as host when `user:` is set):
 
 ```bash
 pre-commit run --all-files
+# or
+docker compose exec python-app poetry run pre-commit run --all-files
 ```
 
 ---
@@ -105,11 +138,11 @@ The following milestones are intentionally preserved to keep historical context:
 - Made Header and Menu functionality
 - Made Our Team Page
 - Made card profile which is used in Author Page and Our Team Page
-- Made author edit profile (needs more functionality later)
+- Made author edit profile with inline formsets (social media, jobs, graduation) and shared form/CSS components
 - Made edit social media profile functionality with messages return
 - Rewrite the user custom model which has been used to create author and reader profiles
 - Made Sign Up page with reader and author type register
-- Made Reader edit profile (more simple than author)
+- Made reader edit profile reusing the same edit-profile CSS and form partials as the author page
 - Made login page
 - Made Password validation with JavaScript
 - Setting show hide password on Login Page

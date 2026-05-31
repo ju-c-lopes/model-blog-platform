@@ -1,9 +1,1 @@
-{% if form.errors %}
-<ul class="form-errors list-unstyled text-error-message mb-3">
-    {% for field, errors in form.errors.items %}
-        {% for error in errors %}
-            <li>{{ field }}: {{ error }}</li>
-        {% endfor %}
-    {% endfor %}
-</ul>
-{% endif %}
+{% include "components/forms/form_errors.html" %}

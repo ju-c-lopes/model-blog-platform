@@ -1,0 +1,9 @@
+<tr class="form-field-row{% if field.field.widget.input_type == 'checkbox' %} form-check form-check-field{% endif %}">
+    <td>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    </td>
+    <td{% if field.field.widget.template_name == 'django/forms/widgets/select.html' %} class="select-wrapper"{% endif %}>
+        {{ field }}
+        {% include "components/forms/form_field_errors.html" with field=field %}
+    </td>
+</tr>

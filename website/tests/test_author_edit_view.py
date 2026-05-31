@@ -39,6 +39,54 @@ class AuthorEditViewTests(TestCase):
         url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn("job-empty-template", content)
+        self.assertIn("start_date", content)
+        self.assertIn("company", content)
+        self.assertIn("formset-item", content)
+
+    def test_edit_author_post_with_all_formsets(self):
+        self.client.force_login(self.owner)
+        url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
+        response = self.client.post(
+            url,
+            {
+                **self._author_edit_post_data(),
+                "social-TOTAL_FORMS": "1",
+                "social-INITIAL_FORMS": "0",
+                "social-MIN_NUM_FORMS": "0",
+                "social-MAX_NUM_FORMS": "1000",
+                "social-0-social_media": "1",
+                "social-0-social_media_profile": "https://facebook.com/testuser",
+                "graduation-TOTAL_FORMS": "1",
+                "graduation-INITIAL_FORMS": "0",
+                "graduation-MIN_NUM_FORMS": "0",
+                "graduation-MAX_NUM_FORMS": "1000",
+                "graduation-0-graduation_level": "1",
+                "graduation-0-course": "Computer Science",
+                "graduation-0-school": "Example University",
+                "graduation-0-year_graduation": "2020",
+                "graduation-0-concluded": "on",
+                "job-TOTAL_FORMS": "1",
+                "job-INITIAL_FORMS": "0",
+                "job-MIN_NUM_FORMS": "0",
+                "job-MAX_NUM_FORMS": "1000",
+                "job-0-occupation": "Developer",
+                "job-0-company": "Example Co",
+                "job-0-location": "Remote",
+                "job-0-start_date": "2020-01-15",
+                "job-0-current_job": "on",
+                "job-0-roles_description": "Build web apps",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.author.refresh_from_db()
+        self.assertEqual(self.author.social_media.count(), 1)
+        self.assertEqual(self.author.graduations.count(), 1)
+        self.assertEqual(self.author.jobs.count(), 1)
+        job = self.author.jobs.first()
+        self.assertEqual(job.occupation, "Developer")
+        self.assertEqual(job.company, "Example Co")
 
     def _author_edit_post_data(self, **overrides):
         data = {
