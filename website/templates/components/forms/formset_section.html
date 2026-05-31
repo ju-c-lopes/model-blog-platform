@@ -1,0 +1,24 @@
+<fieldset class="{{ fieldset_class }}" data-formset-prefix="{{ prefix }}">
+    <h2>{{ title }}</h2>
+    {% include "components/forms/formset_errors.html" with formset=formset %}
+
+    {{ formset.management_form }}
+    <template id="{{ template_id }}">
+        {% include "components/forms/formset_item.html" with form=formset.empty_form item_class=item_class %}
+    </template>
+
+    <div class="{{ list_class }} formset-list">
+        {% for item_form in formset %}
+            {% include "components/forms/formset_item.html" with form=item_form item_class=item_class %}
+        {% endfor %}
+    </div>
+
+    <button
+        type="button"
+        id="{{ add_button_id }}"
+        class="formset-add-button btn btn-primary w-100 {{ add_button_class|default:"" }}"
+    >
+        +
+    </button>
+    <hr>
+</fieldset>

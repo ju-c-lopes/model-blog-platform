@@ -13,4 +13,4 @@ class Job(models.Model):
 
     class Meta:
         db_table = "Job"
-        ordering = ["-start_date"]
+        ordering = ["-start_date", "-pk"]

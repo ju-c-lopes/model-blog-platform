@@ -20,6 +20,7 @@ ENV/
 .env
 .env.*
 !.env.example
+.bash_history
 
 # =========================
 # Django
@@ -39,8 +40,11 @@ staticfiles/
 # =========================
 .coverage
 coverage.xml
+reports/coverage/
 htmlcov/
 .pytest_cache/
+.cache/
+.config/
 
 # =========================
 # IDE / Editor
