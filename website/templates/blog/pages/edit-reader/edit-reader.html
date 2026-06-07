@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="row text-center edit-user-display">
+<div class="text-center edit-user-display">
     <h1 class="edit-user">
         Editando o usuário<br />
         <span>{{ request.user.reader.reader_name|default:request.user.username }}</span>.
@@ -35,8 +35,9 @@
             method="POST"
             enctype="multipart/form-data"
         >{% csrf_token %}
+            <hr />
             <fieldset class="reader-form">
-                <h2 class="visually-hidden">Dados da conta</h2>
+                <h2>Dados da conta</h2>
                 {% include "components/forms/form_errors.html" with form=user_form %}
                 {% include "components/forms/form_errors.html" with form=reader_form %}
                 {% include "components/forms/form_table.html" with form=user_form %}

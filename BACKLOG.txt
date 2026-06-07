@@ -30,6 +30,8 @@ Conteúdo
         [X] Mover login/sign-up para user/; corrigir refs quebradas (errors, search, profile-update)
         [X] Camada compartilhada edit-profile (shared/edit-profile.css)
         [X] Formsets author isolados (author/edit-formsets.css); reader importa só shared
+        [X] Estilização edit author/reader — mobile, tablet e desktop (breakpoints alinhados)
+        [X] Ajustes de layout global mobile/tablet (base/base.css, base/header.css) para edit profile
     [X] Scripts
         [X] editor
             [X] ajuste de table
@@ -79,6 +81,11 @@ Conteúdo
                 [X] Labels pt-BR nos forms (JobForm, GraduationForm Meta.labels; EditAuthorForm explícito)
                 [X] select-wrapper no <td>; custom-select no widget; textarea com altura própria
                 [X] Job.Meta.ordering; testes test_author_job_ordering
+                [X] Estilização desktop (min-width: 1081px) — author + reader
+                [X] Estilização tablet (769px–1080px) — author + reader
+                [X] Estilização mobile (max-width: 768px) — author + reader
+                [X] Checkboxes formset (form-check-field / form-check-delete) — td:first-child / td:last-child
+                [X] h2 "Dados da conta" visível; remoção de .row no edit-user-display
 
             [X] Fase 5 — Testes / CI
                 [X] Migrar imports de AuthorView → AuthorEditView nos testes de edição
@@ -93,21 +100,23 @@ Conteúdo
             [X] Aplicar mesmo padrão em ReaderEditView (serviço + view fina)
             [X] Model Reader: reader_name + related_name reader (migration 0002)
             [X] Template edit-reader alinhado ao padrão table + form_errors + partials compartilhados
-            [X] CSS reader via shared/edit-profile.css (mesmo visual que author, sem formsets)
+            [X] CSS reader via shared/edit-profile.css (mobile, tablet e desktop; sem formsets)
             [X] Testes test_reader_edit_view / test_reader_profile_editor
             [X] Documentação README raiz (seção Profile Edit Pages)
 
 Autores
 [X] Página de edição do autor (Fases 1–6 + CSS/HTML compartilhados)
 [X] Ajuste do template de edição do author (HTML) — partials components/forms
-[X] Ajuste do template de edição do author (CSS) — shared + edit-formsets; revisão fina opcional
-[X] Página de edição do reader — mesmo padrão visual e forms
+[X] Ajuste do template de edição do author (CSS) — mobile, tablet e desktop
+[X] Página de edição do reader — mesmo padrão visual e forms (mobile, tablet e desktop)
 [ ] Template da página de exibição do autor
 [ ] Template da página de equipe
 
 Posts
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
+[ ] Mapear fluxo search posts (view, GET/POST, paginação, testes) — funcionalidade ainda não baselineada
+[X] search_results.html — legibilidade do template (indentação e estrutura HTML)
 [X] Revisar fluxo de reações like/love pós-refatoração (UI inicial, persistência e testes automatizados)
 
 Series

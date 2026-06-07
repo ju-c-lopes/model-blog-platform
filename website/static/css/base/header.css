@@ -453,7 +453,7 @@
     }
 
     .menu-visible {
-        transform: translateY(calc(375px + 4em + 15px)); /* Increased to accommodate profile section */
+        transform: translateY(calc(375px + 4em + 25px)); /* Increased to accommodate profile section */
         transition: 0.4s ease-in;
     }
 
@@ -969,17 +969,11 @@
         outline: none;
         color: #fff;
         padding: 5px;
-        width: 8vw;
+        width: 12vw;
         z-index: 2000;
     }
     .search input:focus {
-        position: absolute;
-        left: -50px;
-        top: 200%;
-        border: none;
         outline: none;
-        width: 25vw;
-        border-bottom: #fff 1px solid;
         z-index: 2000;
     }
     .search input::placeholder {
@@ -1048,6 +1042,7 @@
         color: white;
     }
     .profile-name {
+        text-align: center;
         margin: 0 8px;
         font-weight: 500;
     }
