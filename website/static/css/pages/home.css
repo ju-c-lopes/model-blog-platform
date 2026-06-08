@@ -446,6 +446,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
     margin-bottom: 1rem;
     font-size: 0.875rem;
     color: var(--text-light);
@@ -454,6 +455,15 @@
 .post-author {
     font-weight: 500;
     color: var(--primary-blue);
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.post-meta .post-date {
+    flex-shrink: 0;
 }
 
 .post-link {
