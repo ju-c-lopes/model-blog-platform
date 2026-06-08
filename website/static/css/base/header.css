@@ -441,7 +441,7 @@
         width: 100% !important;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .7);
         padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
-        max-height: calc(100dvh - 5rem);
+        max-height: calc(100vh - 5rem);
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;

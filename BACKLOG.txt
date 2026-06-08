@@ -15,13 +15,10 @@ BACKLOG
 [x] Views finas (orquestração HTTP apenas) — AuthorEditView, ReaderEditView
 [ ] Testes alinhados à arquitetura atual (ver seção Testes — author/reader edit ok; resto pendente)
 
-Conteúdo
-[x] Ajuste do card do autor
-    [ ] Inventariar comportamento atual (GET, POST ok/erro, senha, imagem, formsets)
-    [ ] Confirmar assets estáticos carregados na rota /nossa-equipe/<slug>/edit
-    [ ] Rodar testes no container e registrar estado (muitos ainda apontam AuthorView legado)
-
 [ ] Fase 0 — Baseline
+    [ ] Inventariar comportamento atual edit author (GET, POST ok/erro, senha, imagem, formsets)
+    [ ] Confirmar assets estáticos carregados na rota /nossa-equipe/<slug>/edit
+    [ ] Rodar testes no container e registrar estado (dívida: suite legada vs AuthorView)
     [X] Refatoração Views, Urls, Scripts, CSS (author + reader edit)
     [X] CSS — organização por domínio (website/static/css/README.md)
         [X] base/, shared/, author/, reader/, post/, user/, pages/, exceptions/
@@ -108,8 +105,24 @@ Autores
 [X] Ajuste do template de edição do author (HTML) — partials components/forms
 [X] Ajuste do template de edição do author (CSS) — mobile, tablet e desktop
 [X] Página de edição do reader — mesmo padrão visual e forms (mobile, tablet e desktop)
-[ ] Template da página de exibição do autor — próximo bloco estrutural (após sprint UX mobile)
-[ ] Template da página de equipe — próximo bloco estrutural (após sprint UX mobile)
+[X] Template da página de exibição do autor — partials header/biografia, história, formações, jobs
+[X] Template da página de equipe — grid responsivo com card-author
+[X] CSS author-page — escopo visual por contexto (.our-team-page vs .author-profile-page vs .post-meta)
+[X] Nomes longos — tratamento por contexto (CSS, sem campo novo por enquanto)
+    [X] Perfil do autor — nome completo com quebra de linha (h1)
+    [X] Página de equipe — quebra livre, sem ellipsis
+    [X] Card no post — line-clamp 2 linhas
+    [X] Homepage — ellipsis em uma linha (.post-author)
+[ ] display_name opcional no Author — nome de apresentação curto para cards (avaliar só se CSS não bastar)
+
+[ ] Login
+    [ ] Restaurar a funcionalidade de recuperação de usuário quando clica "Não lembro email" no login
+    [ ] criar possibilidade de entrar com nome de usuário ou email (email já presente, manter padrão)
+    [ ] Reforçar a segurança do login (evitar SQL injection)
+    [ ] Reforçar a segurança do login (evitar XSS)
+    [ ] Verificar outras recomendações de segurança para login
+    [ ] Verificar possibilidade de JWT ou outra recomendação
+    [ ] Implementar entrar com conta google
 
 Experiencia / UX mobile (sprint concluído — pós edit-profile)
 [X] Menu mobile — padding-bottom no final (safe-area + env)
@@ -124,6 +137,7 @@ Experiencia / UX mobile (sprint concluído — pós edit-profile)
 Posts
 [ ] Ajuste do template de criacao de posts
 [ ] Ajuste do template de exibicao do post
+[ ] Separar dados do post de dados do autor (passar dados do post próximo ao título do post)
 [ ] Mapear fluxo search posts (view, GET/POST, paginação, testes) — funcionalidade ainda não baselineada
 [X] search_results.html — legibilidade do template (indentação e estrutura HTML)
 [X] Revisar fluxo de reações like/love pós-refatoração (UI inicial, persistência e testes automatizados)
@@ -152,12 +166,13 @@ Testes
     [X] Prioridade: suite author edit → AuthorEditView + AuthorEditUrl
     [X] Reader edit → ReaderEditView + reader_profile_editor
     [ ] Remover ou adaptar testes de helpers removidos de AuthorView (restante da suite)
-    [ ] Manter testes de view_author_page em AuthorView
+    [X] Estender test_author_view — conteúdo perfil, link "Editar perfil", GET /nossa-equipe/
 
 Produção
 [ ] Subir o projeto
 
 # Ideias e melhorias futuras
 [ ] Ranking de readers
+[ ] Author.display_name — campo opcional "como prefere aparecer" nos cards (fallback: author_name)
 
-# Próximo foco sugerido: Autores — template página de exibição do autor + página de equipe
+# Próximo foco sugerido: Posts — mapear fluxo search + templates de criação/exibição de post

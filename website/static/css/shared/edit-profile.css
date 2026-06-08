@@ -64,7 +64,6 @@ textarea.form-control {
     .edit-user {
         text-align: center;
         font-size: 1.5em;
-        color: #b9b9b9;
     }
 
     .display-message-error {
@@ -270,7 +269,7 @@ textarea.form-control {
         width: 34%;
         text-align: right;
         padding-right: 1rem;
-        color: #cfcfcf;
+        font-weight: 400 !important;
         vertical-align: middle;
         font-size: 0.95rem;
     }
@@ -300,7 +299,7 @@ textarea.form-control {
         border-radius: 22px;
         border: none;
         background: #fff;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06);
+        box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
         font-size: 0.95rem;
         color: #222;
         box-sizing: border-box;
@@ -350,7 +349,7 @@ textarea.form-control {
     select.custom-select:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 6px rgba(91, 59, 255, 0.08);
+        box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     select.custom-select::-ms-expand {
@@ -380,15 +379,16 @@ textarea.form-control {
 /* Desktop (min-width: 1081px)                                        */
 /* ------------------------------------------------------------------ */
 @media screen and (min-width: 1081px) {
+    .edit-user {
+        font-size: 3rem;
+        text-align: center;
+        text-shadow: 1px 2px 3px rgba(255, 255, 255, 0.3);
+    }
+
     h2 {
         margin-bottom: 2rem;
         font-size: 3rem;
-    }
-
-    .edit-user {
-        font-size: 3rem;
-        color: #8c8c8c;
-        text-align: center;
+        text-shadow: 1px 2px 3px rgba(255, 255, 255, 0.3);
     }
 
     .edit-form {
@@ -436,9 +436,10 @@ textarea.form-control {
         width: 34%;
         text-align: right;
         padding-right: 1rem;
-        color: #cfcfcf;
+        font-weight: 700 !important;
         vertical-align: middle;
         font-size: 0.95rem;
+        text-shadow: 1px 2px 3px rgba(255, 255, 255, 0.3);
     }
 
     .form-table td {
@@ -466,7 +467,7 @@ textarea.form-control {
         border-radius: 22px;
         border: none;
         background: #fff;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06);
+        box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
         font-size: 0.95rem;
         color: #222;
         appearance: none;

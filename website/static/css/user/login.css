@@ -71,16 +71,6 @@
         width: 80vw;
         height: 40px;
     }
-    .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
-        text-align: center;
-    }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
-        text-align: center;
-    }
     fieldset {
         border: none;
     }
@@ -199,16 +189,6 @@
         width: 80vw;
         height: 40px;
     }
-    .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
-        text-align: center;
-    }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
-        text-align: center;
-    }
 }
 
 @media screen and (min-width: 1081px) {
@@ -297,15 +277,5 @@
         margin: 0 auto 2vh auto;
         width: 80vw;
         height: 40px;
-    }
-    .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
-        text-align: center;
-    }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
-        text-align: center;
     }
 }

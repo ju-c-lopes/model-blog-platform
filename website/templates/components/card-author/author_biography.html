@@ -1,0 +1,59 @@
+<div class="biography">
+    {% if author.history %}
+        <section class="author-history">
+            <h2>História</h2>
+            <p>{{ author.history|linebreaksbr }}</p>
+        </section>
+    {% endif %}
+
+    {% with graduations=author.get_graduations %}
+        {% if graduations %}
+            <section class="author-graduation-list">
+                <h2>Formação</h2>
+                <ul>
+                    {% for graduation in graduations %}
+                        <li>{{ graduation.display_text }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    {% endwith %}
+
+    {% with jobs=author.get_jobs %}
+        {% if jobs %}
+            <section class="author-jobs-list">
+                <h2>Experiência profissional</h2>
+                <ul>
+                    {% for job in jobs %}
+                        <li class="author-job-item">
+                            <p class="author-job-title">
+                                <strong>{{ job.occupation }}</strong>
+                                {% if job.company %} — {{ job.company }}{% endif %}
+                                {% if job.current_job %}
+                                    <span class="author-job-badge">Atual</span>
+                                {% endif %}
+                            </p>
+                            {% if job.location %}
+                                <p class="author-job-meta">{{ job.location }}</p>
+                            {% endif %}
+                            <p class="author-job-meta">
+                                {{ job.start_date|date:"d/m/Y" }}
+                                —
+                                {% if job.end_date %}
+                                    {{ job.end_date|date:"d/m/Y" }}
+                                {% elif job.current_job %}
+                                    presente
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </p>
+                            {% if job.roles_description %}
+                                <p class="author-job-description">{{ job.roles_description|linebreaksbr }}</p>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    {% endwith %}
+</div>
