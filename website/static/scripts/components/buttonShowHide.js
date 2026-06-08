@@ -28,11 +28,14 @@
             return;
         }
 
-        if (!button.dataset.hideIcon) {
+        if (!button.dataset.hideIcon || !button.dataset.viewIcon) {
             const img = button.querySelector("img");
-            if (img) {
-                button.dataset.hideIcon = img.getAttribute("src") || "";
-                button.dataset.viewIcon = img.getAttribute("src") || "";
+            const currentSrc = img ? img.getAttribute("src") || "" : "";
+            if (!button.dataset.hideIcon) {
+                button.dataset.hideIcon = currentSrc;
+            }
+            if (!button.dataset.viewIcon) {
+                button.dataset.viewIcon = currentSrc.replace("hide.png", "view.png");
             }
         }
 

@@ -30,7 +30,7 @@ html {
 }
 
 body {
-    color: #b9b9b9;
+    color: #33312B;
     overflow-x: hidden;
     overflow-y: scroll;
     margin: 0 !important;
@@ -41,55 +41,32 @@ body {
     width: unset !important;
 }
 
-/* Mobile styles */
+/* ------------------------------------------------------------------ */
+/* Mobile (0px – 768px)                                               */
+/* ------------------------------------------------------------------ */
 @media screen and (max-width: 768px) {
     body {
         top: 0;
-        overflow-y: scroll;
-    }
-    .row-header {
-        top: 0;
-    }
-    .d-flex {
-        position: absolute;
-        margin-top: 80px;
-        padding-bottom: 2em;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-}
-
-/* ------------------------------------------------------------------ */
-/* Tablet (769px – 1080px)                                            */
-/* ------------------------------------------------------------------ */
-@media screen and (min-width: 769px) and (max-width: 1080px) {
-    body {
-        overflow-y: scroll;
-    }
-    .d-flex {
-        position: relative;
-        margin-top: 80px;
-        padding-top: 0;
-        z-index: 0;
-    }
-}
-
-/* Mobile styles */
-@media screen and (max-width: 768px) {
-    body {
         font-size: 16px;
         line-height: 1.6;
+        overflow-y: scroll;
     }
 
     .container-fluid {
         margin: 0;
     }
 
+    .row-header {
+        top: 0;
+    }
+
     .d-flex {
         position: relative;
+        display: flex;
+        flex-direction: column;
         margin-top: 80px;
         padding: 0 2rem;
+        width: 100%;
     }
 
     .content-area {
@@ -114,18 +91,61 @@ body {
         height: 40px;
     }
     .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
+        color: #7e2121 !important;
+        background-color: #ff9d9d !important;
         text-align: center;
     }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
+    .text-success-message {
+        color: rgb(80, 80, 19) !important;
+        background-color: #c6d0ad !important;
         text-align: center;
     }
 }
 
+/* ------------------------------------------------------------------ */
+/* Tablet (769px – 1080px)                                            */
+/* ------------------------------------------------------------------ */
+@media screen and (min-width: 769px) and (max-width: 1080px) {
+    body {
+        overflow-y: scroll;
+    }
+    .d-flex {
+        position: relative;
+        margin-top: 100px;
+        padding-top: 0;
+        z-index: 0;
+    }
+    .messages {
+        top: 25px;
+        position: relative;
+        margin: 0 auto 2vh auto;
+        width: 80vw;
+        height: 40px;
+    }
+    .message-error {
+        color: #7e2121 !important;
+        background-color: #ff9d9d !important;
+        text-align: center;
+    }
+    .text-success-message {
+        color: rgb(80, 80, 19) !important;
+        background-color: #c6d0ad !important;
+        text-align: center;
+    }
+}
+
+
 @media screen and (min-width: 1025px) {
+    body {
+        overflow-y: scroll;
+    }
+
+    .d-flex {
+        position: relative;
+        margin-top: 100px;
+        padding-top: 0;
+        z-index: 0;
+    }
 
     .screen-size {
         position: relative;
@@ -142,13 +162,13 @@ body {
         height: 40px;
     }
     .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
+        color: #7e2121 !important;
+        background-color: #ff9d9d !important;
         text-align: center;
     }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
+    .text-success-message {
+        color: rgb(80, 80, 19) !important;
+        background-color: #c6d0ad !important;
         text-align: center;
     }
 }

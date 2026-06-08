@@ -1,71 +1,42 @@
-{% extends 'blog/pages/base.html' %} {% load static %} {% block head-css %}
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-css %}
 <link
     rel="stylesheet"
     type="text/css"
     href="{% static 'css/author/author-page.css' %}"
     media="all"
 />
-{% endblock %} {% block content %}
+{% endblock %}
 
-<main>
+{% block content %}
+<main class="author-profile-page">
     <div class="display-message-success">
         {% if messages %}
-        {% for message in messages %}
-        <span class="text-success-message">{{ message }}</span>
-        {% endfor %}
+            {% for message in messages %}
+                <span class="text-success-message">{{ message }}</span>
+            {% endfor %}
         {% endif %}
     </div>
 
-    <!-- Card do Autor  -->
-    <div class="author-presentation-card">
-        <div class="author-card-top">
-            <!-- Imagem do autor -->
-            {% if not author.image %}
-            <img src="{% static 'img/no-user.jpg' %}" alt="{{ author.username }}" width="100" height="100" />
-            {% else %}
-            <img src="/media/{{ author.image }}" alt="{{ author.username }}" width="100" height="100" />
-            {% endif %}
-            <div class="card-top-right">
-                <!-- nome do autor H1 -->
-                <h1 class="author-name-h1">{{ author.author_name }}</h1>
-                {% if author_connected %}
-                <a href="{% url 'edit_author' request.user.author.author_url_slug %}">
-                    Editar perfil
-                </a>
-                {% endif %}
-            </div>
-        </div>
+    <article class="author-presentation-card author-profile-card">
+        {% include "components/card-author/author_profile_header.html" %}
 
-        <!-- Resumo da formaçao do autor -->
-        {% include "components/card-author/card-author.html" %}
-
-        <div class="author-social-media">
-            {% for social_media in social_media.all %}
-                {% for i, social in social_media_index %}
-                    {% if social_media.social_media == i %}
-                    <a
-                        class="{{ social|lower }}"
-                        href="{{ social_media.social_media_profile }}"
-                    >
-                        <img
-                            src="{% static 'img/'|add:social|lower|add:'.png' %}"
-                            alt="{{ social }}"
-                            width="20"
-                            height="20"
-                        />
-                    </a>
+        {% with graduation=author.get_main_graduation job=author.current_job %}
+            {% if graduation or job %}
+                <div class="author-profile-summary">
+                    {% if graduation %}
+                        <p class="author-education">{{ graduation.display_text }}</p>
                     {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
+                    {% if job %}
+                        <p class="author-job">{{ job.occupation }} na {{ job.company }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
-        <div class="biography">
-            <div class="author-history"></div>
-
-            <div class="author-graduation"></div>
-
-            <div class="author-professional-tragetory"></div>
-        </div>
-    </div>
+        {% include "components/card-author/author_biography.html" %}
+    </article>
 </main>
 {% endblock %}
