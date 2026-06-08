@@ -17,13 +17,12 @@ BACKLOG
 
 Conteúdo
 [x] Ajuste do card do autor
-
-[ ] Fase 0 — Baseline
     [ ] Inventariar comportamento atual (GET, POST ok/erro, senha, imagem, formsets)
     [ ] Confirmar assets estáticos carregados na rota /nossa-equipe/<slug>/edit
     [ ] Rodar testes no container e registrar estado (muitos ainda apontam AuthorView legado)
 
-[X] Refatoração Views, Urls, Scripts, CSS (author + reader edit)
+[ ] Fase 0 — Baseline
+    [X] Refatoração Views, Urls, Scripts, CSS (author + reader edit)
     [X] CSS — organização por domínio (website/static/css/README.md)
         [X] base/, shared/, author/, reader/, post/, user/, pages/, exceptions/
         [X] Renomear edit-author-page.css → author/edit.css, edit-reader-page.css → reader/edit.css
@@ -109,8 +108,18 @@ Autores
 [X] Ajuste do template de edição do author (HTML) — partials components/forms
 [X] Ajuste do template de edição do author (CSS) — mobile, tablet e desktop
 [X] Página de edição do reader — mesmo padrão visual e forms (mobile, tablet e desktop)
-[ ] Template da página de exibição do autor
-[ ] Template da página de equipe
+[ ] Template da página de exibição do autor — próximo bloco estrutural (após sprint UX mobile)
+[ ] Template da página de equipe — próximo bloco estrutural (após sprint UX mobile)
+
+Experiencia / UX mobile (sprint concluído — pós edit-profile)
+[X] Menu mobile — padding-bottom no final (safe-area + env)
+[X] Menu mobile — scroll no Safari iOS (-webkit-overflow-scrolling, max-height 100dvh)
+[X] Login — corrigir botão olho (mostrar/ocultar senha) — buttonShowHide.js + LoginForm
+[X] Card autor (mobile) — exibir ícones de redes sociais — author-page.css
+[X] Locale pt-BR — datas dd/mm/yyyy
+    [X] settings LANGUAGE_CODE pt-br / DATE_FORMAT / DATE_INPUT_FORMATS
+    [X] templates homepage e search_results com |date:"d/m/Y"
+    [X] JobForm DateInput texto dd/mm/aaaa (aceita ISO no POST)
 
 Posts
 [ ] Ajuste do template de criacao de posts
@@ -150,3 +159,5 @@ Produção
 
 # Ideias e melhorias futuras
 [ ] Ranking de readers
+
+# Próximo foco sugerido: Autores — template página de exibição do autor + página de equipe

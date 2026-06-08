@@ -159,8 +159,13 @@
                         id="{{ form.password1.id_for_label }}"
                         placeholder="Digite sua Senha"
                     />
-                    <button class="show-hide-btn" type="button">
-                        <img src="{% static 'img/icons/hide.png' %}" />
+                    <button
+                        class="show-hide-btn"
+                        type="button"
+                        data-hide-icon="{% static 'img/icons/hide.png' %}"
+                        data-view-icon="{% static 'img/icons/view.png' %}"
+                    >
+                        <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
                     </button>
                 </div>
                 {% endif %}
@@ -197,8 +202,13 @@
                         id="{{ form.password2.id_for_label }}"
                         placeholder="Confirme a senha"
                     />
-                    <button class="show-hide-btn" type="button">
-                        <img src="{% static 'img/icons/hide.png' %}" />
+                    <button
+                        class="show-hide-btn"
+                        type="button"
+                        data-hide-icon="{% static 'img/icons/hide.png' %}"
+                        data-view-icon="{% static 'img/icons/view.png' %}"
+                    >
+                        <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
                     </button>
                 </div>
                 {% endif %}

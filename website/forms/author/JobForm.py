@@ -2,8 +2,26 @@ from django import forms
 
 from website.models.author.JobsModel import Job
 
+DATE_BR_INPUT_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
+
 
 class JobForm(forms.ModelForm):
+    start_date = forms.DateField(
+        input_formats=DATE_BR_INPUT_FORMATS,
+        widget=forms.DateInput(
+            format="%d/%m/%Y",
+            attrs={"class": "form-control", "placeholder": "dd/mm/aaaa"},
+        ),
+    )
+    end_date = forms.DateField(
+        required=False,
+        input_formats=DATE_BR_INPUT_FORMATS,
+        widget=forms.DateInput(
+            format="%d/%m/%Y",
+            attrs={"class": "form-control", "placeholder": "dd/mm/aaaa"},
+        ),
+    )
+
     class Meta:
         model = Job
         fields = [
@@ -29,7 +47,5 @@ class JobForm(forms.ModelForm):
             "company": forms.TextInput(attrs={"class": "form-control"}),
             "current_job": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
-            "start_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
-            "end_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "roles_description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
         }
