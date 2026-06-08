@@ -29,7 +29,12 @@
                     {% if forloop.counter == 2 %}
                     <label for="{{ f.label.lower }}">{{ f.label }}</label>
                     {{ f }}
-                    <button class="show-hide-btn" type="button">
+                    <button
+                        class="show-hide-btn"
+                        type="button"
+                        data-hide-icon="{% static 'img/icons/hide.png' %}"
+                        data-view-icon="{% static 'img/icons/view.png' %}"
+                    >
                         <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
                     </button>
                     {% else %}
