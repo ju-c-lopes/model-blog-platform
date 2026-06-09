@@ -31,6 +31,9 @@ class Post(models.Model):
     series = models.ForeignKey("Series", on_delete=models.SET_NULL, null=True, blank=True, related_name="posts")
     series_order = models.PositiveIntegerField(null=True, blank=True)
 
+    cover_image = models.ImageField(upload_to="post_covers/", blank=True, null=True)
+    tags = models.ManyToManyField("Tag", blank=True, related_name="posts")
+
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="liked_posts",

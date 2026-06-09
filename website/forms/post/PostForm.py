@@ -1,101 +1,112 @@
+import re
+
 from django import forms
 
 from website.models.post.PostModel import Post
+from website.models.post.TagModel import Tag
 from website.utils.sanitizer import sanitize_html
 
 
 class PostForm(forms.ModelForm):
-    """Enhanced form for creating and editing blog posts with rich text editor"""
+    """Formulário de criação e edição de posts com editor rich text."""
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label="Tags",
+        help_text="Tecnologias ou temas abordados no post.",
+    )
 
     class Meta:
         model = Post
-        fields = ["title", "url_slug", "meta_description", "text"]
+        fields = ["title", "url_slug", "meta_description", "cover_image", "tags", "text"]
         widgets = {
             "title": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter an engaging post title",
+                    "placeholder": "Título envolvente do post",
                     "maxlength": "200",
                 }
             ),
             "url_slug": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "my-awesome-post",
+                    "placeholder": "meu-post-incrivel",
                     "pattern": "[a-z0-9-]+",
-                    "title": "Only lowercase letters, numbers, and hyphens allowed",
+                    "title": "Use apenas letras minúsculas, números e hífens",
                 }
             ),
             "meta_description": forms.Textarea(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Write a compelling meta description for SEO (max 160 characters)",
+                    "placeholder": "Descrição para SEO (máx. 160 caracteres)",
                     "rows": 3,
                     "maxlength": "160",
+                }
+            ),
+            "cover_image": forms.FileInput(
+                attrs={
+                    "class": "form-control-file",
+                    "accept": "image/*",
                 }
             ),
             "text": forms.Textarea(
                 attrs={
                     "class": "form-control rich-text-editor",
                     "id": "rich-editor",
-                    "placeholder": "Start writing your content here...",
+                    "placeholder": "Comece a escrever o conteúdo aqui...",
                 }
             ),
         }
         labels = {
-            "title": "Post Title",
-            "url_slug": "URL Slug",
-            "meta_description": "Meta Description (SEO)",
-            "text": "📃 Content",
+            "title": "Título",
+            "url_slug": "URL amigável (slug)",
+            "meta_description": "Meta descrição (SEO)",
+            "cover_image": "Imagem de capa",
+            "text": "Conteúdo",
         }
         help_texts = {
-            "url_slug": "A unique URL-friendly identifier (use lowercase letters, numbers, and hyphens only)",
-            "meta_description": "This appears in search engine results. Keep it under 160 characters.",
-            "text": "Use the rich text editor to format your content with headings, images, videos, and tables.",
+            "url_slug": "Identificador único na URL (letras minúsculas, números e hífens)",
+            "meta_description": "Aparece nos resultados de busca. Mantenha até 160 caracteres.",
+            "cover_image": "Imagem exibida em listagens e no topo do post (opcional).",
+            "text": "Use o editor para formatar o conteúdo com títulos, imagens, vídeos e tabelas.",
         }
 
     def clean_url_slug(self):
-        """Validate that the URL slug is unique and properly formatted"""
         url_slug = self.cleaned_data.get("url_slug")
-
-        # Convert to lowercase and replace spaces with hyphens
         url_slug = url_slug.lower().replace(" ", "-")
-
-        # Remove any characters that aren't letters, numbers, or hyphens
-        import re
-
         url_slug = re.sub(r"[^a-z0-9-]", "", url_slug)
-
-        # Remove multiple consecutive hyphens
         url_slug = re.sub(r"-+", "-", url_slug)
-
-        # Remove leading/trailing hyphens
         url_slug = url_slug.strip("-")
 
         if not url_slug:
-            raise forms.ValidationError("URL slug cannot be empty after formatting.")
+            raise forms.ValidationError("O slug não pode ficar vazio após a formatação.")
 
-        # Check if the slug already exists (excluding the current instance if editing)
         if self.instance.pk:
             if Post.objects.filter(url_slug=url_slug).exclude(pk=self.instance.pk).exists():
-                raise forms.ValidationError("This URL slug is already in use. Please choose a different one.")
-        else:
-            if Post.objects.filter(url_slug=url_slug).exists():
-                raise forms.ValidationError("This URL slug is already in use. Please choose a different one.")
+                raise forms.ValidationError("Este slug já está em uso. Escolha outro.")
+        elif Post.objects.filter(url_slug=url_slug).exists():
+            raise forms.ValidationError("Este slug já está em uso. Escolha outro.")
 
         return url_slug
 
     def clean_meta_description(self):
-        """Validate meta description length"""
         meta_description = self.cleaned_data.get("meta_description")
         if meta_description and len(meta_description) > 160:
-            raise forms.ValidationError("Meta description must be 160 characters or less.")
+            raise forms.ValidationError("A meta descrição deve ter no máximo 160 caracteres.")
         return meta_description
 
     def clean_text(self):
         text = self.cleaned_data.get("text")
-        # Sanitize rich text before saving
         try:
             return sanitize_html(text)
         except Exception:
             return text
+
+    def save(self, commit=True):
+        if self.instance.pk and "cover_image" in self.changed_data:
+            old_post = Post.objects.get(pk=self.instance.pk)
+            if old_post.cover_image:
+                old_post.cover_image.delete(save=False)
+        return super().save(commit=commit)

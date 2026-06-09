@@ -107,6 +107,7 @@ ignore = ["E203"]
 "website/views/AuthorView.py" = ["C901"]
 "website/views/user/ProfileUpdateView.py" = ["C901"]
 "website/templatetags/get_type.py" = ["C901"]
+"website/views/post/PostContentImageUploadView.py" = ["C901"]
 
 # Allow long lines in tests that contain long help text or comments; these
 # are test-only strings and are not safe to auto-wrap automatically.

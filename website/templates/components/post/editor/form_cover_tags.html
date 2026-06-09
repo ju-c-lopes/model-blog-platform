@@ -1,0 +1,70 @@
+{% load static %}
+
+<div class="form-group full-width cover-tags-section">
+    <div class="cover-field">
+        <label for="{{ form.cover_image.id_for_label }}">{{ form.cover_image.label }}</label>
+        {% if post and post.cover_image %}
+            <div class="cover-current-preview">
+                <img src="{{ post.cover_image.url }}" alt="Capa atual" width="200" />
+                <span class="cover-current-label">Capa atual</span>
+            </div>
+        {% endif %}
+        {{ form.cover_image }}
+        <div id="cover-preview" class="cover-new-preview" hidden>
+            <img id="cover-preview-img" src="" alt="Prévia da nova capa" width="200" />
+        </div>
+        {% if form.cover_image.help_text %}
+            <div class="help-text">{{ form.cover_image.help_text }}</div>
+        {% endif %}
+        {% if form.cover_image.errors %}
+            <ul class="errorlist">
+                {% for error in form.cover_image.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="tags-field">
+        <label for="post-tags">{{ form.tags.label }}</label>
+        {% if form.tags.help_text %}
+            <div class="help-text">{{ form.tags.help_text }}</div>
+        {% endif %}
+        <div class="tag-checkbox-grid" id="post-tags">
+            {% for tag in available_tags %}
+                <label class="tag-checkbox-item">
+                    <input
+                        type="checkbox"
+                        name="tags"
+                        value="{{ tag.pk }}"
+                        {% if tag.pk in selected_tag_ids %}checked{% endif %}
+                    />
+                    <span class="tag-checkbox-label">
+                        {% if tag.icon %}
+                            <img
+                                src="{% static tag.icon %}"
+                                alt=""
+                                width="20"
+                                height="20"
+                                class="tag-icon"
+                                onerror="this.hidden=true;this.nextElementSibling.hidden=false"
+                            />
+                            <span class="tag-fallback" hidden>{{ tag.name }}</span>
+                        {% else %}
+                            <span class="tag-fallback">{{ tag.name }}</span>
+                        {% endif %}
+                    </span>
+                </label>
+            {% empty %}
+                <p class="help-text">Nenhuma tag cadastrada.</p>
+            {% endfor %}
+        </div>
+        {% if form.tags.errors %}
+            <ul class="errorlist">
+                {% for error in form.tags.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
