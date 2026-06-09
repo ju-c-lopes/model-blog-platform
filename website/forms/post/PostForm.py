@@ -105,8 +105,13 @@ class PostForm(forms.ModelForm):
             return text
 
     def save(self, commit=True):
+        old_cover = None
         if self.instance.pk and "cover_image" in self.changed_data:
-            old_post = Post.objects.get(pk=self.instance.pk)
-            if old_post.cover_image:
-                old_post.cover_image.delete(save=False)
-        return super().save(commit=commit)
+            old_cover = Post.objects.only("cover_image").get(pk=self.instance.pk).cover_image
+
+        instance = super().save(commit=commit)
+
+        if commit and old_cover and old_cover != instance.cover_image:
+            old_cover.delete(save=False)
+
+        return instance

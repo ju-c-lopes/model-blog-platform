@@ -17,8 +17,16 @@ def _ensure_upload_session(request) -> str:
     if not session_id:
         session_id = str(uuid.uuid4())
         request.session["post_content_upload_session"] = session_id
-    request.session.modified = True
+        request.session.modified = True
     return session_id
+
+
+def _selected_tag_ids(form, post) -> set[int]:
+    if form.is_bound:
+        return {int(pk) for pk in form.data.getlist("tags") if pk.isdigit()}
+    if post:
+        return set(post.tags.values_list("pk", flat=True))
+    return set()
 
 
 @xframe_options_exempt
@@ -74,16 +82,13 @@ def edit_post(request, url_slug=None):
         else:
             form = PostForm(request.POST, request.FILES, instance=post)
             if form.is_valid():
-                updated_post = form.save(commit=False)
-                updated_post.updated_date = timezone.now()
-                updated_post.save()
-                form.save_m2m()
+                updated_post = form.save()
                 messages.success(request, "Post atualizado com sucesso!")
                 return redirect("post_detail", url_slug=updated_post.url_slug)
     else:
         form = PostForm(instance=post) if post else PostForm()
 
-    selected_tag_ids = set(post.tags.values_list("pk", flat=True)) if post else set()
+    selected_tag_ids = _selected_tag_ids(form, post)
     upload_session_id = _ensure_upload_session(request) if is_creating else ""
 
     return render(

@@ -6,6 +6,17 @@ function initHtmlSourceEditor() {
 
     if (!sourceEl || !toggleButtons.length) return;
 
+    function setActiveTab(activeBtn) {
+        toggleButtons.forEach((btn) => {
+            const active = btn === activeBtn;
+            btn.classList.toggle("is-active", active);
+            btn.setAttribute("aria-selected", active ? "true" : "false");
+            btn.tabIndex = active ? 0 : -1;
+        });
+    }
+
+    setActiveTab(document.querySelector(".editor-toggle-btn.is-active") || toggleButtons[0]);
+
     function syncQuillToSource() {
         if (!window.quillEditor) return;
         sourceEl.value = window.quillEditor.root.innerHTML;
@@ -37,7 +48,7 @@ function initHtmlSourceEditor() {
                 syncSourceToQuill();
             }
 
-            toggleButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+            setActiveTab(btn);
             panes.forEach((pane) => {
                 const active = pane.dataset.pane === mode;
                 pane.classList.toggle("is-active", active);
