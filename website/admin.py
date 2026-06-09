@@ -12,6 +12,7 @@ from website.models.post.PostModel import Post
 from website.models.post.PostReactionModel import PostReaction
 from website.models.post.PostViewModel import PostView
 from website.models.post.SeriesModel import Series
+from website.models.post.TagModel import Tag
 from website.models.user.ReaderModel import Reader
 
 
@@ -119,8 +120,16 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = (
         "published_date",
         "series",
+        "tags",
     )
     prepopulated_fields = {"url_slug": ("title",)}
+    filter_horizontal = ("tags",)
+
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "icon")
+    search_fields = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
 
 
 class SeriesAdmin(admin.ModelAdmin):
@@ -155,6 +164,7 @@ admin.site.register(SocialMedia)
 admin.site.register(Graduation)
 admin.site.register(Job)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(PostReaction)
 admin.site.register(PostView, PostViewAdmin)
 admin.site.register(Series, SeriesAdmin)

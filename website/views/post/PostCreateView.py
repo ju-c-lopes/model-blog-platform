@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -7,6 +9,16 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from website.forms.post.PostForm import PostForm
 from website.models.author.AuthorModel import Author
 from website.models.post.PostModel import Post
+from website.services.post import post_content_images as content_images
+
+
+def _ensure_upload_session(request) -> str:
+    session_id = request.session.get("post_content_upload_session")
+    if not session_id:
+        session_id = str(uuid.uuid4())
+        request.session["post_content_upload_session"] = session_id
+    request.session.modified = True
+    return session_id
 
 
 @xframe_options_exempt
@@ -19,7 +31,7 @@ def edit_post(request, url_slug=None):
 
     if not is_creating:
         try:
-            post = Post.objects.get(url_slug=url_slug)
+            post = Post.objects.prefetch_related("tags").get(url_slug=url_slug)
         except Post.DoesNotExist:
             messages.error(request, "Post not found.")
             return redirect("home")
@@ -38,32 +50,51 @@ def edit_post(request, url_slug=None):
 
     if request.method == "POST":
         if is_creating:
-            form = PostForm(request.POST)
+            form = PostForm(request.POST, request.FILES)
             if form.is_valid():
-                # Create post but don't save to DB yet
                 new_post = form.save(commit=False)
-                # Set additional fields
                 new_post.author = author
                 new_post.published_date = timezone.now()
                 new_post.updated_date = timezone.now()
-                # Save to DB
+
+                upload_session_id = request.POST.get("upload_session_id", "").strip()
+                session_id = request.session.get("post_content_upload_session")
+                if upload_session_id and session_id and upload_session_id == session_id:
+                    new_post.text = content_images.consolidate_temp_images(
+                        new_post.text,
+                        upload_session_id,
+                        new_post.url_slug,
+                    )
+                    request.session.pop("post_content_upload_session", None)
+
                 new_post.save()
-                messages.success(request, "Your blog post has been created successfully!")
+                form.save_m2m()
+                messages.success(request, "Post criado com sucesso!")
                 return redirect("post_detail", url_slug=new_post.url_slug)
         else:
-            form = PostForm(request.POST, instance=post)
+            form = PostForm(request.POST, request.FILES, instance=post)
             if form.is_valid():
-                # Update the post
                 updated_post = form.save(commit=False)
                 updated_post.updated_date = timezone.now()
                 updated_post.save()
-                messages.success(request, "Your blog post has been updated successfully!")
+                form.save_m2m()
+                messages.success(request, "Post atualizado com sucesso!")
                 return redirect("post_detail", url_slug=updated_post.url_slug)
     else:
         form = PostForm(instance=post) if post else PostForm()
 
+    selected_tag_ids = set(post.tags.values_list("pk", flat=True)) if post else set()
+    upload_session_id = _ensure_upload_session(request) if is_creating else ""
+
     return render(
         request,
         "blog/pages/post/edit_post.html",
-        {"form": form, "post": post, "is_creating": is_creating},
+        {
+            "form": form,
+            "post": post,
+            "is_creating": is_creating,
+            "available_tags": form.fields["tags"].queryset,
+            "selected_tag_ids": selected_tag_ids,
+            "upload_session_id": upload_session_id,
+        },
     )

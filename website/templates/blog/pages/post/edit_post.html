@@ -1,60 +1,76 @@
-{% extends 'blog/pages/base.html' %} {% load static %}
-{% block title %}
-    {% if is_creating %} Create New Post {% else %} Edit Post {% endif %}
-{% endblock %}
-{% block head-css %}
-<link
-    rel="stylesheet"
-    href="{% static 'vendor/quill/quill.snow.css' %}"
-/>
-<link
-    rel="stylesheet"
-    href="{% static 'css/post/edit_post.css' %}"
-/>
-<link
-    rel="stylesheet"
-    href="{% static 'css/post/post.css' %}"
-/>
-{% endblock %} {% block content %}
-<div class="post-form-container">
+{% extends 'blog/pages/base.html' %}
+{% load static %}
 
+{% block title %}
+    {% if is_creating %}Criar post{% else %}Editar post{% endif %}
+{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'vendor/quill/quill.snow.css' %}" />
+<link rel="stylesheet" href="{% static 'css/post/edit_post.css' %}" />
+<link rel="stylesheet" href="{% static 'css/post/post.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div
+    class="post-form-container"
+    data-upload-url="{% url 'post_upload_content_image' %}"
+    data-upload-session-id="{{ upload_session_id }}"
+    data-post-slug="{% if post %}{{ post.url_slug }}{% endif %}"
+>
     {% include 'components/post/editor/form_header.html' with is_creating=is_creating %}
 
-    <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% if is_creating and upload_session_id %}
+            <input type="hidden" name="upload_session_id" value="{{ upload_session_id }}" />
+        {% endif %}
 
         {% include 'components/post/editor/form_fields.html' with form=form %}
 
-        <!-- Rich Text Editor -->
-        <div class="form-group full-width">
-            {% include 'components/post/editor/media_upload.html' with form=form %}
+        {% include 'components/post/editor/form_cover_tags.html' %}
 
-            {% include 'components/post/editor/editor_container.html' with form=form %}
+        <div class="form-group full-width editor-section">
+            <div class="editor-view-toggle" role="tablist">
+                <button type="button" class="editor-toggle-btn is-active" data-mode="editor" role="tab">
+                    Editor
+                </button>
+                <button type="button" class="editor-toggle-btn" data-mode="html" role="tab">
+                    Editar HTML
+                </button>
+            </div>
+
+            <div class="editor-pane editor-pane--editor is-active" data-pane="editor">
+                {% include 'components/post/editor/media_upload.html' with form=form %}
+                {% include 'components/post/editor/editor_container.html' with form=form %}
+            </div>
+
+            <div class="editor-pane editor-pane--html" data-pane="html" hidden>
+                <label class="html-source-label" for="html-source">
+                    Código HTML do conteúdo (tags avançadas, embeds, etc.)
+                </label>
+                <textarea id="html-source" class="html-source" spellcheck="false"></textarea>
+            </div>
         </div>
 
         {% include 'components/post/editor/form_buttons.html' with is_creating=is_creating post=post %}
     </form>
 </div>
 {% endblock %}
-{% block scripts %}
-<!-- 1. Vendor -->
-<script src="{% static 'vendor/quill/quill.js' %}"></script>
 
-<!-- 2. Core -->
+{% block scripts %}
+<script src="{% static 'vendor/quill/quill.js' %}"></script>
 <script src="{% static 'scripts/editor/editor-utils.js' %}"></script>
 <script src="{% static 'scripts/editor/quill-init.js' %}"></script>
-
-<!-- 3. UI / Components -->
 <script src="{% static 'scripts/editor/popup.js' %}"></script>
 <script src="{% static 'scripts/editor/media-preview.js' %}"></script>
 <script src="{% static 'scripts/editor/counters.js' %}"></script>
 <script src="{% static 'scripts/editor/slug.js' %}"></script>
-
-<!-- 4. Features -->
 <script src="{% static 'scripts/editor/image-upload.js' %}"></script>
 <script src="{% static 'scripts/editor/video-upload.js' %}"></script>
 <script src="{% static 'scripts/editor/youtube.js' %}"></script>
 <script src="{% static 'scripts/editor/insertTable.js' %}"></script>
-
-<!-- 5. Orquestrador -->
+<script src="{% static 'scripts/editor/cover-preview.js' %}"></script>
+<script src="{% static 'scripts/editor/html-source.js' %}"></script>
 <script src="{% static 'scripts/editor/edit_post.js' %}"></script>
 {% endblock %}

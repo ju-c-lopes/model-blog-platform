@@ -425,7 +425,139 @@ label.textarea--editor {
     background-color: #c82333;
 }
 
+/* Cover, tags, HTML preview */
+.cover-tags-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cover-current-preview,
+.cover-new-preview {
+    margin: 0.75rem 0;
+}
+
+.cover-current-preview img,
+.cover-new-preview img {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+.cover-current-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #9c9c9c;
+    margin-top: 0.35rem;
+}
+
+.tag-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.tag-checkbox-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid #dee2e6;
+    border-radius: 999px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #264d60;
+}
+
+.tag-checkbox-item input {
+    margin: 0;
+}
+
+.tag-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.tag-fallback {
+    font-weight: 600;
+}
+
+.editor-section {
+    margin-top: 1rem;
+}
+
+.editor-view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.editor-toggle-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #264d60;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.editor-toggle-btn.is-active {
+    background: #264d60;
+    color: #fff;
+    border-color: #264d60;
+}
+
+.editor-pane--html {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fff;
+}
+
+.html-source-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+}
+
+.html-source {
+    width: 100%;
+    min-height: 400px;
+    padding: 1rem;
+    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    resize: vertical;
+    color: #212529;
+    background: #f8f9fa;
+    box-sizing: border-box;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .cover-tags-section {
+        grid-template-columns: 1fr 1fr;
+    }
+    .post-form-container {
+        margin: 1.5rem;
+        padding: 2rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .cover-tags-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
