@@ -4,7 +4,9 @@ from website.models.author.AuthorModel import Author
 
 
 def view_team(request):
-    authors = Author.objects.prefetch_related("graduations", "jobs", "social_media").all()
+    # jobs omitido: o card usa current_job (.filter), que não usa cache do prefetch;
+    # carregar todos os jobs aqui só aumentaria carga sem evitar N+1.
+    authors = Author.objects.prefetch_related("graduations", "social_media").all()
     context = {
         "authors": authors,
     }

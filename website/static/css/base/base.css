@@ -95,7 +95,8 @@ body {
         background-color: #ff9d9d !important;
         text-align: center;
     }
-    .text-success-message {
+    .text-success-message,
+    .message-success {
         color: rgb(80, 80, 19) !important;
         background-color: #c6d0ad !important;
         text-align: center;
@@ -127,7 +128,8 @@ body {
         background-color: #ff9d9d !important;
         text-align: center;
     }
-    .text-success-message {
+    .text-success-message,
+    .message-success {
         color: rgb(80, 80, 19) !important;
         background-color: #c6d0ad !important;
         text-align: center;
@@ -135,7 +137,7 @@ body {
 }
 
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1081px) {
     body {
         overflow-y: scroll;
     }
@@ -166,7 +168,8 @@ body {
         background-color: #ff9d9d !important;
         text-align: center;
     }
-    .text-success-message {
+    .text-success-message,
+    .message-success {
         color: rgb(80, 80, 19) !important;
         background-color: #c6d0ad !important;
         text-align: center;

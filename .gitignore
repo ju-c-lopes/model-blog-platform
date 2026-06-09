@@ -67,6 +67,13 @@ Thumbs.db
 # =========================
 # Project Specific
 # =========================
+BACKLOG.txt
+tree.txt
+requirements-bkp.txt
+fix_imports.py
+fix_reader_model_tests.py
+fix_templatetags_test.py
+fix_tests.py
 run_manage_py_with_test.py
 blog-model.code-workspace
 

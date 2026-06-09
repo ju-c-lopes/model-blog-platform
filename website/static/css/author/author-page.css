@@ -2,18 +2,19 @@
 .author-profile-page,
 .our-team-page {
     width: 100%;
-    max-width: 960px;
+    max-width: 1024px;
     margin: 0 auto;
     padding: 1rem;
     box-sizing: border-box;
 }
 
 .author-profile-card {
+    margin-top: 20px;
     width: 100%;
 }
 
 .author-name-h1 {
-    font-size: 1.5em;
+    font-size: 2em;
     margin: 0;
     text-align: right;
     word-break: break-word;
@@ -126,7 +127,7 @@
 .author-job-meta {
     margin: 0.15rem 0;
     font-size: 0.9em;
-    color: #6b6b6b;
+    color: #484646;
 }
 
 .author-job-description {

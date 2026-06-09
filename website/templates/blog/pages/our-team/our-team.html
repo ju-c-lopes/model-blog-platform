@@ -15,7 +15,7 @@
     <h1 class="our-team-title">Nossa equipe</h1>
     <div class="our-team-grid">
         {% for author in authors %}
-            {% include "components/card-author/card-author.html" with author=author tag="article" %}
+            {% include "components/card-author/card-author.html" with author=author tag="article" link_author_name=True %}
         {% empty %}
             <p class="our-team-empty">Nenhum autor cadastrado.</p>
         {% endfor %}

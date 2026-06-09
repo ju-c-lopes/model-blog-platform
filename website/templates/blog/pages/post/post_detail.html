@@ -18,7 +18,7 @@
                 {{ post.title }}
             </h1>
             <div class="post-meta">
-                {% include 'components/card-author/card-author.html' with author=post.author %}
+                {% include 'components/card-author/card-author.html' with author=post.author link_author_name=True %}
                 <span class="post-date">
                     Published on {{ post.published_date }}
                 </span><br />
