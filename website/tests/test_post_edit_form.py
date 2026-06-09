@@ -52,6 +52,60 @@ class PostEditFormTests(TestCase):
         self.assertEqual(post.tags.count(), 2)
         self.assertIn(self.docker_tag, post.tags.all())
 
+    def test_invalid_create_post_preserves_selected_tags(self):
+        Post.objects.create(
+            author=self.author,
+            title="Outro post",
+            url_slug="slug-ocupado",
+            text="<p>Conteúdo de outro post.</p>",
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("create_post"),
+            {
+                "title": "Novo post",
+                "url_slug": "slug-ocupado",
+                "meta_description": "Descrição válida.",
+                "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
+                "tags": [str(self.python_tag.pk)],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.python_tag.pk, response.context["selected_tag_ids"])
+
+    def test_invalid_edit_post_preserves_selected_tags(self):
+        Post.objects.create(
+            author=self.author,
+            title="Outro post",
+            url_slug="slug-ocupado",
+            text="<p>Conteúdo de outro post.</p>",
+        )
+        post = Post.objects.create(
+            author=self.author,
+            title="Post teste",
+            url_slug="post-teste",
+            text="<p>Conteúdo inicial do post.</p>",
+        )
+        post.tags.add(self.docker_tag)
+
+        self.client.force_login(self.user)
+        response = self.client.post(
+            reverse("edit_post", kwargs={"url_slug": post.url_slug}),
+            {
+                "title": "Post teste",
+                "url_slug": "slug-ocupado",
+                "meta_description": "Descrição válida.",
+                "text": "<p>Conteúdo atualizado com mais de dez caracteres.</p>",
+                "tags": [str(self.python_tag.pk)],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.python_tag.pk, response.context["selected_tag_ids"])
+        self.assertNotIn(self.docker_tag.pk, response.context["selected_tag_ids"])
+
     def test_edit_post_page_shows_tags_and_preview_controls(self):
         post = Post.objects.create(
             author=self.author,

@@ -35,12 +35,10 @@ if (form) {
             ta.value = injectYouTubeIframes(ta.value);
         }
 
-        // Basic validation (unchanged)
         const titleEl = document.getElementById("id_title");
         const title = titleEl ? titleEl.value.trim() : "";
-        const contentText = window.quillEditor
-            ? window.quillEditor.getText().trim()
-            : "";
+        const contentHtml = ta ? ta.value : "";
+        const contentText = contentHtml.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
         if (!title) {
             alert("Informe um título para o post.");
