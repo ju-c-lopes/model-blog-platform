@@ -219,31 +219,33 @@ body.popup-open {
     background: #e8f1f5;
 }
 
-/* YouTube Video Container Styles */
-.youtube-video-container {
-    position: relative !important;
-    margin: 1.5rem 0 !important;
-    padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
-    height: 0 !important;
-    overflow: hidden !important;
-    background-color: #000 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+/* YouTube / Quill video embeds in editor */
+.ql-editor iframe.ql-video,
+.ql-editor iframe[src*="youtube.com/embed"],
+.ql-editor iframe[src*="youtube-nocookie.com/embed"] {
+    display: block;
+    max-width: 100%;
+    border: 0;
+    border-radius: 8px;
+    margin: 1rem 0;
+    background-color: #000;
 }
-.youtube-video-container:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+
+.ql-editor iframe.ql-video:not([width]):not([height]):not([style]),
+.ql-editor iframe[src*="youtube.com/embed"]:not([width]):not([height]):not([style]),
+.ql-editor iframe[src*="youtube-nocookie.com/embed"]:not([width]):not([height]):not([style]) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
 }
-.youtube-video-container iframe {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    border: none !important;
-    border-radius: 8px !important;
+
+.ql-editor iframe.ql-video[width]:not([height]):not([style*="height"]),
+.ql-editor iframe[src*="youtube.com/embed"][width]:not([height]):not([style*="height"]),
+.ql-editor iframe[src*="youtube-nocookie.com/embed"][width]:not([height]):not([style*="height"]) {
+    aspect-ratio: 16 / 9;
+    height: auto;
 }
+
 /* Media Upload Section */
 .media-upload-section,
 #rich-editor-container,

@@ -37,7 +37,7 @@ sqlparse = "^0.5.5"
 typing-extensions = "^4.15.0"
 tzdata = "^2025.3"
 urllib3 = "^2.6.3"
-bleach = "^6.3.0"
+bleach = {version = "^6.3.0", extras = ["css"]}
 argon2-cffi = "^25.1.0"
 dotenv = "^0.9.9"
 
@@ -115,3 +115,4 @@ ignore = ["E203"]
 "website/tests/test_author_view.py" = ["E501"]
 "website/tests/test_author_view_helpers_more.py" = ["E501"]
 "website/tests/test_profile_reader_post_views.py" = ["E501"]
+"website/tests/test_sanitizer.py" = ["E501"]

@@ -6,6 +6,31 @@ This centralizes allowed tags/attributes and can be tuned later.
 
 import bleach
 
+try:
+    from bleach.css_sanitizer import CSSSanitizer
+
+    CSS_SANITIZER = CSSSanitizer(
+        allowed_css_properties=[
+            "width",
+            "height",
+            "max-width",
+            "max-height",
+            "min-width",
+            "min-height",
+            "aspect-ratio",
+            "margin",
+            "margin-top",
+            "margin-bottom",
+            "margin-left",
+            "margin-right",
+            "display",
+            "border",
+            "border-radius",
+        ]
+    )
+except ImportError:
+    CSS_SANITIZER = None
+
 # Keep this conservative: allow a small set of formatting tags and images/links
 ALLOWED_TAGS = [
     "a",
@@ -36,8 +61,8 @@ ALLOWED_TAGS = [
 
 ALLOWED_ATTRIBUTES = {
     "a": ["href", "title", "rel", "target"],
-    "img": ["src", "alt", "title", "width", "height"],
-    "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen"],
+    "img": ["src", "alt", "title", "width", "height", "style"],
+    "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "style"],
     "td": ["colspan", "rowspan", "data-row", "data-col"],
 }
 
@@ -64,6 +89,7 @@ def sanitize_html(value: str) -> str:
         tags=ALLOWED_TAGS,
         attributes=ALLOWED_ATTRIBUTES,
         protocols=ALLOWED_PROTOCOLS,
+        css_sanitizer=CSS_SANITIZER,
         strip=True,
     )
 

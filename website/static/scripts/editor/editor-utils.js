@@ -17,7 +17,6 @@ function getEditorRange() {
 }
 
 function insertIntoEditor(html) {
-    console.log("Inserting into editor:", html);
     const range = getEditorRange();
 
     window.quillEditor.clipboard.dangerouslyPasteHTML(
@@ -25,7 +24,7 @@ function insertIntoEditor(html) {
         html + "<br><br>"
     );
 
-    window.quillEditor.setSelection(range.index + 1);
+    window.quillEditor.setSelection(window.quillEditor.getLength() - 1, 0);
 }
 
 window.getEditorRange = getEditorRange;
