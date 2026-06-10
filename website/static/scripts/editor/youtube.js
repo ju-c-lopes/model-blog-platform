@@ -1,4 +1,3 @@
-// Helper function to extract YouTube video ID
 function extractYouTubeId(url) {
     const regExp =
         /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -6,14 +5,23 @@ function extractYouTubeId(url) {
     return match && match[2].length === 11 ? match[2] : null;
 }
 
-// Secure YouTube video insertion function (keeps building iframe dynamically)
+function buildYouTubeEmbedUrl(videoId) {
+    return `https://www.youtube.com/embed/${videoId}`;
+}
+
+function syncEditorTextarea() {
+    const textarea = document.getElementById("id_text");
+    if (textarea && window.quillEditor) {
+        textarea.value = window.quillEditor.root.innerHTML;
+    }
+}
+
 function insertYouTubeVideo() {
     const youtubeForm = document.querySelector(".youtube-form");
     const popup = document.querySelector(".video-buttons .popup");
 
     if (!youtubeForm) return;
 
-    // Show form and focus input
     youtubeForm.style.display = "flex";
     if (popup) {
         popup.style.height = "auto";
@@ -21,112 +29,52 @@ function insertYouTubeVideo() {
     }
     const input = document.getElementById("youtube-url");
     if (input) {
-        input.value = ""; // clear previous
+        input.value = "";
         input.focus();
     }
 }
 
-// Called by the small button next to the input in your template
 function insertUrl() {
     const input = document.getElementById("youtube-url");
     if (!input) return;
-    const url = input.value.trim();
-    sendYoutubeUrl(url);
+    sendYoutubeUrl(input.value.trim());
 }
 
-// -- Replace sendYoutubeUrl to insert only the link wrapper --
 function sendYoutubeUrl(url) {
-    if (!url || url.trim() === "") {
+    if (!url) {
         alert("Por favor cole a URL do YouTube no campo.");
         return;
     }
 
-    const videoId = extractYouTubeId(url.trim());
+    const videoId = extractYouTubeId(url);
     if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
         alert(
-            "❌ URL inválida! Use https://youtu.be/VIDEO_ID ou https://www.youtube.com/watch?v=VIDEO_ID"
+            "URL inválida. Use https://youtu.be/VIDEO_ID ou https://www.youtube.com/watch?v=VIDEO_ID"
         );
         return;
     }
 
-    const youtubeHtml = buildYouTubeContentHtml(videoId);
+    if (!window.quillEditor) {
+        alert("Editor não disponível.");
+        return;
+    }
 
-    console.log("Inserted YouTube link wrapper into editor.");
+    const embedUrl = buildYouTubeEmbedUrl(videoId);
+    const range = getEditorRange();
 
-    insertIntoEditor(youtubeHtml);
-    showMediaPreview("YouTube Link", `Video ID: ${videoId}`);
+    window.quillEditor.insertEmbed(range.index, "video", embedUrl);
+    window.quillEditor.insertText(range.index + 1, "\n\n");
+    window.quillEditor.setSelection(range.index + 3, 0);
 
-    // Clear and hide the form
+    syncEditorTextarea();
+    showMediaPreview("YouTube", `Vídeo ${videoId}`);
+
     const input = document.getElementById("youtube-url");
     if (input) input.value = "";
     const youtubeForm = document.querySelector(".youtube-form");
     if (youtubeForm) youtubeForm.style.display = "none";
 
     closePopup(".video-buttons");
-
-    console.log(
-        `✅ YouTube link inserted (video id ${videoId}). Iframe will be added on save.`
-    );
-}
-
-function buildYouTubeLinkHtml(videoId) {
-    return `
-        <div class="youtube-link-wrapper"
-            data-video-id="${videoId}"
-            contenteditable="false"
-            style="margin:1rem 0; text-align:left;">
-
-            📺 <a href="https://www.youtube.com/watch?v=${videoId}"
-                target="_blank"
-                rel="noopener noreferrer">
-                View on YouTube
-            </a>
-
-        </div>
-        `;
-}
-
-// -- New helper: inject iframe tags into HTML payload before submit --
-function buildYouTubeEmbedHtml(videoId) {
-    return `
-            <div class="youtube-video-container"
-                style="
-                    position: relative;
-                    margin: 1.5rem 0;
-                    padding-bottom: 56.25%;
-                    overflow: hidden;
-                    border-radius: 8px;"
-            >
-                <iframe
-                    src="https://www.youtube.com/embed/${videoId}"
-                    title="YouTube video player"
-                    style="
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;"
-                    frameborder="0"
-                    allow="
-                        accelerometer;
-                        autoplay;
-                        clipboard-write;
-                        encrypted-media;
-                        gyroscope;
-                        picture-in-picture;
-                        web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                ></iframe>
-            </div>
-        `;
-}
-
-function buildYouTubeContentHtml(videoId) {
-    const linkHtml = buildYouTubeLinkHtml(videoId);
-    const embedHtml = buildYouTubeEmbedHtml(videoId);
-
-    return linkHtml + embedHtml;
 }
 
 function initYoutube() {
@@ -143,3 +91,5 @@ function initYoutube() {
 }
 
 window.initYoutube = initYoutube;
+window.extractYouTubeId = extractYouTubeId;
+window.buildYouTubeEmbedUrl = buildYouTubeEmbedUrl;
