@@ -29,6 +29,24 @@ def _selected_tag_ids(form, post) -> set[int]:
     return set()
 
 
+def _pending_new_tag_names(form) -> list[str]:
+    if not form.is_bound:
+        return []
+
+    names = []
+    seen = set()
+    for raw_name in form.data.getlist("new_tag_names"):
+        name = raw_name.strip()
+        if not name:
+            continue
+        key = name.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        names.append(name)
+    return names
+
+
 @xframe_options_exempt
 @login_required
 def edit_post(request, url_slug=None):
@@ -89,6 +107,7 @@ def edit_post(request, url_slug=None):
         form = PostForm(instance=post) if post else PostForm()
 
     selected_tag_ids = _selected_tag_ids(form, post)
+    pending_new_tag_names = _pending_new_tag_names(form)
     upload_session_id = _ensure_upload_session(request) if is_creating else ""
 
     return render(
@@ -100,6 +119,7 @@ def edit_post(request, url_slug=None):
             "is_creating": is_creating,
             "available_tags": form.fields["tags"].queryset,
             "selected_tag_ids": selected_tag_ids,
+            "pending_new_tag_names": pending_new_tag_names,
             "upload_session_id": upload_session_id,
         },
     )

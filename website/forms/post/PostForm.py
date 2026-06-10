@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.utils.text import slugify
 
 from website.models.post.PostModel import Post
 from website.models.post.TagModel import Tag
@@ -13,7 +14,7 @@ class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         required=False,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.MultipleHiddenInput,
         label="Tags",
         help_text="Tecnologias ou temas abordados no post.",
     )
@@ -97,6 +98,36 @@ class PostForm(forms.ModelForm):
             raise forms.ValidationError("A meta descrição deve ter no máximo 160 caracteres.")
         return meta_description
 
+    def clean(self):
+        cleaned_data = super().clean()
+        self._new_tag_names = []
+        seen = set()
+
+        for raw_name in self.data.getlist("new_tag_names"):
+            name = raw_name.strip()
+            if not name:
+                continue
+
+            key = name.casefold()
+            if key in seen:
+                continue
+            seen.add(key)
+
+            if len(name) > Tag._meta.get_field("name").max_length:
+                self.add_error(
+                    "tags",
+                    forms.ValidationError(f'A tag "{name[:20]}…" excede o limite de 50 caracteres.'),
+                )
+                continue
+
+            if not slugify(name):
+                self.add_error("tags", forms.ValidationError(f'Não foi possível gerar slug para "{name}".'))
+                continue
+
+            self._new_tag_names.append(name)
+
+        return cleaned_data
+
     def clean_text(self):
         text = self.cleaned_data.get("text")
         try:
@@ -109,9 +140,31 @@ class PostForm(forms.ModelForm):
         if self.instance.pk and "cover_image" in self.changed_data:
             old_cover = Post.objects.only("cover_image").get(pk=self.instance.pk).cover_image
 
-        instance = super().save(commit=commit)
+        instance = super().save(commit=False)
 
-        if commit and old_cover and old_cover != instance.cover_image:
-            old_cover.delete(save=False)
+        if commit:
+            instance.save()
+            self._save_m2m()
+
+            if old_cover and old_cover != instance.cover_image:
+                old_cover.delete(save=False)
 
         return instance
+
+    def _save_m2m(self):
+        self._save_tags(self.instance)
+
+    def _save_tags(self, instance):
+        tags = list(self.cleaned_data.get("tags") or [])
+        tag_ids = {tag.pk for tag in tags}
+
+        for name in getattr(self, "_new_tag_names", []):
+            tag, _created = Tag.objects.get_or_create(
+                slug=slugify(name),
+                defaults={"name": name, "icon": ""},
+            )
+            if tag.pk not in tag_ids:
+                tags.append(tag)
+                tag_ids.add(tag.pk)
+
+        instance.tags.set(tags)

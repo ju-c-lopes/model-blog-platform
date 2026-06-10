@@ -26,39 +26,82 @@
     </div>
 
     <div class="tags-field">
-        <label for="post-tags">{{ form.tags.label }}</label>
+        <label id="post-tags-label">{{ form.tags.label }}</label>
         {% if form.tags.help_text %}
             <div class="help-text">{{ form.tags.help_text }}</div>
         {% endif %}
-        <div class="tag-checkbox-grid" id="post-tags">
-            {% for tag in available_tags %}
-                <label class="tag-checkbox-item">
-                    <input
-                        type="checkbox"
-                        name="tags"
-                        value="{{ tag.pk }}"
-                        {% if tag.pk in selected_tag_ids %}checked{% endif %}
-                    />
-                    <span class="tag-checkbox-label">
-                        {% if tag.icon %}
-                            <img
-                                src="{% static tag.icon %}"
-                                alt=""
-                                width="20"
-                                height="20"
-                                class="tag-icon"
-                                onerror="this.hidden=true;this.nextElementSibling.hidden=false"
-                            />
-                            <span class="tag-fallback" hidden>{{ tag.name }}</span>
-                        {% else %}
-                            <span class="tag-fallback">{{ tag.name }}</span>
-                        {% endif %}
-                    </span>
-                </label>
-            {% empty %}
-                <p class="help-text">Nenhuma tag cadastrada.</p>
-            {% endfor %}
+
+        <div class="tag-picker" id="tag-picker">
+            <div class="tag-selected-list" id="tag-selected-list" aria-labelledby="post-tags-label">
+                {% for tag in available_tags %}
+                    {% if tag.pk in selected_tag_ids %}
+                        {% include "components/post/editor/tag_chip.html" with tag=tag removable=True %}
+                    {% endif %}
+                {% endfor %}
+                {% for name in pending_new_tag_names %}
+                    {% include "components/post/editor/tag_chip.html" with tag_name=name removable=True is_new=True %}
+                {% endfor %}
+            </div>
+
+            <div class="tag-picker-controls">
+                <button type="button" class="tag-picker-toggle" id="tag-picker-toggle" aria-expanded="false" aria-controls="tag-picker-dropdown">
+                    Adicionar tag
+                </button>
+            </div>
+
+            <div class="tag-picker-dropdown" id="tag-picker-dropdown" hidden>
+                <input
+                    type="search"
+                    class="tag-picker-search"
+                    id="tag-picker-search"
+                    placeholder="Buscar tag por nome…"
+                    autocomplete="off"
+                    aria-label="Buscar tag"
+                />
+                <ul class="tag-picker-options" id="tag-picker-options" role="listbox">
+                    {% for tag in available_tags %}
+                        <li
+                            class="tag-picker-option{% if tag.pk in selected_tag_ids %} is-selected{% endif %}"
+                            role="option"
+                            data-tag-id="{{ tag.pk }}"
+                            data-tag-name="{{ tag.name }}"
+                            data-icon-url="{% if tag.icon %}{% static tag.icon %}{% endif %}"
+                            {% if tag.pk in selected_tag_ids %}aria-disabled="true" hidden{% endif %}
+                        >
+                            <span class="tag-picker-option-label">
+                                {% if tag.icon %}
+                                    <img
+                                        src="{% static tag.icon %}"
+                                        alt=""
+                                        width="20"
+                                        height="20"
+                                        class="tag-picker-option-icon"
+                                    />
+                                {% endif %}
+                                <span class="tag-picker-option-name">{{ tag.name }}</span>
+                            </span>
+                        </li>
+                    {% empty %}
+                        <li class="tag-picker-empty">Nenhuma tag cadastrada.</li>
+                    {% endfor %}
+                </ul>
+                <button type="button" class="tag-picker-create" id="tag-picker-create" hidden>
+                    Criar tag "<span id="tag-picker-create-name"></span>"
+                </button>
+            </div>
+
+            <div id="tag-hidden-inputs">
+                {% for tag in available_tags %}
+                    {% if tag.pk in selected_tag_ids %}
+                        <input type="hidden" name="tags" value="{{ tag.pk }}" data-tag-id="{{ tag.pk }}" />
+                    {% endif %}
+                {% endfor %}
+                {% for name in pending_new_tag_names %}
+                    <input type="hidden" name="new_tag_names" value="{{ name }}" data-new-name="{{ name }}" />
+                {% endfor %}
+            </div>
         </div>
+
         {% if form.tags.errors %}
             <ul class="errorlist">
                 {% for error in form.tags.errors %}

@@ -7,7 +7,7 @@ class Tag(models.Model):
     icon = models.CharField(
         max_length=120,
         blank=True,
-        help_text="Caminho relativo em static/, ex.: img/icons/tags/docker.png",
+        help_text="Caminho relativo em static/, ex.: img/icons/tags/docker.svg",
     )
 
     def __str__(self):
