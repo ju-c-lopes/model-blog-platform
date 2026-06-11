@@ -75,6 +75,47 @@ class PostEditFormTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.python_tag.pk, response.context["selected_tag_ids"])
 
+    def test_create_post_with_new_tag_name(self):
+        self.client.force_login(self.user)
+        response = self.client.post(
+            reverse("create_post"),
+            {
+                "title": "Post com tag nova",
+                "url_slug": "post-tag-nova",
+                "meta_description": "Descrição válida.",
+                "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
+                "new_tag_names": ["Rust"],
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        post = Post.objects.get(url_slug="post-tag-nova")
+        self.assertEqual(post.tags.count(), 1)
+        self.assertTrue(Tag.objects.filter(slug="rust", name="Rust").exists())
+
+    def test_invalid_create_post_preserves_pending_new_tag_names(self):
+        Post.objects.create(
+            author=self.author,
+            title="Outro post",
+            url_slug="slug-ocupado",
+            text="<p>Conteúdo de outro post.</p>",
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("create_post"),
+            {
+                "title": "Novo post",
+                "url_slug": "slug-ocupado",
+                "meta_description": "Descrição válida.",
+                "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
+                "new_tag_names": ["Rust"],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Rust", response.context["pending_new_tag_names"])
+
     def test_invalid_edit_post_preserves_selected_tags(self):
         Post.objects.create(
             author=self.author,
@@ -122,5 +163,6 @@ class PostEditFormTests(TestCase):
         content = response.content.decode()
         self.assertIn("Editar HTML", content)
         self.assertIn("Imagem de capa", content)
+        self.assertIn("tag-picker", content)
         self.assertIn("Docker", content)
-        self.assertIn('value="{}"'.format(self.docker_tag.pk), content)
+        self.assertIn('data-tag-id="{}"'.format(self.docker_tag.pk), content)

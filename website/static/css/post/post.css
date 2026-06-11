@@ -1,11 +1,259 @@
 /* Post detail page styles */
 
+.post-detail-page {
+    --site-header-offset: calc(4em + 15px);
+}
+
+@media screen and (min-width: 769px) {
+    .post-detail-page {
+        --site-header-offset: 80px;
+    }
+}
+
+#reading-bar {
+    position: fixed;
+    top: var(--site-header-offset);
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: #3b82f6;
+    z-index: 9998;
+}
+
+.post-detail-page .post-detail {
+    width: 100%;
+}
+
+.post-detail-page .head-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.post-detail-page .head-card--has-cover {
+    min-height: 32vh;
+    padding-top: 0.5rem;
+}
+
+.post-detail-page .post-header-content {
+    width: 60%;
+}
+
+.post-detail-page .post-info-meta {
+    position: relative;
+    margin: 0 1em 1.25rem;
+    color: #6c757d;
+    z-index: 10;
+}
+
+.post-detail-page .post-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 0.5rem 1.25rem;
+    font-size: 0.95rem;
+    color: #b9b9b9;
+    text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.8)
+}
+
+.post-detail-page .post-date {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.post-detail-page .post-date-updated {
+    color: #b9b9b9 !important;
+    background-color: rgba(127, 126, 44, 0.6);
+}
+
+.post-detail-page .reading-time {
+    white-space: nowrap;
+    background-color: rgba(13, 42, 99, 0.4);
+}
+
+.post-detail-page .post-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+}
+
+.post-detail-page .post-tag-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(38, 77, 96, 0.2);
+}
+
+.post-detail-page .post-tag-badge--has-tooltip {
+    position: relative;
+}
+
+.post-detail-page .post-tag-badge--has-tooltip::after {
+    content: attr(data-tag-name);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    padding: 0.25rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #fff;
+    background: #264d60;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    transition-delay: 0s;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-detail-page .post-tag-badge--has-tooltip:hover::after,
+.post-detail-page .post-tag-badge--has-tooltip:focus-within::after {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 1s;
+}
+
+.post-detail-page .post-tag-badge--has-tooltip:not(:hover):not(:focus-within)::after {
+    transition-delay: 0.6s;
+}
+
+.post-detail-page .post-tag-fallback {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #264d60;
+}
+
+.post-detail-page .post-tag-icon {
+    display: block;
+    filter: drop-shadow(1px 1px 2px #000);
+}
+
+.post-detail-page .post-cover {
+    margin: 0 1em 1.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.8);
+}
+
+.post-detail-page .post-cover-image {
+    display: block;
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+}
+
+.post-detail-page .post-author-section {
+    position: relative;
+    z-index: 10;
+    margin: 0.5rem 1em 0;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+}
+
+.post-detail-page .head-card--has-cover .post-author-section {
+    margin-top: auto;
+    margin-left: 2rem !important;
+}
+
+.post-detail-page .post-author-section .author-presentation-card {
+    margin: 0;
+}
+
+.post-detail-page .author-education,
+.post-detail-page .author-job {
+    color: #b9b9b9;
+    text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.8);
+}
+
+.post-detail-page .post-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.post-detail-page .post-main {
+    width: 100%;
+}
+
+/* YouTube / Quill video embeds — base chrome */
+.post-content iframe.ql-video,
+.ql-editor iframe.ql-video,
+.post-content iframe[src*="youtube.com/embed"],
+.post-content iframe[src*="youtube-nocookie.com/embed"],
+.ql-editor iframe[src*="youtube.com/embed"],
+.ql-editor iframe[src*="youtube-nocookie.com/embed"] {
+    display: block;
+    max-width: 100%;
+    border: 0;
+    border-radius: 8px;
+    margin: 1rem 0;
+    background-color: #000;
+}
+
+/* Padrão responsivo 16:9 quando o autor não define tamanho */
+.post-content iframe.ql-video:not([width]):not([height]):not([style]),
+.ql-editor iframe.ql-video:not([width]):not([height]):not([style]),
+.post-content iframe[src*="youtube.com/embed"]:not([width]):not([height]):not([style]),
+.post-content iframe[src*="youtube-nocookie.com/embed"]:not([width]):not([height]):not([style]),
+.ql-editor iframe[src*="youtube.com/embed"]:not([width]):not([height]):not([style]),
+.ql-editor iframe[src*="youtube-nocookie.com/embed"]:not([width]):not([height]):not([style]) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
+
+/* width no HTML sem height: mantém largura do atributo e calcula altura 16:9 */
+.post-content iframe.ql-video[width]:not([height]):not([style*="height"]),
+.ql-editor iframe.ql-video[width]:not([height]):not([style*="height"]),
+.post-content iframe[src*="youtube.com/embed"][width]:not([height]):not([style*="height"]),
+.post-content iframe[src*="youtube-nocookie.com/embed"][width]:not([height]):not([style*="height"]),
+.ql-editor iframe[src*="youtube.com/embed"][width]:not([height]):not([style*="height"]),
+.ql-editor iframe[src*="youtube-nocookie.com/embed"][width]:not([height]):not([style*="height"]) {
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
+
 /* Common styles for all screen sizes */
 @media screen and (min-width: 1081px) {
+    #reading-bar {
+        top: 80px !important;
+    }
     .post-container {
         display: flex;
         flex-direction: row;
-        gap: 3vw;
+        gap: 2vw;
+        max-width: 98%;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .post-detail-page .head-card--has-cover .post-author-section {
+        background: none;
+    }
+    .post-author-section {
+        margin-left: 3rem !important;
+    }
+    .author-name-h2 {
+        text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.8);
+    }
+    .social-presentation {
+        justify-content: flex-start !important;
     }
     .post-author-social-media {
         display: flex;
@@ -19,11 +267,21 @@
         width: 40px;
         height: auto;
     }
-    .post-detail {
+    .post-main {
         border-radius: 8px;
-        padding-top: 3vh;
         width: 65%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .post-detail-page .post-header-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 60%;
+    }
+    .post-detail-page .post-info-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 3rem !important;
     }
     .post-meta {
         background: rgba(255, 255, 255, 0.4);
@@ -31,20 +289,19 @@
         border-radius: 10px;
         color: #6c757d;
         overflow: hidden;
-        margin: 0 1em;
-    }
-    #reading-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: #3b82f6;
-        z-index: 9999;
+        margin: 0 3rem;
     }
     .post-author-presentation-card {
         padding: 10px;
+        margin-left: 3rem !important;
         overflow: hidden;
+    }
+    .author-card-top {
+        margin-bottom: 0.5vh !important;
+    }
+    .author-card-top img {
+        width: 70px;
+        height: 70px;
     }
     aside {
         display: flex;
@@ -52,24 +309,37 @@
         align-items: center;
         width: 35%;
         padding: 25px;
+        border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    .head-card {
+    .post-detail-page .head-card {
         background: none;
         margin-bottom: 1.5em;
+        height: 100%;
+        align-items: flex-start;
     }
     .post-title {
+        position: relative;
         font-size: 3.5rem;
         font-weight: bold;
         margin-bottom: 1rem;
-        margin-left: 1em;
+        margin-left: 3rem;
         color: #b9b9b9;
+        z-index: 10;
+    }
+    .post-detail-page .post-cover {
+        position: absolute;
+        top: 0;
+        max-width: 98%;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
     }
     /* Post list/card styles for desktop */
     .post-content {
         font-size: 1.5rem;
         color: var(--text-dark);
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.2);
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         padding: 1.5rem;
@@ -136,11 +406,17 @@
     .post-footer div {
         margin: 1em;
     }
+    .post-detail-page .post-footer-actions {
+        max-width: 40%;
+        width: 40%;
+        margin: 3vh auto;
+    }
     .reaction-section {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
+        padding-top: 2vh;
     }
     .reaction-div {
         background: none;
@@ -177,7 +453,7 @@
         justify-content: start;
         gap: 0.5em;
     }
-    .post-detail {
+    .post-main {
         border-radius: 8px;
         padding-top: 3vh;
         width: 65%;
@@ -190,15 +466,6 @@
         color: #6c757d;
         overflow: hidden;
         margin: 0 1em;
-    }
-    #reading-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: #3b82f6;
-        z-index: 9999;
     }
     .post-author-presentation-card {
         padding: 10px;
@@ -348,26 +615,18 @@
         justify-content: start;
         gap: 0.5em;
     }
-    .post-detail {
+    .post-main {
         border-radius: 8px;
         padding-top: 3vh;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+    .post-aside,
     aside {
         display: none;
     }
     .head-card {
         background: none;
         margin-bottom: 1.5em;
-    }
-    #reading-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: #3b82f6;
-        z-index: 9999;
     }
     .post-title {
         font-size: 1.8rem;

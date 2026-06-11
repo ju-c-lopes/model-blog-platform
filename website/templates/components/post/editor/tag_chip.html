@@ -1,0 +1,17 @@
+{% load static %}
+
+<span
+    class="tag-chip{% if is_new %} tag-chip--new{% endif %}"
+    {% if tag %}data-tag-id="{{ tag.pk }}"{% endif %}
+    {% if tag_name %}data-new-name="{{ tag_name }}"{% endif %}
+>
+    <span class="tag-chip-label">
+        {% if tag and tag.icon %}
+            <img src="{% static tag.icon %}" alt="" width="18" height="18" class="tag-icon" />
+        {% endif %}
+        <span class="tag-chip-name">{% if tag %}{{ tag.name }}{% else %}{{ tag_name }}{% endif %}</span>
+    </span>
+    {% if removable %}
+        <button type="button" class="tag-chip-remove" aria-label="Remover tag">&times;</button>
+    {% endif %}
+</span>

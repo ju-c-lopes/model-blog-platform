@@ -1,0 +1,16 @@
+<div class="post-info-meta">
+    <div class="post-dates">
+        <time class="post-date" datetime="{{ post.published_date|date:'Y-m-d' }}">
+            Publicado em {{ post.published_date|date:"d/m/Y" }}
+        </time>
+        {% if post.updated_date and post.updated_date.date != post.published_date %}
+            <time class="post-date post-date-updated" datetime="{{ post.updated_date|date:'Y-m-d' }}">
+                Atualizado em {{ post.updated_date|date:"d/m/Y" }}
+            </time>
+        {% endif %}
+        <span class="reading-time">⏱ {{ post.reading_time }} min de leitura</span>
+    </div>
+    {% if post.tags.exists %}
+        {% include "components/post/post_tags.html" %}
+    {% endif %}
+</div>

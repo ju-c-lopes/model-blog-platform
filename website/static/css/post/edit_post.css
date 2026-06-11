@@ -461,6 +461,173 @@ label.textarea--editor {
     margin-top: 0.75rem;
 }
 
+.tag-picker {
+    position: relative;
+    margin-top: 0.75rem;
+}
+
+.tag-selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+}
+
+.tag-selected-list:empty::before {
+    content: "Nenhuma tag selecionada.";
+    color: #9c9c9c;
+    font-size: 0.9rem;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.65rem;
+    border: 1px solid #cfe2f3;
+    border-radius: 999px;
+    background: #f8fbff;
+    color: #264d60;
+    font-size: 0.9rem;
+}
+
+.tag-chip--new {
+    border-style: dashed;
+    background: #fff;
+}
+
+.tag-chip-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.tag-chip-name {
+    font-weight: 600;
+}
+
+.tag-chip-remove {
+    border: 0;
+    background: transparent;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0 0.15rem;
+}
+
+.tag-chip-remove:hover {
+    color: #c82333;
+}
+
+.tag-picker-controls {
+    margin-top: 0.75rem;
+}
+
+.tag-picker-toggle {
+    padding: 0.45rem 0.9rem;
+    border: 1px solid #264d60;
+    border-radius: 6px;
+    background: #fff;
+    color: #264d60;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.tag-picker-toggle:hover {
+    background: #f0f7fa;
+}
+
+.tag-picker-dropdown {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    width: min(100%, 22rem);
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.tag-picker-search {
+    width: 100%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.tag-picker-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 14rem;
+    overflow-y: auto;
+}
+
+.tag-picker-option {
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tag-picker-option:hover {
+    background: #f0f7fa;
+}
+
+.tag-picker-option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.tag-picker-option-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.tag-picker-option-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #264d60;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tag-picker-empty {
+    padding: 0.5rem;
+    color: #9c9c9c;
+    font-size: 0.9rem;
+}
+
+.tag-picker-create {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px dashed #264d60;
+    border-radius: 6px;
+    background: #fff;
+    color: #264d60;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.tag-picker-create:hover {
+    background: #f0f7fa;
+}
+
 .tag-checkbox-item {
     display: inline-flex;
     align-items: center;

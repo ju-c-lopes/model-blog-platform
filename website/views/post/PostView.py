@@ -3,19 +3,16 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_POST
 
-from website.models import ACADEMIC_LEVEL, SOCIAL_MEDIA
 from website.models.post.PostModel import Post
 
 
 @xframe_options_exempt
 def post_detail(request, url_slug):
-    # Get the post by its URL slug or return 404 if not found
-    post = get_object_or_404(Post, url_slug=url_slug)
+    post = get_object_or_404(
+        Post.objects.select_related("author").prefetch_related("tags", "likes", "loves"),
+        url_slug=url_slug,
+    )
     context = {"post": post}
-    context["author_connected"] = request.user == post.author.user
-    context["graduations_level"] = ACADEMIC_LEVEL
-    context["social_media_index"] = SOCIAL_MEDIA
-    # Keep reaction icons in sync on initial page load.
     if request.user.is_authenticated:
         context["user_liked"] = post.likes.filter(pk=request.user.pk).exists()
         context["user_loved"] = post.loves.filter(pk=request.user.pk).exists()

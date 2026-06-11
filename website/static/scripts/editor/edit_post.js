@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initYoutube();
     initTable();
     initCoverPreview();
+    initTagPicker();
     initHtmlSourceEditor();
 });
 
-// -- Update form submit handler to inject iframes before saving payload --
+// -- Sync Quill content into textarea before submit --
 const form = document.querySelector("form");
 if (form) {
     form.addEventListener("submit", function (e) {
@@ -25,14 +26,7 @@ if (form) {
         if (htmlPaneActive && sourceEl && ta) {
             ta.value = sourceEl.value;
         } else if (window.quillEditor && ta) {
-            const currentHtml = window.quillEditor.root.innerHTML;
-            const processedHtml =
-                typeof injectYouTubeIframes === "function"
-                    ? injectYouTubeIframes(currentHtml)
-                    : currentHtml;
-            ta.value = processedHtml;
-        } else if (ta && typeof injectYouTubeIframes === "function") {
-            ta.value = injectYouTubeIframes(ta.value);
+            ta.value = window.quillEditor.root.innerHTML;
         }
 
         const titleEl = document.getElementById("id_title");
