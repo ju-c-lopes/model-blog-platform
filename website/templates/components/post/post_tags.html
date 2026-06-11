@@ -1,0 +1,24 @@
+{% load static %}
+
+<ul class="post-tag-list" aria-label="Tags do post">
+    {% for tag in post.tags.all %}
+        <li
+            class="post-tag-badge{% if tag.icon %} post-tag-badge--has-tooltip{% endif %}"
+            {% if tag.icon %}data-tag-name="{{ tag.name }}" tabindex="0"{% endif %}
+        >
+            {% if tag.icon %}
+                <img
+                    src="{% static tag.icon %}"
+                    alt="{{ tag.name }}"
+                    width="60"
+                    height="60"
+                    class="post-tag-icon"
+                    onerror="this.hidden=true;this.nextElementSibling.hidden=false"
+                />
+                <span class="post-tag-fallback" hidden>{{ tag.name }}</span>
+            {% else %}
+                <span class="post-tag-fallback">{{ tag.name }}</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
