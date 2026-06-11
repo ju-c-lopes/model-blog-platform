@@ -53,7 +53,6 @@
     flex-wrap: wrap;
     align-items: start;
     gap: 0.5rem 1.25rem;
-    font-size: 0.95rem;
     color: #b9b9b9;
     text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.8)
 }
@@ -186,6 +185,22 @@
     justify-content: space-between;
     align-items: center;
     gap: 0.75rem;
+}
+
+.post-detail-page .post-footer-actions a {
+    color: white;
+}
+
+.post-detail-page .post-footer-actions .btn {
+    background: linear-gradient(135deg, #264d60 0%, #1a3a4a 100%);
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(38, 77, 96, 0.2);
 }
 
 .post-detail-page .post-main {
@@ -443,21 +458,34 @@
 
 /* Desktop styles */
 @media screen and (min-width: 769px) and (max-width: 1080px) {
+    #reading-bar {
+        top: 92px !important;
+    }
     .post-container {
         display: flex;
         flex-direction: row;
-        gap: 3vw;
+        gap: 1vw;
+        max-width: 98%;
+        width: 100%;
+        margin: 0 auto;
     }
     .post-author-social-media {
         display: flex;
         justify-content: start;
         gap: 0.5em;
     }
+    .post-detail-page .post-author-section {
+        padding: 0.75rem 0;
+    }
     .post-main {
         border-radius: 8px;
-        padding-top: 3vh;
         width: 65%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .post-detail-page .post-info-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 2rem !important;
     }
     .post-meta {
         background: rgba(255, 255, 255, 0.4);
@@ -483,14 +511,30 @@
         background: none;
         margin-bottom: 1.5em;
     }
+    .post-detail-page .post-header-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        z-index: 10;
+    }
     .post-title {
         font-size: 1.8rem;
         font-weight: bold;
         margin-bottom: 1rem;
-        margin-left: 1em;
+        margin-left: 2rem;
         color: #b9b9b9;
     }
-    /* Post list/card styles for desktop */
+    .post-detail-page .post-cover {
+        position: absolute;
+        top: 0;
+        max-width: 98%;
+        width: 100%;
+        height: 100%;
+        margin: 0 1% 1.5rem;
+        z-index: 0;
+    }
+    /* Post list/card styles for tablet */
     .post-content {
         background-color: white;
         border-radius: 8px;
@@ -518,6 +562,31 @@
         font-weight: 900;
         background: lightblue;
     }
+    .post-content iframe.ql-video,
+    .ql-editor iframe.ql-video,
+    .post-content iframe[src*="youtube.com/embed"],
+    .post-content iframe[src*="youtube-nocookie.com/embed"],
+    .ql-editor iframe[src*="youtube.com/embed"],
+    .ql-editor iframe[src*="youtube-nocookie.com/embed"] {
+        display: block;
+        max-width: 60%;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        border-radius: 8px;
+        margin: 1rem 0;
+        background-color: #000;
+        height: auto;
+    }
+    .post-content iframe.ql-video:not([width]):not([height]):not([style]),
+    .ql-editor iframe.ql-video:not([width]):not([height]):not([style]),
+    .post-content iframe[src*="youtube.com/embed"]:not([width]):not([height]):not([style]),
+    .post-content iframe[src*="youtube-nocookie.com/embed"]:not([width]):not([height]):not([style]),
+    .ql-editor iframe[src*="youtube.com/embed"]:not([width]):not([height]):not([style]),
+    .ql-editor iframe[src*="youtube-nocookie.com/embed"]:not([width]):not([height]):not([style]) {
+        width: 60% !important;
+        aspect-ratio: 16 / 9;
+        height: auto;
+    }
     .post-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -544,6 +613,7 @@
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
+        padding-top: 2vh;
     }
     .reaction-div {
         background: none;
@@ -565,6 +635,19 @@
     }
     .reaction-icon img {
         background: none;
+    }
+    .post-detail-page .post-footer-actions {
+        justify-content: space-evenly;
+        max-width: 100%;
+        width: 85%;
+        margin: 3vh auto;
+    }
+    .post-detail-page .post-footer-actions a {
+        text-decoration: underline;
+    }
+    .post-detail-page .post-footer-actions a:visited {
+        color: white;
+
     }
     .read-more {
         display: inline-block;
