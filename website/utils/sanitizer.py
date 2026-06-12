@@ -57,6 +57,7 @@ ALLOWED_TAGS = [
     "tbody",
     "tr",
     "td",
+    "div",
 ]
 
 ALLOWED_ATTRIBUTES = {
@@ -64,6 +65,7 @@ ALLOWED_ATTRIBUTES = {
     "img": ["src", "alt", "title", "width", "height", "style"],
     "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "style"],
     "td": ["colspan", "rowspan", "data-row", "data-col"],
+    "div": ["style", "class"],
 }
 
 ALLOWED_PROTOCOLS = ["http", "https", "mailto", "data"]
