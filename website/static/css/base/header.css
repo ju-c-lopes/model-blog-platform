@@ -431,7 +431,7 @@
         box-shadow: 0 60px 100px 50px rgb(10, 10, 83);
     }
 
-    .menu-navigation, .menu-visible {
+    .menu-navigation, body .menu-visible {
         position: absolute;
         display: flex;
         flex-direction: column;
