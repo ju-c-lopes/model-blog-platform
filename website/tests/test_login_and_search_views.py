@@ -5,9 +5,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.backends.db import SessionStore
 from django.test import RequestFactory, TestCase
+from django.urls import reverse
 
 from website.models.author.AuthorModel import Author
 from website.models.post.PostModel import Post
+from website.models.post.TagModel import Tag
+from website.services.post.post_search import search_posts_queryset
 from website.views.post.SearchView import search_posts
 from website.views.user.LoginView import login_user
 
@@ -59,41 +62,85 @@ class LoginViewTests(TestCase):
 class SearchViewTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-
-    def test_search_returns_results_and_counts(self):
         user = User.objects.create_user(email="a@example.com", username="a", password="pw")
-        author = Author.objects.create(user=user, author_name="AuthorX", author_url_slug="ax")
-        # create matching posts
-        Post.objects.create(author=author, title="FindMe", text="abc", url_slug="p1")
-        Post.objects.create(author=author, title="FindMe two", text="def", url_slug="p2")
+        self.author = Author.objects.create(user=user, author_name="AuthorX", author_url_slug="ax")
 
-        req = self.factory.get("/search", {"query": "FindMe"})
+    def _search(self, params):
+        req = self.factory.get("/search", params)
 
         def fake_render(req_in, template, context=None):
             return SimpleNamespace(status_code=200, context=context)
 
         with patch("website.views.post.SearchView.render", fake_render):
-            resp = search_posts(req)
+            return search_posts(req)
+
+    def test_search_returns_results_and_counts(self):
+        Post.objects.create(author=self.author, title="FindMe", text="abc", url_slug="p1")
+        Post.objects.create(author=self.author, title="FindMe two", text="def", url_slug="p2")
+
+        resp = self._search({"query": "FindMe"})
 
         assert resp.status_code == 200
         assert resp.context["results_count"] == 2
+        assert resp.context["is_explore"] is False
 
     def test_search_page_not_integer_returns_first_page(self):
-        user = User.objects.create_user(email="b@example.com", username="b", password="pw")
-        author = Author.objects.create(user=user, author_name="AuthorY", author_url_slug="ay")
-        # one matching post
-        Post.objects.create(author=author, title="OnlyOne", text="x", url_slug="o1")
+        Post.objects.create(author=self.author, title="OnlyOne", text="x", url_slug="o1")
 
-        req = self.factory.get("/search", {"query": "OnlyOne", "page": "notint"})
-
-        def fake_render(req_in, template, context=None):
-            return SimpleNamespace(status_code=200, context=context)
-
-        resp = None
-        with patch("website.views.post.SearchView.render", fake_render):
-            resp = search_posts(req)
+        resp = self._search({"query": "OnlyOne", "page": "notint"})
 
         assert resp.status_code == 200
-        # posts is a Page object; ensure it corresponds to page 1
-        # by checking object_list length
         assert len(list(resp.context["posts"])) == 1
+
+    def test_search_by_meta_description(self):
+        Post.objects.create(
+            author=self.author,
+            title="Other title",
+            text="body",
+            meta_description="Guia completo de Docker",
+            url_slug="docker-meta",
+        )
+
+        resp = self._search({"query": "Docker"})
+
+        assert resp.context["results_count"] == 1
+        assert resp.context["posts"][0].url_slug == "docker-meta"
+
+    def test_search_by_tag_name(self):
+        tag, _ = Tag.objects.get_or_create(slug="seo", defaults={"name": "SEO"})
+        post = Post.objects.create(author=self.author, title="Marketing", text="content", url_slug="seo-post")
+        post.tags.add(tag)
+
+        resp = self._search({"query": "SEO"})
+
+        assert resp.context["results_count"] == 1
+        assert resp.context["posts"][0].url_slug == "seo-post"
+
+    def test_search_empty_query_lists_all_posts_explore_mode(self):
+        Post.objects.create(author=self.author, title="Alpha", text="a", url_slug="alpha")
+        Post.objects.create(author=self.author, title="Beta", text="b", url_slug="beta")
+
+        resp = self._search({})
+
+        assert resp.context["is_explore"] is True
+        assert resp.context["results_count"] == 2
+        assert len(list(resp.context["posts"])) == 2
+
+    def test_search_distinct_does_not_duplicate_post_with_multiple_tags(self):
+        tag_python, _ = Tag.objects.get_or_create(slug="python", defaults={"name": "Python"})
+        tag_pytest = Tag.objects.create(name="PyTest Search", slug="pytest-search-test")
+        post = Post.objects.create(author=self.author, title="Tagged", text="x", url_slug="tagged")
+        post.tags.add(tag_python, tag_pytest)
+
+        results = search_posts_queryset("Py")
+
+        assert results.count() == 1
+        assert results.first().pk == post.pk
+
+    def test_search_results_post_links_include_return_query(self):
+        Post.objects.create(author=self.author, title="FindMe", text="abc", url_slug="p1")
+
+        response = self.client.get(reverse("search_posts"), {"query": "FindMe"})
+        content = response.content.decode()
+
+        self.assertIn("from_query=FindMe", content)

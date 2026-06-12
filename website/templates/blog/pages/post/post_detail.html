@@ -69,7 +69,7 @@
 
                     <footer class="post-footer">
                         <div class="post-footer-actions">
-                            <a href="{% url 'home' %}" class="btn btn-outline-primary">Voltar aos posts</a>
+                            <a href="{{ posts_back_url }}" class="btn btn-outline-primary">Voltar aos posts</a>
                             {% if request.user.is_authenticated and request.user.author == post.author %}
                             <a href="{% url 'edit_post' url_slug=post.url_slug %}" class="btn btn-primary">Editar post</a>
                             {% endif %}

@@ -33,11 +33,11 @@
     </div>
 
     <!-- SEARCH -->
-    <form method="POST" accept-charset="utf-8">{% csrf_token %}
+    <form method="GET" action="{% url 'search_posts' %}" class="header-search-form" role="search">
         <div class="search">
-            <input type="text" name="search" id="search" placeholder="Buscar postagem..." />
-            <button class="search-btn" type="submit">
-                <img src="{% static 'img/icons/lupa.png' %}" alt="Buscar" />
+            <input type="search" name="query" id="search" placeholder="Buscar postagem..." aria-label="Buscar postagem" />
+            <button class="search-btn" type="submit" aria-label="Buscar">
+                <img src="{% static 'img/icons/lupa.png' %}" alt="" />
             </button>
         </div>
     </form>
