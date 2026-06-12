@@ -1,7 +1,7 @@
 {% extends 'blog/pages/base.html' %}
 {% load static %}
 
-{% block title %}Search Results{% endblock %}
+{% block title %}Busca{% endblock %}
 
 {% block head-css %}
 <link rel="stylesheet" href="{% static 'css/pages/home.css' %}" />
@@ -9,112 +9,88 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <h1 class="mb-4">Search Results</h1>
+<section class="search-page recent-posts-section">
+    <div class="posts-container">
+        <h1 class="section-title">{% if is_explore %}Explorar posts{% else %}Resultados da busca{% endif %}</h1>
 
-            <form method="GET" action="{% url 'search_posts' %}" class="mb-4">{% csrf_token %}
-                <div class="input-group">
-                    {{ form.query }}
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
+        <form method="GET" action="{% url 'search_posts' %}" class="search-form mb-4" role="search">
+            <div class="input-group">
+                {{ form.query }}
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
                 </div>
-            </form>
+            </div>
+        </form>
 
-            {% if query %}
-                <p class="search-info">
-                    Found {{ results_count }} result{% if results_count != 1 %}s{% endif %} for "{{ query }}"
-                </p>
+        {% if query %}
+            <p class="search-info">
+                {{ results_count }} resultado{% if results_count != 1 %}s{% endif %} para &ldquo;{{ query }}&rdquo;
+            </p>
+        {% elif results_count %}
+            <p class="search-info">{{ results_count }} post{% if results_count != 1 %}s{% endif %} disponíveis</p>
+        {% endif %}
 
-                {% if posts %}
-                    <div class="row">
-                        {% for post in posts %}
-                        <div class="col-md-6 mb-4">
-                            <div class="card h-100">
-                                {% if post.image %}
-                                <img
-                                    src="{{ post.image.url }}"
-                                    class="card-img-top"
-                                    alt="{{ post.title }}"
-                                />
-                                {% else %}
-                                <img
-                                    src="{% static 'img/default-post.jpg' %}"
-                                    class="card-img-top"
-                                    alt="Default post"
-                                />
-                                {% endif %}
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ post.title }}</h5>
-                                    <p class="card-text">{{ post.content|truncatewords:20 }}</p>
-                                    <a href="{% url 'post_detail' post.url_slug %}" class="btn btn-primary">
-                                        Read More...
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <small>Publicado em {{ post.published_date|date:"d/m/Y" }}</small>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% if posts.has_other_pages %}
-                    <nav aria-label="Page navigation" class="mt-4">
-                        <ul class="pagination justify-content-center">
-                            {% if posts.has_previous %}
-                            <li class="page-item">
-                                <a
-                                    class="page-link"
-                                    href="?query={{ query }}&page={{ posts.previous_page_number }}"
-                                    aria-label="Previous"
-                                >
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            {% else %}
-                            <li class="page-item disabled">
-                                <span class="page-link" aria-hidden="true">&laquo;</span>
-                            </li>
-                            {% endif %}
+        {% if posts %}
+            <div class="posts-grid">
+                {% for post in posts %}
+                    {% include "components/post/post_list_card.html" with search_query=query search_page=posts.number from_search=1 %}
+                {% endfor %}
+            </div>
 
-                            {% for i in posts.paginator.page_range %}
-                                {% if posts.number == i %}
-                                <li class="page-item active">
-                                    <span class="page-link">{{ i }}</span>
-                                </li>
-                                {% else %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?query={{ query }}&page={{ i }}">{{ i }}</a>
-                                </li>
-                                {% endif %}
-                            {% endfor %}
-                            {% if posts.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?query={{ query }}&page={{ posts.next_page_number }}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            {% else %}
-                            <li class="page-item disabled">
-                                <span class="page-link" aria-hidden="true">&raquo;</span>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+            {% if posts.has_other_pages %}
+            <nav aria-label="Paginação" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?{% if query %}query={{ query|urlencode }}&amp;{% endif %}page={{ posts.previous_page_number }}"
+                            aria-label="Anterior"
+                        >
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&laquo;</span>
+                    </li>
                     {% endif %}
-                {% else %}
-                    <div class="alert alert-info">
-                        No posts found matching your search criteria.
-                    </div>
-                {% endif %}
-            {% else %}
-                <div class="alert alert-info">
-                    Enter a search term to find blog posts.
-                </div>
+
+                    {% for i in posts.paginator.page_range %}
+                        {% if posts.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if query %}query={{ query|urlencode }}&amp;{% endif %}page={{ i }}">{{ i }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if posts.has_next %}
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?{% if query %}query={{ query|urlencode }}&amp;{% endif %}page={{ posts.next_page_number }}"
+                            aria-label="Próxima"
+                        >
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&raquo;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
             {% endif %}
-        </div>
+        {% else %}
+            <div class="alert alert-info">
+                Nenhum post encontrado para os critérios informados.
+            </div>
+        {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}

@@ -4,6 +4,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_POST
 
 from website.models.post.PostModel import Post
+from website.services.post.post_search import resolve_posts_back_url
 
 
 @xframe_options_exempt
@@ -12,7 +13,10 @@ def post_detail(request, url_slug):
         Post.objects.select_related("author").prefetch_related("tags", "likes", "loves"),
         url_slug=url_slug,
     )
-    context = {"post": post}
+    context = {
+        "post": post,
+        "posts_back_url": resolve_posts_back_url(request),
+    }
     if request.user.is_authenticated:
         context["user_liked"] = post.likes.filter(pk=request.user.pk).exists()
         context["user_loved"] = post.loves.filter(pk=request.user.pk).exists()

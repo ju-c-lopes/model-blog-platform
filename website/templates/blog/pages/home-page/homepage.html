@@ -35,7 +35,7 @@
                     Sign In
                 </a>
                 {% else %}
-                <a href="/search/" class="btn btn-primary-hero">
+                <a href="{% url 'search_posts' %}" class="btn btn-primary-hero">
                     Explore Posts
                 </a>
                 {% if request.user.author %}
@@ -92,34 +92,11 @@
         <h2 class="section-title">Latest Stories</h2>
         <div class="posts-grid">
             {% for post in posts|slice:":3" %}
-            <article class="post-card">
-                {% if post.image %}
-                <div class="post-image">
-                    <img src="/media/{{ post.image }}" alt="{{ post.title }}" />
-                </div>
-                {% endif %}
-                <div class="post-content">
-                    <a href="{% url 'post_detail' post.url_slug %}">
-                        <h3 class="post-title">{{ post.title }}</h3>
-                    </a>
-                    <p class="post-excerpt">
-                        {{ post.content|truncatewords:20 }}
-                    </p>
-                    <div class="post-meta">
-                        <span class="post-author">{{ post.author.author_name }}</span>
-                        <span class="post-date">
-                            {{ post.published_date|date:"d/m/Y" }}
-                        </span>
-                    </div>
-                    <a href="{% url 'post_detail' post.url_slug %}" class="post-link">
-                        Read More
-                    </a>
-                </div>
-            </article>
+                {% include "components/post/post_list_card.html" %}
             {% endfor %}
         </div>
         <div class="posts-cta">
-            <a href="/search/" class="btn btn-outline-primary">
+            <a href="{% url 'search_posts' %}" class="btn btn-outline-primary">
                 View All Posts
             </a>
         </div>

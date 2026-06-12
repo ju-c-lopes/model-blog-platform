@@ -1,0 +1,25 @@
+{% load post_navigation %}
+<article class="post-card">
+    {% if post.cover_image %}
+    <div class="post-image">
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" loading="lazy" />
+    </div>
+    {% endif %}
+    <div class="post-content">
+        <a href="{% post_detail_url post.url_slug search_query search_page from_search %}">
+            <h3 class="post-title">{{ post.title }}</h3>
+        </a>
+        <p class="post-excerpt">
+            {% if post.meta_description %}
+                {{ post.meta_description }}
+            {% else %}
+                {{ post.text|striptags|truncatewords:20 }}
+            {% endif %}
+        </p>
+        <div class="post-meta">
+            <span class="post-author">{{ post.author.author_name }}</span>
+            <span class="post-date">{{ post.published_date|date:"d/m/Y" }}</span>
+        </div>
+        <a href="{% post_detail_url post.url_slug search_query search_page from_search %}" class="post-link">Ler mais</a>
+    </div>
+</article>

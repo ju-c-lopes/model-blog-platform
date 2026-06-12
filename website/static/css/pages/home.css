@@ -46,6 +46,10 @@
     margin-bottom: 2rem;
 }
 
+.pagination .page-item {
+    list-style-type: none;
+}
+
 .pagination .page-item .page-link {
     color: #264d60;
     background-color: #fff;
@@ -100,7 +104,7 @@
     }
 }
 
-@media screen and (min-width: 769px) and (max-width: 1024px) {
+@media screen and (min-width: 769px) and (max-width: 1081px) {
     .home-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -162,7 +166,7 @@
     }
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1081px) {
     .screen-size {
         position: relative;
         margin-top: 2vh;
@@ -380,7 +384,6 @@
 /* Recent Posts Section */
 .recent-posts-section {
     padding: 4rem 1rem;
-    background: var(--background-light);
 }
 
 .posts-container {

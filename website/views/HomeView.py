@@ -3,22 +3,20 @@ from django.shortcuts import render
 
 from website.models.post.PostModel import Post
 
+POSTS_PER_PAGE = 6
+
 
 def get_home_page(request):
-    # Get all posts ordered by published date (newest first)
-    post_list = Post.objects.all().order_by("-published_date")
+    post_list = Post.objects.select_related("author").prefetch_related("tags").order_by("-published_date")
 
-    # Set up pagination - 6 posts per page
-    paginator = Paginator(post_list, 6)
+    paginator = Paginator(post_list, POSTS_PER_PAGE)
     page = request.GET.get("page")
 
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page
         posts = paginator.page(1)
     except EmptyPage:
-        # If page is out of range, deliver last page of results
         posts = paginator.page(paginator.num_pages)
 
     return render(request, "blog/pages/home-page/homepage.html", {"posts": posts})

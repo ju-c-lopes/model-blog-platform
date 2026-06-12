@@ -100,3 +100,24 @@ class PostDetailViewTests(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(url)
         self.assertIn("Editar post", response.content.decode())
+
+    def test_posts_back_url_preserves_search_query(self):
+        post = self._create_post()
+        url = reverse("post_detail", kwargs={"url_slug": post.url_slug})
+        search_back = reverse("search_posts") + "?query=docker"
+
+        response = self.client.get(url, {"from_query": "docker"})
+        content = response.content.decode()
+
+        self.assertIn(f'href="{search_back}"', content)
+
+    def test_posts_back_url_default_without_return_params(self):
+        post = self._create_post()
+        url = reverse("post_detail", kwargs={"url_slug": post.url_slug})
+        search_url = reverse("search_posts")
+
+        response = self.client.get(url)
+        content = response.content.decode()
+
+        self.assertIn(f'href="{search_url}"', content)
+        self.assertNotIn("from_query=", content)

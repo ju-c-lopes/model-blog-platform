@@ -1,40 +1,33 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Q
 from django.shortcuts import render
 
 from website.forms.post.SearchForm import SearchForm
-from website.models.post.PostModel import Post
+from website.services.post.post_search import search_posts_queryset
+
+POSTS_PER_PAGE = 6
 
 
 def search_posts(request):
     form = SearchForm(request.GET)
-    query = request.GET.get("query", "")
-    results = []
+    query = request.GET.get("query", "").strip()
+    results = search_posts_queryset(query)
 
-    if query:
-        # Search in title, text, and author name
-        results = Post.objects.filter(
-            Q(title__icontains=query) | Q(text__icontains=query) | Q(author__author_name__icontains=query)
-        ).order_by("-published_date")
-
-    # Pagination
-    paginator = Paginator(results, 6)  # Show 6 posts per page
+    paginator = Paginator(results, POSTS_PER_PAGE)
     page = request.GET.get("page")
 
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page
         posts = paginator.page(1)
     except EmptyPage:
-        # If page is out of range, deliver last page of results
         posts = paginator.page(paginator.num_pages)
 
     context = {
         "form": form,
         "query": query,
         "posts": posts,
-        "results_count": results.count() if query else 0,
+        "results_count": results.count(),
+        "is_explore": not query,
     }
 
     return render(request, "blog/pages/search/search_results.html", context)
