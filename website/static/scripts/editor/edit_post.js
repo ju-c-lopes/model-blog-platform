@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initSlug();
     initSlugTooltip();
     initQuillEditor();
+    initFirstLineIndentButton();
     initPopup();
     initImageUpload();
     initVideoUpload();

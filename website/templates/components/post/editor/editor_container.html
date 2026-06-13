@@ -2,12 +2,25 @@
 <div class="editor-container">
     <!-- Hidden textarea for form submission -->
     <div class="header-content-area">
-    <label class="textarea--editor" for="id_text">{{ form.text.label }}</label>
-    {% if form.text.help_text %}
-        <div class="rich-help-text">
-            {{ form.text.help_text }}
-        </div>
-    {% endif %}
+        <label class="textarea--editor" for="id_text">{{ form.text.label }}</label>
+        {% if form.text.help_text %}
+        <details class="editor-help-details">
+            <summary class="editor-help-summary">Dicas de formatação</summary>
+            <div class="editor-help-body rich-help-text">
+                {{ form.text.help_text|linebreaksbr }}
+            </div>
+        </details>
+        {% endif %}
+    </div>
+    <div class="editor-inline-tools">
+        <button
+            type="button"
+            class="editor-tool-btn"
+            id="btn-first-line-indent"
+            title="Insere recuo no início da linha atual (espaço inseparável)"
+        >
+            Recuo 1ª linha
+        </button>
     </div>
     <div id="rich-editor-container"></div>
     <textarea class="textarea--editor" name="text" id="id_text">{{ form.text.value|default:'' }}</textarea>

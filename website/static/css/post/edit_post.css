@@ -298,11 +298,97 @@ label.textarea--editor {
 .header-content-area {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
 }
+
+.editor-help-details {
+    margin-left: auto;
+}
+
+.editor-help-summary {
+    cursor: pointer;
+    color: var(--primary-blue, #264d60);
+    font-size: 0.875rem;
+    font-weight: 600;
+    list-style: none;
+    user-select: none;
+}
+
+.editor-help-summary::-webkit-details-marker {
+    display: none;
+}
+
+.editor-help-summary::before {
+    content: "▸ ";
+    display: inline-block;
+    transition: transform 0.2s ease;
+    margin-right: 0.5rem;
+}
+
+.editor-help-details[open] .editor-help-summary::before {
+    transform: rotate(90deg);
+}
+
+.editor-help-body {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    max-width: 36rem;
+}
+
 .rich-help-text {
     color: #565656 !important;
 }
+
+.editor-inline-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.editor-tool-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary-blue, #264d60);
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.editor-tool-btn:hover {
+    background: var(--light-blue, #e8f1f5);
+    border-color: var(--primary-blue, #264d60);
+}
+
+.editor-tool-btn:focus-visible {
+    outline: 2px solid var(--primary-blue, #264d60);
+    outline-offset: 2px;
+}
+
+.editor-container #rich-editor-container {
+    border-radius: 0 0 8px 8px;
+}
+
+.editor-container #rich-editor-container .ql-toolbar {
+    border-radius: 0;
+}
+
 #id_text {
     display: none;
 }
@@ -750,7 +836,16 @@ label.textarea--editor {
         border-bottom: 1px solid #fff;
     }
     .editor-container .header-content-area {
+        flex-direction: column;
+        align-items: flex-start;
         gap: 1rem;
+    }
+    .editor-help-details {
+        margin-left: 0;
+        width: 100%;
+    }
+    .editor-help-body {
+        max-width: none;
     }
     .media-buttons {
         justify-content: center;

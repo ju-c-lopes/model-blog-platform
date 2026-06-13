@@ -11,6 +11,7 @@ from PIL import Image
 from website.models.author.AuthorModel import Author
 from website.models.post.PostModel import Post
 from website.models.post.TagModel import Tag
+from website.utils.sanitizer import sanitize_html
 
 User = get_user_model()
 
@@ -49,7 +50,7 @@ class PostDetailViewTests(TestCase):
         post = self._create_post()
         post.tags.add(self.docker_tag)
 
-        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}))
+        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}), follow=True)
 
         self.assertEqual(response.status_code, 200)
         content = response.content.decode()
@@ -66,7 +67,7 @@ class PostDetailViewTests(TestCase):
         post = self._create_post(cover_image=self._make_cover())
         post.tags.add(self.docker_tag, self.python_tag)
 
-        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}))
+        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}), follow=True)
         content = response.content.decode()
 
         self.assertEqual(response.status_code, 200)
@@ -84,7 +85,7 @@ class PostDetailViewTests(TestCase):
         post.refresh_from_db()
         self.assertNotEqual(post.updated_date.date(), post.published_date)
 
-        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}))
+        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}), follow=True)
         content = response.content.decode()
 
         self.assertIn("Atualizado em", content)
@@ -94,11 +95,11 @@ class PostDetailViewTests(TestCase):
         post = self._create_post()
         url = reverse("post_detail", kwargs={"url_slug": post.url_slug})
 
-        response = self.client.get(url)
+        response = self.client.get(url, follow=True)
         self.assertNotIn("Editar post", response.content.decode())
 
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(url, follow=True)
         self.assertIn("Editar post", response.content.decode())
 
     def test_posts_back_url_preserves_search_query(self):
@@ -106,7 +107,7 @@ class PostDetailViewTests(TestCase):
         url = reverse("post_detail", kwargs={"url_slug": post.url_slug})
         search_back = reverse("search_posts") + "?query=docker"
 
-        response = self.client.get(url, {"from_query": "docker"})
+        response = self.client.get(url, {"from_query": "docker"}, follow=True)
         content = response.content.decode()
 
         self.assertIn(f'href="{search_back}"', content)
@@ -116,8 +117,25 @@ class PostDetailViewTests(TestCase):
         url = reverse("post_detail", kwargs={"url_slug": post.url_slug})
         search_url = reverse("search_posts")
 
-        response = self.client.get(url)
+        response = self.client.get(url, follow=True)
         content = response.content.decode()
 
         self.assertIn(f'href="{search_url}"', content)
         self.assertNotIn("from_query=", content)
+
+    def test_post_detail_renders_quill_rich_content(self):
+        rich_html = sanitize_html(
+            '<p class="ql-align-center"><span style="color: rgb(200, 0, 0);">Destaque</span></p>'
+            '<div class="ql-code-block-container">code_line</div>'
+            '<ol><li data-list="bullet"><span class="ql-ui"></span>Lista</li></ol>'
+        )
+        post = self._create_post(text=rich_html)
+        response = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}), follow=True)
+        content = response.content.decode()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("ql-align-center", content)
+        self.assertIn("ql-code-block-container", content)
+        self.assertIn('data-list="bullet"', content)
+        self.assertIn("Destaque", content)
+        self.assertIn("code_line", content)
