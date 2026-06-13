@@ -681,6 +681,9 @@
 
 /* Mobile styles */
 @media screen and (max-width: 768px) {
+    .d-flex {
+        z-index: auto !important;
+    }
     .content {
         top: 80px;
     }

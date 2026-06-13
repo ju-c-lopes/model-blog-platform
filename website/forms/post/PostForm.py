@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 from website.models.post.PostModel import Post
 from website.models.post.TagModel import Tag
-from website.utils.sanitizer import sanitize_html
+from website.utils.sanitizer import SanitizerError, sanitize_html
 
 
 class PostForm(forms.ModelForm):
@@ -71,7 +71,13 @@ class PostForm(forms.ModelForm):
             "url_slug": "Identificador único na URL (letras minúsculas, números e hífens)",
             "meta_description": "Aparece nos resultados de busca. Mantenha até 160 caracteres.",
             "cover_image": "Imagem exibida em listagens e no topo do post (opcional).",
-            "text": "Use o editor para formatar o conteúdo com títulos, imagens, vídeos e tabelas.",
+            "text": (
+                "Recuo (+/−): desloca o bloco inteiro — recomendado principalmente para uso em listas.\n"
+                "Recuo só na 1ª linha: use o botão «Recuo 1ª linha» acima do editor "
+                "(ou &nbsp; na aba Editar HTML).\n"
+                "Tab: pode aparecer no editor, mas não gera recuo visível na página publicada.\n"
+                'JSON-LD (SEO): na aba Editar HTML, use script type="application/ld+json".'
+            ),
         }
 
     def clean_url_slug(self):
@@ -130,8 +136,12 @@ class PostForm(forms.ModelForm):
 
     def clean_text(self):
         text = self.cleaned_data.get("text")
+        if not text:
+            return text
         try:
             return sanitize_html(text)
+        except SanitizerError as exc:
+            raise forms.ValidationError(str(exc)) from exc
         except Exception:
             return text
 
