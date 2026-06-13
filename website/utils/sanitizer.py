@@ -6,6 +6,7 @@ This centralizes allowed tags/attributes and can be tuned later.
 
 from __future__ import annotations
 
+import json
 import re
 
 import bleach
