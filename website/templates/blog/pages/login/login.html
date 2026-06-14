@@ -28,15 +28,17 @@
                 <div class="form-field">
                     {% if forloop.counter == 2 %}
                     <label for="{{ f.label.lower }}">{{ f.label }}</label>
-                    {{ f }}
-                    <button
-                        class="show-hide-btn"
-                        type="button"
-                        data-hide-icon="{% static 'img/icons/hide.png' %}"
-                        data-view-icon="{% static 'img/icons/view.png' %}"
-                    >
-                        <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
-                    </button>
+                    <div class="password-field">
+                        {{ f }}
+                        <button
+                            class="show-hide-btn"
+                            type="button"
+                            data-hide-icon="{% static 'img/icons/hide.png' %}"
+                            data-view-icon="{% static 'img/icons/view.png' %}"
+                        >
+                            <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
+                        </button>
+                    </div>
                     {% else %}
                     <label for="{{ f.label.lower }}">{{ f.label }}</label>
                     {{ f }}
@@ -48,14 +50,17 @@
                 </button>
             </div>
 
-            {% if email_not_found %}
-                <input
-                    type="hidden"
-                    name="remember"
-                    value="1"
-                />
+            {% if remember_mode == "username" %}
+                <input type="hidden" name="remember" value="1" />
+                <input type="hidden" name="remember_mode" value="username" />
                 <button type="submit" class="bt-remember">
                     Não lembro meu email.
+                </button>
+            {% elif remember_mode == "email" %}
+                <input type="hidden" name="remember" value="1" />
+                <input type="hidden" name="remember_mode" value="email" />
+                <button type="submit" class="bt-remember">
+                    Não lembro meu usuário.
                 </button>
             {% endif %}
         </fieldset>
@@ -64,19 +69,26 @@
     <form action="" method="POST">
         {% csrf_token %}
         <fieldset class="remember">
-            <input
-                type="hidden"
-                name="remember"
-                value="1"
-            />
+            <input type="hidden" name="remember" value="1" />
+            <input type="hidden" name="remember_mode" value="{{ remember_mode }}" />
             <div>
-                <label for="nome">Usuário: </label>
+                {% if remember_mode == "email" %}
+                <label for="recovery_value">Email: </label>
+                <input
+                    type="email"
+                    name="recovery_value"
+                    id="recovery_value"
+                    placeholder="Digite o email cadastrado."
+                />
+                {% else %}
+                <label for="recovery_value">Usuário: </label>
                 <input
                     type="text"
-                    name="nome"
-                    id="nome"
+                    name="recovery_value"
+                    id="recovery_value"
                     placeholder="Digite o usuário cadastrado."
                 />
+                {% endif %}
             </div>
             <button type="submit" class="btn btn-primary mt-4">
                 Lembrar

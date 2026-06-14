@@ -28,22 +28,34 @@
         justify-content: space-around;
         align-items: center;
         width: 100%;
-        height: 20vh;
+        height: 30vh;
     }
-    label {
+    .form-field label {
         text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
         margin-bottom: 0;
+        width: 100px;
+    }
+    .remember label {
+        margin-bottom: 1rem;
     }
     .form-field input[type="text"],
     .form-field input[type="password"],
-    .form-field input[type= "email"] {
+    .form-field input[type= "email"],
+    .remember input[type= "text"],
+    .remember input[type= "email"] {
         padding: 0.5em;
         border-radius: 1em;
         outline: none;
         border: none;
         box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
     }
-    .btn-entry {
+    .remember div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 15vh;
+    }
+    .btn-entry, .remember button {
         background: rgb(36, 111, 224);
         color: white;
         padding: 4px;
@@ -93,9 +105,8 @@
         height: 100%;
         outline: none;
         border: none;
-        top: 0;
+        top: 2px;
         right: 5px;
-        bottom: 5px;
     }
     .show-hide-btn img {
         background: none;
@@ -104,12 +115,17 @@
 }
 
 @media screen and (min-width: 769px) and (max-width: 1080px) {
+    h1 {
+        margin: 3vh 0 0 3vw;
+    }
     fieldset {
         border: none;
-        height: 200px;
+        width: 300px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0 auto;
+
     }
     .form-fieldset {
         color: #b9b9b9;
@@ -118,29 +134,39 @@
         justify-content: space-around;
         align-items: center;
         gap: 5vh;
-        width: 100%;
-        height: 20vh;
     }
     .form-field {
         display: flex;
         flex-direction: row;
         gap: 2vw;
         align-items: center;
-        width: 30%;
+        width: 100%;
     }
-    label {
+    .form-field label {
         text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
         margin-bottom: 0;
+        width: 100px;
+    }
+    .remember label {
+        display: flex;
+        justify-content: center;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+        margin-bottom: 1rem;
+    }
+    .form-field .password-field {
+        position: relative;
     }
     .form-field input[type="text"],
     .form-field input[type="password"],
     .form-field input[type= "email"],
-    .remember input[type="text"] {
+    .remember input[type="text"],
+    .remember input[type="email"] {
         padding: 0.5em;
         border-radius: 1em;
         outline: none;
         border: none;
         box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
+        width: 300px;
     }
     .btn-entry, .remember button {
         background: rgb(36, 111, 224);
@@ -156,14 +182,13 @@
         margin-top: 3vh;
     }
     .show-hide-btn, .show-hide-btn:focus {
-        position: relative;
+        position: absolute;
         background: none;
         width: 25px;
         outline: none;
         border: none;
         top: 2px;
-        right: 50px;
-        bottom: 5px;
+        right: 5px;
     }
     .show-hide-btn img {
         position: sticky;
@@ -192,6 +217,9 @@
 }
 
 @media screen and (min-width: 1081px) {
+    h1 {
+        margin: 3vh 0 0 3vw;
+    }
     fieldset {
         border: none;
         margin: 0 auto;
@@ -212,19 +240,31 @@
         align-items: center;
         width: 100%;
     }
-    label {
+    .form-field label {
         text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
         margin-bottom: 0;
+        width: 100px;
+    }
+    .remember label {
+        display: flex;
+        justify-content: center;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+        margin-bottom: 1rem;
+    }
+    .form-field .password-field {
+        position: relative;
     }
     .form-field input[type="text"],
     .form-field input[type="password"],
     .form-field input[type="email"],
-    .remember input[type="text"] {
+    .remember input[type="text"],
+    .remember input[type="email"] {
         padding: 0.5em;
         border-radius: 1em;
         outline: none;
         border: none;
         box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
+        width: 300px
     }
     .remember div {
         display: flex;
@@ -246,14 +286,13 @@
         margin-top: 3vh;
     }
     .show-hide-btn, .show-hide-btn:focus {
-        position: relative;
+        position: absolute;
         background: none;
         width: 25px;
         outline: none;
         border: none;
         top: 2px;
-        right: 70px;
-        bottom: 5px;
+        right: 5px;
     }
     .show-hide-btn img {
         background: none;

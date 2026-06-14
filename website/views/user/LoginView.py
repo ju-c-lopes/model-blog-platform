@@ -5,6 +5,9 @@ from django.shortcuts import redirect, render
 from website.forms.user.LoginForm import LoginForm
 from website.models.user.UserModel import User
 
+REMEMBER_MODE_USERNAME = "username"
+REMEMBER_MODE_EMAIL = "email"
+
 
 def _mask_email(email):
     try:
@@ -24,36 +27,45 @@ def _resolve_user_by_identifier(identifier):
     return User.objects.filter(username__iexact=identifier).first()
 
 
-def _login_context(form, remember=False, email_not_found=False):
+def _login_context(form, remember=False, remember_mode=None):
     context = {"form": form, "remember": remember}
-    if email_not_found:
-        context["email_not_found"] = email_not_found
+    if remember_mode:
+        context["remember_mode"] = remember_mode
     return context
 
 
 def login_user(request):
     remember = request.POST.get("remember")
-    user_to_remember = (request.POST.get("nome") or "").strip()
+    remember_mode = request.POST.get("remember_mode")
+    recovery_value = (request.POST.get("recovery_value") or "").strip()
 
     if request.POST and remember:
-        if user_to_remember:
-            user = User.objects.filter(username__iexact=user_to_remember).first()
-            if user:
-                messages.success(request, f"Seu email é: {_mask_email(user.email)}")
+        if recovery_value:
+            if remember_mode == REMEMBER_MODE_EMAIL:
+                user = User.objects.filter(email__iexact=recovery_value).first()
+                if user:
+                    messages.success(request, f"Seu usuário é: {user.username}")
+                else:
+                    messages.error(request, f"Email «{recovery_value}» não encontrado.")
             else:
-                messages.error(request, f"Usuário «{user_to_remember}» não encontrado.")
+                user = User.objects.filter(username__iexact=recovery_value).first()
+                if user:
+                    messages.success(request, f"Seu email é: {_mask_email(user.email)}")
+                else:
+                    messages.error(request, f"Usuário «{recovery_value}» não encontrado.")
             return render(
                 request,
                 "blog/pages/login/login.html",
                 context=_login_context(LoginForm()),
             )
-        return render(
-            request,
-            "blog/pages/login/login.html",
-            context=_login_context(LoginForm(), remember=True),
-        )
+        if remember_mode in (REMEMBER_MODE_USERNAME, REMEMBER_MODE_EMAIL):
+            return render(
+                request,
+                "blog/pages/login/login.html",
+                context=_login_context(LoginForm(), remember=True, remember_mode=remember_mode),
+            )
 
-    email_not_found = False
+    remember_mode = None
 
     if request.POST:
         form = LoginForm(request.POST)
@@ -64,9 +76,10 @@ def login_user(request):
             if user is None:
                 if "@" in identifier:
                     messages.error(request, f"{_mask_email(identifier)} não encontrado.")
+                    remember_mode = REMEMBER_MODE_USERNAME
                 else:
                     messages.error(request, f"Usuário «{identifier}» não encontrado.")
-                email_not_found = True
+                    remember_mode = REMEMBER_MODE_EMAIL
             elif not password:
                 messages.error(request, "Informe a senha.")
             else:
@@ -83,5 +96,5 @@ def login_user(request):
     return render(
         request,
         "blog/pages/login/login.html",
-        context=_login_context(form, email_not_found=email_not_found),
+        context=_login_context(form, remember_mode=remember_mode),
     )

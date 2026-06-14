@@ -47,7 +47,7 @@ class LoginViewTests(TestCase):
 
         assert resp.status_code in (301, 302)
 
-    def test_login_email_not_found_renders_with_flag(self):
+    def test_login_email_not_found_renders_remember_username_mode(self):
         data = {"identifier": "noone@example.com", "password": "pw"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
@@ -59,8 +59,7 @@ class LoginViewTests(TestCase):
             resp = login_user(req)
 
         assert resp.status_code == 200
-        assert getattr(resp, "context", None) is not None
-        assert resp.context.get("email_not_found", False) is True
+        assert resp.context.get("remember_mode") == "username"
 
     def test_login_invalid_form_when_identifier_empty(self):
         data = {"identifier": "", "password": "pw"}
@@ -76,7 +75,7 @@ class LoginViewTests(TestCase):
         assert resp.status_code == 200
         assert resp.context["form"].errors
 
-    def test_login_username_not_found_shows_remember_link(self):
+    def test_login_username_not_found_shows_remember_email_mode(self):
         data = {"identifier": "nobody", "password": "pw"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
@@ -87,7 +86,7 @@ class LoginViewTests(TestCase):
         with patch("website.views.user.LoginView.render", fake_render):
             resp = login_user(req)
 
-        assert resp.context.get("email_not_found", False) is True
+        assert resp.context.get("remember_mode") == "email"
 
     def test_login_wrong_password_does_not_show_remember_link(self):
         User.objects.create_user(email="u3@example.com", username="u3", password="pw")
@@ -102,7 +101,7 @@ class LoginViewTests(TestCase):
             with patch("website.views.user.LoginView.render", fake_render):
                 resp = login_user(req)
 
-        assert resp.context.get("email_not_found", False) is False
+        assert resp.context.get("remember_mode") is None
 
     def test_login_unknown_email_with_empty_password_shows_remember_link(self):
         data = {"identifier": "noone@example.com", "password": ""}
@@ -115,10 +114,15 @@ class LoginViewTests(TestCase):
         with patch("website.views.user.LoginView.render", fake_render):
             resp = login_user(req)
 
-        assert resp.context.get("email_not_found", False) is True
+        assert resp.context.get("remember_mode") == "username"
 
     def test_remember_click_shows_username_form(self):
-        data = {"remember": "1", "identifier": "wrong@example.com", "password": "pw"}
+        data = {
+            "remember": "1",
+            "remember_mode": "username",
+            "identifier": "wrong@example.com",
+            "password": "pw",
+        }
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
@@ -130,10 +134,30 @@ class LoginViewTests(TestCase):
 
         assert resp.status_code == 200
         assert resp.context.get("remember")
+        assert resp.context.get("remember_mode") == "username"
+
+    def test_remember_click_shows_email_form(self):
+        data = {
+            "remember": "1",
+            "remember_mode": "email",
+            "identifier": "nobody",
+            "password": "pw",
+        }
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            resp = login_user(req)
+
+        assert resp.context.get("remember")
+        assert resp.context.get("remember_mode") == "email"
 
     def test_remember_by_username_returns_masked_email(self):
         User.objects.create_user(email="secret@example.com", username="myuser", password="pw")
-        data = {"remember": "1", "nome": "myuser"}
+        data = {"remember": "1", "remember_mode": "username", "recovery_value": "myuser"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
@@ -148,8 +172,24 @@ class LoginViewTests(TestCase):
         assert any("Seu email é:" in str(m.message) for m in messages_list)
         assert any("sec___@e__" in str(m.message) for m in messages_list)
 
+    def test_remember_by_email_returns_username(self):
+        User.objects.create_user(email="secret@example.com", username="myuser", password="pw")
+        data = {"remember": "1", "remember_mode": "email", "recovery_value": "secret@example.com"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            login_user(req)
+
+        storage = req._messages
+        messages_list = list(storage)
+        assert any("Seu usuário é: myuser" in str(m.message) for m in messages_list)
+
     def test_remember_unknown_username_shows_error(self):
-        data = {"remember": "1", "nome": "nobody"}
+        data = {"remember": "1", "remember_mode": "username", "recovery_value": "nobody"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
