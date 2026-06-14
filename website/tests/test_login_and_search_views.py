@@ -26,28 +26,32 @@ class LoginViewTests(TestCase):
         req._messages = FallbackStorage(req)
 
     def test_login_success_redirects(self):
-        # create user
         user = User.objects.create_user(email="u1@example.com", username="u1", password="pw")
-        data = {"email": "u1@example.com", "password": "pw"}
+        data = {"identifier": "u1@example.com", "password": "pw"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
-        # patch authenticate and check_password to ensure branch
-        with (
-            patch("website.views.user.LoginView.authenticate", return_value=user),
-            patch("website.views.user.LoginView.check_password", return_value=True),
-        ):
+        with patch("website.views.user.LoginView.authenticate", return_value=user):
             resp = login_user(req)
 
-        # successful login redirects to '/'
+        assert resp.status_code in (301, 302)
+
+    def test_login_with_username_redirects(self):
+        user = User.objects.create_user(email="u2@example.com", username="u2user", password="pw")
+        data = {"identifier": "u2user", "password": "pw"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        with patch("website.views.user.LoginView.authenticate", return_value=user):
+            resp = login_user(req)
+
         assert resp.status_code in (301, 302)
 
     def test_login_email_not_found_renders_with_flag(self):
-        data = {"email": "noone@example.com", "password": "pw"}
+        data = {"identifier": "noone@example.com", "password": "pw"}
         req = self.factory.post("/login", data)
         self._attach_session_and_messages(req)
 
-        # patch render to capture context
         def fake_render(req_in, template, context=None, status=200):
             return SimpleNamespace(status_code=status, context=context)
 
@@ -57,6 +61,107 @@ class LoginViewTests(TestCase):
         assert resp.status_code == 200
         assert getattr(resp, "context", None) is not None
         assert resp.context.get("email_not_found", False) is True
+
+    def test_login_invalid_form_when_identifier_empty(self):
+        data = {"identifier": "", "password": "pw"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            resp = login_user(req)
+
+        assert resp.status_code == 200
+        assert resp.context["form"].errors
+
+    def test_login_username_not_found_shows_remember_link(self):
+        data = {"identifier": "nobody", "password": "pw"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            resp = login_user(req)
+
+        assert resp.context.get("email_not_found", False) is True
+
+    def test_login_wrong_password_does_not_show_remember_link(self):
+        User.objects.create_user(email="u3@example.com", username="u3", password="pw")
+        data = {"identifier": "u3@example.com", "password": "wrong"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.authenticate", return_value=None):
+            with patch("website.views.user.LoginView.render", fake_render):
+                resp = login_user(req)
+
+        assert resp.context.get("email_not_found", False) is False
+
+    def test_login_unknown_email_with_empty_password_shows_remember_link(self):
+        data = {"identifier": "noone@example.com", "password": ""}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            resp = login_user(req)
+
+        assert resp.context.get("email_not_found", False) is True
+
+    def test_remember_click_shows_username_form(self):
+        data = {"remember": "1", "identifier": "wrong@example.com", "password": "pw"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            resp = login_user(req)
+
+        assert resp.status_code == 200
+        assert resp.context.get("remember")
+
+    def test_remember_by_username_returns_masked_email(self):
+        User.objects.create_user(email="secret@example.com", username="myuser", password="pw")
+        data = {"remember": "1", "nome": "myuser"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            login_user(req)
+
+        storage = req._messages
+        messages_list = list(storage)
+        assert any("Seu email é:" in str(m.message) for m in messages_list)
+        assert any("sec___@e__" in str(m.message) for m in messages_list)
+
+    def test_remember_unknown_username_shows_error(self):
+        data = {"remember": "1", "nome": "nobody"}
+        req = self.factory.post("/login", data)
+        self._attach_session_and_messages(req)
+
+        def fake_render(req_in, template, context=None, status=200):
+            return SimpleNamespace(status_code=status, context=context)
+
+        with patch("website.views.user.LoginView.render", fake_render):
+            login_user(req)
+
+        storage = req._messages
+        messages_list = list(storage)
+        assert any("nobody" in str(m.message) and "não encontrado" in str(m.message) for m in messages_list)
 
 
 class SearchViewTests(TestCase):

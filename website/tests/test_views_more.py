@@ -35,7 +35,7 @@ class ViewSmokeTests(TestCase):
         r = self.client.get(url)
         self.assertEqual(r.status_code, 200)
         # POST with invalid data should not redirect
-        r2 = self.client.post(url, data={"email": "nope", "password": ""})
+        r2 = self.client.post(url, data={"identifier": "nope", "password": ""})
         self.assertEqual(r2.status_code, 200)
 
     def test_create_post_requires_author_profile(self):

@@ -48,8 +48,7 @@
                 </button>
             </div>
 
-            {% for message in messages %}
-                {% if message is not None and email_not_found %}
+            {% if email_not_found %}
                 <input
                     type="hidden"
                     name="remember"
@@ -58,9 +57,7 @@
                 <button type="submit" class="bt-remember">
                     Não lembro meu email.
                 </button>
-
-                {% endif %}
-            {% endfor %}
+            {% endif %}
         </fieldset>
     </form>
     {% else %}
