@@ -2,8 +2,10 @@ asgiref==3.7.2
 certifi==2024.2.2
 charset-normalizer==3.3.2
 click==8.1.7
+cryptography==49.0.0
 defusedxml==0.7.1
 Django==5.0.3
+django-allauth==65.18.0
 django-bootstrap==0.2.4
 django-csp==4.0
 django-phonenumber-field==7.3.0
@@ -22,6 +24,7 @@ pluggy==1.6.0
 pycodestyle==2.14.0
 pyflakes==3.4.0
 Pygments==2.19.2
+PyJWT==2.13.0
 requests==2.31.0
 setuptools==80.9.0
 sqlparse==0.4.4
