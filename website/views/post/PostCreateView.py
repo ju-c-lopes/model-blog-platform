@@ -80,7 +80,8 @@ def edit_post(request, url_slug=None):
             if form.is_valid():
                 new_post = form.save(commit=False)
                 new_post.author = author
-                new_post.published_date = timezone.now()
+                if new_post.status == Post.PUBLISHED:
+                    new_post.published_date = timezone.now().date()
                 new_post.updated_date = timezone.now()
 
                 upload_session_id = request.POST.get("upload_session_id", "").strip()

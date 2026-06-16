@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 from django.contrib.auth import get_user_model
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 
 from website.adapters.social_account import CustomSocialAccountAdapter
 from website.models.author.AuthorModel import Author
@@ -57,6 +57,7 @@ class CustomSocialAccountAdapterTests(TestCase):
 
 
 class GoogleOAuthTemplateTests(TestCase):
+    @override_settings(GOOGLE_OAUTH_CLIENT_ID="")
     def test_login_hides_google_button_without_client_id(self):
         response = self.client.get("/login/")
         self.assertEqual(response.status_code, 200)

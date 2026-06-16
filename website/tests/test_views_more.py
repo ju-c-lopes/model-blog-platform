@@ -19,7 +19,13 @@ class ViewSmokeTests(TestCase):
 
         # create posts
         for i in range(8):
-            Post.objects.create(author=self.author, title=f"T{i}", url_slug=f"slug-{i}", text="txt")
+            Post.objects.create(
+                author=self.author,
+                title=f"T{i}",
+                url_slug=f"slug-{i}",
+                text="txt",
+                status=Post.PUBLISHED,
+            )
 
     def test_home_pagination_first_page(self):
         url = reverse("home")

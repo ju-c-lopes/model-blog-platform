@@ -41,6 +41,7 @@ class PostDetailViewTests(TestCase):
             "url_slug": "post-de-teste",
             "text": "<p>Conteúdo do post com texto suficiente para leitura.</p>",
             "published_date": timezone.now().date(),
+            "status": Post.PUBLISHED,
         }
         defaults.update(kwargs)
         post = Post.objects.create(**defaults)

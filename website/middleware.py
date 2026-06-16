@@ -18,7 +18,7 @@ class Custom404Middleware:
     def process_exception(self, request, exception):
         # Handle 404 exceptions
         if isinstance(exception, Http404):
-            return render(request, "errors/404.html", status=404)
+            return render(request, "blog/pages/errors/404.html", status=404)
 
         # For other exceptions, return None to let Django handle it
         return None

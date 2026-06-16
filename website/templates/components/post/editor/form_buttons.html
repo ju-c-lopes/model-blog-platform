@@ -1,7 +1,7 @@
 <div class="form-buttons">
     {% if is_creating %}
         <a href="{% url 'home' %}" class="btn-cancel">Cancelar</a>
-        <button type="submit" class="btn-submit">Publicar post</button>
+        <button type="submit" class="btn-submit">Salvar post</button>
     {% else %}
         <a href="{% url 'post_detail' url_slug=post.url_slug %}" class="btn-cancel">Cancelar</a>
         <button type="submit" class="btn-submit">Salvar alterações</button>

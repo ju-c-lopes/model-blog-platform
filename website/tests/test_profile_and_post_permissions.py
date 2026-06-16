@@ -21,7 +21,13 @@ class ProfileAndPostPermissionTests(TestCase):
         # another user and their author+post
         self.other_user = User.objects.create_user(email="a1@example.com", password="pw", username="a1")
         self.other_author = Author.objects.create(user=self.other_user, author_name="A1", author_url_slug="a1")
-        self.post = Post.objects.create(author=self.other_author, title="T", text="x", url_slug="u1")
+        self.post = Post.objects.create(
+            author=self.other_author,
+            title="T",
+            text="x",
+            url_slug="u1",
+            status=Post.PUBLISHED,
+        )
 
     def test_edit_post_permission_owner_vs_non_owner(self):
         # non-owner tries to edit existing post

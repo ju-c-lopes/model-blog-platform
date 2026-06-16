@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.utils import timezone
 from django.utils.text import slugify
 
 from website.models.post.PostModel import Post
@@ -18,10 +19,17 @@ class PostForm(forms.ModelForm):
         label="Tags",
         help_text="Tecnologias ou temas abordados no post.",
     )
+    status = forms.ChoiceField(
+        choices=[(Post.DRAFT, "Rascunho"), (Post.PUBLISHED, "Publicado")],
+        initial=Post.DRAFT,
+        widget=forms.RadioSelect(attrs={"class": "post-status-options"}),
+        label="Status",
+        help_text="Rascunhos só são visíveis para você até serem publicados.",
+    )
 
     class Meta:
         model = Post
-        fields = ["title", "url_slug", "meta_description", "cover_image", "tags", "text"]
+        fields = ["title", "url_slug", "meta_description", "cover_image", "tags", "status", "text"]
         widgets = {
             "title": forms.TextInput(
                 attrs={
@@ -147,10 +155,16 @@ class PostForm(forms.ModelForm):
 
     def save(self, commit=True):
         old_cover = None
-        if self.instance.pk and "cover_image" in self.changed_data:
-            old_cover = Post.objects.only("cover_image").get(pk=self.instance.pk).cover_image
+        previous_status = None
+        if self.instance.pk:
+            previous = Post.objects.only("cover_image", "status").get(pk=self.instance.pk)
+            old_cover = previous.cover_image if "cover_image" in self.changed_data else None
+            previous_status = previous.status
 
         instance = super().save(commit=False)
+
+        if instance.status == Post.PUBLISHED and previous_status in (Post.DRAFT, None):
+            instance.published_date = timezone.now().date()
 
         if commit:
             instance.save()
