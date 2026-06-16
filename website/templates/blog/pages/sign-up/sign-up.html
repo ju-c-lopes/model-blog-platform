@@ -24,140 +24,77 @@
 
 <div class="main-div">
     <div class="sign-up-wrapper">
-        <form action="" method="post" accept-charset="utf-8">{% csrf_token %}
-
+        <form action="" method="post" accept-charset="utf-8">
+            {% csrf_token %}
             <fieldset>
-                {% if aprovar %}
-                <div class="aux-screen">
+                {% include "components/forms/admin_approval_modal.html" %}
 
-                    <!-- Aprovação -->
-                    <div class="approval" id="approval">
-                        <form action="" method="POST" accept-charset="utf-8">{% csrf_token %}
-                            <input
-                                type="hidden"
-                                name="approval"
-                                value="1"
-                            />
-                            <div>
-                                <label for="super">Administrador</label>
-                                <input
-                                    type="text"
-                                    id="super"
-                                    name="super"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label for="pass-super">Senha</label>
-                                <input
-                                    type="password"
-                                    id="pass-super"
-                                    name="pass-super"
-                                    required
-                                />
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-4">
-                                Aprovar
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                {% if aprovar %}
+                <input type="hidden" name="nome" value="{{ nome }}" />
+                <input type="hidden" name="email" value="{{ email }}" />
+                <input type="hidden" name="phone" value="{{ phone }}" />
+                <input type="hidden" name="password1" value="{{ password1 }}" />
+                <input type="hidden" name="password2" value="{{ password2 }}" />
+                <input type="hidden" name="tipo-user" value="{{ tipo_user }}" />
                 {% endif %}
 
-                <!-- Tipo de Usuario -->
                 <div class="form-field">
                     <label for="tipo-user">Tipo de Usuário</label>
-                    <select name="tipo-user" id="tipo-user">
-                        <option value="reader" selected>Leitor</option>
-                        <option value="author">Autor</option>
+                    <select name="tipo-user" id="tipo-user" {% if aprovar %}disabled{% endif %}>
+                        <option value="reader" {% if tipo_user == "reader" or not aprovar %}selected{% endif %}>Leitor</option>
+                        <option value="author" {% if tipo_user == "author" %}selected{% endif %}>Autor</option>
                     </select>
                 </div>
 
-                <!-- Nome -->
-
                 <div class="form-field">
-                    {% if aprovar %}
-                    <label for="nome" class="label">Nome</label>
+                    <label for="nome">Nome</label>
                     <input
                         type="text"
-                        name="nome"
                         id="nome"
-                        value="{{ nome }}"
-                    />
-                    {% else %}
-                    <label for="{{ form.nome.id_for_label }}" class="label">Nome</label>
-                    <input
-                        type="text"
-                        id="{{ form.nome.id_for_label }}"
                         name="nome"
                         class="cadastro-usuario--nome"
                         placeholder="Digite seu nome"
+                        value="{{ nome|default:'' }}"
+                        {% if aprovar %}readonly{% else %}required{% endif %}
                     />
-                    {% endif %}
                 </div>
 
-                <!-- Email -->
                 <div class="form-field">
-                    {% if aprovar %}
-                    <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+                    <label for="email">Email</label>
                     <input
                         type="email"
                         name="email"
                         id="email"
-                        value="{{ form.email }}"
+                        placeholder="Digite seu email"
+                        value="{{ email|default:'' }}"
+                        {% if aprovar %}readonly{% else %}required{% endif %}
                     />
-                    {% else %}
-                    <label for="{{ form.email.id_for_label }}" class="label">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="{{ form.email.id_for_label }}"
-                        placeholder="Digite seu email: "
-                    />
-                    {% endif %}
                 </div>
 
-                <!-- Telefone -->
                 <div class="form-field">
+                    <label for="phone">Celular</label>
+                    <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        placeholder="Digite seu celular"
+                        value="{{ phone|default:'' }}"
+                        {% if aprovar %}readonly{% endif %}
+                    />
+                </div>
+
+                <div class="form-field">
+                    <label for="id_password1">Senha</label>
                     {% if aprovar %}
-                    <label for="{{ form.phone.id_for_label }}" class="label">Celular:</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        id="{{ form.phone.id_for_label }}"
-                        value="{{ form.phone }}"
-                    />
+                    <input type="password" name="password1" id="id_password1" value="{{ password1 }}" readonly />
                     {% else %}
-                    <label for="{{ form.phone.id_for_label }}" class="label">Celular:</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        id="{{ form.phone.id_for_label }}"
-                        placeholder="Digite seu celular: "
-                    />
-                    {% endif %}
-                </div>
-
-                <!-- SENHA 1 -->
-                {% if aprovar %}
-                <div class="form-field">
-                    <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
-                    <input
-                        type="password"
-                        name="password1"
-                        id="{{ form.password1.id_for_label }}"
-                        value="{{ form.password1 }}"
-                    />
-                </div>
-                {% else %}
-                <div class="form-field">
-                    <label for="{{ form.password1.id_for_label }}" class="label">Senha</label>
                     <input
                         class="input-type-pass"
                         type="password"
                         name="password1"
-                        id="{{ form.password1.id_for_label }}"
+                        id="id_password1"
                         placeholder="Digite sua Senha"
+                        required
                     />
                     <button
                         class="show-hide-btn"
@@ -167,10 +104,10 @@
                     >
                         <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
                     </button>
+                    {% endif %}
                 </div>
-                {% endif %}
 
-                <!-- Validação de Senha -->
+                {% if not aprovar %}
                 <div class="popup-validate">
                     <p>A senha deve conter:</p>
                     <ul>
@@ -180,27 +117,20 @@
                         <li>❌ Entre 10 a 16 caracteres.</li>
                     </ul>
                 </div>
+                {% endif %}
 
-                <!-- SENHA 2 -->
-                {% if aprovar %}
-                <div class="form-field">
-                    <label for="{{ form.password2.id_for_label }}" class="label label-confirm">Confirme a senha</label>
-                    <input
-                        type="password"
-                        name="password2"
-                        id="{{ form.password2.id_for_label }}"
-                        value="{{ password }}"
-                    />
-                </div>
-                {% else %}
                 <div class="form-field confirm">
-                    <label for="{{ form.password2.id_for_label }}" class="label label-confirm" id="confirm">Confirme a senha</label>
+                    <label for="id_password2" class="label-confirm">Confirme a senha</label>
+                    {% if aprovar %}
+                    <input type="password" name="password2" id="id_password2" value="{{ password2 }}" readonly />
+                    {% else %}
                     <input
                         class="input-type-pass"
                         type="password"
                         name="password2"
-                        id="{{ form.password2.id_for_label }}"
+                        id="id_password2"
                         placeholder="Confirme a senha"
+                        required
                     />
                     <button
                         class="show-hide-btn"
@@ -210,25 +140,28 @@
                     >
                         <img src="{% static 'img/icons/hide.png' %}" alt="Mostrar senha" />
                     </button>
+                    {% endif %}
                 </div>
-                {% endif %}
 
+                {% if not aprovar %}
                 <div class="form-field form-field--button pt-4">
-                    <button
-                        type="submit"
-                        class="finish-register btn-primary mt-4"
-                        id="finish-register"
-                    >
+                    <button type="submit" class="finish-register btn-primary mt-4" id="finish-register">
                         Finalizar Cadastro
                     </button>
                 </div>
+                {% endif %}
             </fieldset>
         </form>
+
+        {% include "components/user/google_signin.html" %}
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+{% if GOOGLE_OAUTH_ENABLED %}
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+{% endif %}
 <script src="{% static 'scripts/forms/checkPass.js' %}"></script>
 <script src="{% static 'scripts/components/buttonShowHide.js' %}"></script>
 {% endblock %}

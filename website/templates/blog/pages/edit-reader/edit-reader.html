@@ -49,6 +49,14 @@
                 Salvar
             </button>
         </form>
+
+        {% if not request.user.is_staff %}
+        <p class="reader-author-upgrade mt-4">
+            <a href="{% url 'author-upgrade' %}" class="btn btn-outline-secondary w-100">
+                Solicitar perfil de autor
+            </a>
+        </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

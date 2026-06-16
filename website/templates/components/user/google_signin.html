@@ -1,0 +1,24 @@
+{% if GOOGLE_OAUTH_ENABLED %}
+<div class="google-signin-divider">
+    <span>ou</span>
+</div>
+<div class="google-signin-container">
+    {# GIS envia POST com credential para login/token/ (allauth). ux_mode=redirect evita popup em branco. #}
+    <div
+        id="g_id_onload"
+        data-client_id="{{ GOOGLE_OAUTH_CLIENT_ID }}"
+        data-ux_mode="redirect"
+        data-login_uri="{{ request.scheme }}://{{ request.get_host }}{% url 'google_login_by_token' %}"
+        data-auto_prompt="false"
+    ></div>
+    <div
+        class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="signin_with"
+        data-shape="rectangular"
+        data-locale="pt-BR"
+    ></div>
+</div>
+{% endif %}
