@@ -14,7 +14,13 @@ class ReactionToggleTests(TestCase):
         self.user = User.objects.create_user(username="tester", email="t@test.com", password="pass")
         self.author_user = User.objects.create_user(username="author", email="a@test.com", password="pass")
         self.author = Author.objects.create(user=self.author_user, author_name="Author")
-        self.post = Post.objects.create(author=self.author, title="T", url_slug="t-slug", text="body")
+        self.post = Post.objects.create(
+            author=self.author,
+            title="T",
+            url_slug="t-slug",
+            text="body",
+            status=Post.PUBLISHED,
+        )
 
     def test_like_then_switch_to_love_decrements_like_counter(self):
         self.client.force_login(self.user)

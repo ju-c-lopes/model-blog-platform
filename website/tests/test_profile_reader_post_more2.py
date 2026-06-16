@@ -71,6 +71,7 @@ class ProfileReaderPostMore2Test(TestCase):
             url_slug="slug-a",
             meta_description="m",
             text="t",
+            status=Post.PUBLISHED,
         )
 
         # another user B tries to edit -> redirected

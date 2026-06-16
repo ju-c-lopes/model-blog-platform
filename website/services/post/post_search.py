@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from django.db.models import Q, QuerySet
 from django.urls import reverse
 
-from website.models.post.PostModel import Post
+from website.services.post.post_visibility import published_posts
 
 FROM_QUERY_PARAM = "from_query"
 FROM_PAGE_PARAM = "from_page"
@@ -29,7 +29,7 @@ def _term_q(term: str) -> Q:
 def search_posts_queryset(query: str) -> QuerySet:
     """Return posts matching query, or all posts when query is empty (explore mode)."""
     normalized = " ".join(query.split()).strip()
-    base = Post.objects.select_related("author").prefetch_related("tags")
+    base = published_posts().select_related("author").prefetch_related("tags")
 
     if not normalized:
         return base.order_by("-published_date")

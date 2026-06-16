@@ -1,3 +1,4 @@
+import shutil
 from io import BytesIO
 from pathlib import Path
 
@@ -24,7 +25,10 @@ def _make_image(name="test.png"):
 @override_settings(MEDIA_ROOT="/tmp/test-post-content-media")
 class PostContentImageServiceTests(TestCase):
     def setUp(self):
-        Path(settings.MEDIA_ROOT).mkdir(parents=True, exist_ok=True)
+        root = Path(settings.MEDIA_ROOT)
+        if root.exists():
+            shutil.rmtree(root)
+        root.mkdir(parents=True, exist_ok=True)
 
     def test_save_to_temp_and_consolidate_to_slug(self):
         session_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
@@ -132,6 +136,7 @@ class PostContentImageUploadViewTests(TestCase):
             title="Post",
             url_slug="post-slug",
             text="<p>conteúdo</p>",
+            status=Post.PUBLISHED,
         )
         self.client.force_login(self.user)
 
@@ -172,6 +177,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "meta_description": "Relato docker",
                 "text": f"<p>Texto longo do post.</p><img src='{image_url}' alt='img' />",
                 "upload_session_id": session_id,
+                "status": Post.PUBLISHED,
             },
         )
 

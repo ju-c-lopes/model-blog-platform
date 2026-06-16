@@ -10,7 +10,6 @@ colorama==0.4.6 ; python_version >= "3.11" and python_version < "4.0" and platfo
 cryptography==49.0.0 ; python_version >= "3.11" and python_version < "4.0"
 defusedxml==0.7.1 ; python_version >= "3.11" and python_version < "4.0"
 django-allauth==65.18.0 ; python_version >= "3.11" and python_version < "4.0"
-defusedxml==0.7.1 ; python_version >= "3.11" and python_version < "4.0"
 django-bootstrap==0.2.4 ; python_version >= "3.11" and python_version < "4.0"
 django-csp==4.0 ; python_version >= "3.11" and python_version < "4.0"
 django-phonenumber-field==8.4.0 ; python_version >= "3.11" and python_version < "4.0"

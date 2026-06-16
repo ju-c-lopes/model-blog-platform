@@ -220,8 +220,20 @@ class SearchViewTests(TestCase):
             return search_posts(req)
 
     def test_search_returns_results_and_counts(self):
-        Post.objects.create(author=self.author, title="FindMe", text="abc", url_slug="p1")
-        Post.objects.create(author=self.author, title="FindMe two", text="def", url_slug="p2")
+        Post.objects.create(
+            author=self.author,
+            title="FindMe",
+            text="abc",
+            url_slug="p1",
+            status=Post.PUBLISHED,
+        )
+        Post.objects.create(
+            author=self.author,
+            title="FindMe two",
+            text="def",
+            url_slug="p2",
+            status=Post.PUBLISHED,
+        )
 
         resp = self._search({"query": "FindMe"})
 
@@ -230,7 +242,13 @@ class SearchViewTests(TestCase):
         assert resp.context["is_explore"] is False
 
     def test_search_page_not_integer_returns_first_page(self):
-        Post.objects.create(author=self.author, title="OnlyOne", text="x", url_slug="o1")
+        Post.objects.create(
+            author=self.author,
+            title="OnlyOne",
+            text="x",
+            url_slug="o1",
+            status=Post.PUBLISHED,
+        )
 
         resp = self._search({"query": "OnlyOne", "page": "notint"})
 
@@ -244,6 +262,7 @@ class SearchViewTests(TestCase):
             text="body",
             meta_description="Guia completo de Docker",
             url_slug="docker-meta",
+            status=Post.PUBLISHED,
         )
 
         resp = self._search({"query": "Docker"})
@@ -253,7 +272,13 @@ class SearchViewTests(TestCase):
 
     def test_search_by_tag_name(self):
         tag, _ = Tag.objects.get_or_create(slug="seo", defaults={"name": "SEO"})
-        post = Post.objects.create(author=self.author, title="Marketing", text="content", url_slug="seo-post")
+        post = Post.objects.create(
+            author=self.author,
+            title="Marketing",
+            text="content",
+            url_slug="seo-post",
+            status=Post.PUBLISHED,
+        )
         post.tags.add(tag)
 
         resp = self._search({"query": "SEO"})
@@ -262,8 +287,8 @@ class SearchViewTests(TestCase):
         assert resp.context["posts"][0].url_slug == "seo-post"
 
     def test_search_empty_query_lists_all_posts_explore_mode(self):
-        Post.objects.create(author=self.author, title="Alpha", text="a", url_slug="alpha")
-        Post.objects.create(author=self.author, title="Beta", text="b", url_slug="beta")
+        Post.objects.create(author=self.author, title="Alpha", text="a", url_slug="alpha", status=Post.PUBLISHED)
+        Post.objects.create(author=self.author, title="Beta", text="b", url_slug="beta", status=Post.PUBLISHED)
 
         resp = self._search({})
 
@@ -274,7 +299,13 @@ class SearchViewTests(TestCase):
     def test_search_distinct_does_not_duplicate_post_with_multiple_tags(self):
         tag_python, _ = Tag.objects.get_or_create(slug="python", defaults={"name": "Python"})
         tag_pytest = Tag.objects.create(name="PyTest Search", slug="pytest-search-test")
-        post = Post.objects.create(author=self.author, title="Tagged", text="x", url_slug="tagged")
+        post = Post.objects.create(
+            author=self.author,
+            title="Tagged",
+            text="x",
+            url_slug="tagged",
+            status=Post.PUBLISHED,
+        )
         post.tags.add(tag_python, tag_pytest)
 
         results = search_posts_queryset("Py")
@@ -283,7 +314,13 @@ class SearchViewTests(TestCase):
         assert results.first().pk == post.pk
 
     def test_search_results_post_links_include_return_query(self):
-        Post.objects.create(author=self.author, title="FindMe", text="abc", url_slug="p1")
+        Post.objects.create(
+            author=self.author,
+            title="FindMe",
+            text="abc",
+            url_slug="p1",
+            status=Post.PUBLISHED,
+        )
 
         response = self.client.get(reverse("search_posts"), {"query": "FindMe"})
         content = response.content.decode()

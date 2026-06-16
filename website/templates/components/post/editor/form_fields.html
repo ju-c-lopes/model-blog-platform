@@ -77,4 +77,20 @@
             </ul>
         {% endif %}
     </div>
+
+    <!-- Status -->
+    <div class="form-group full-width post-status-field">
+        <span class="post-status-label">{{ form.status.label }}</span>
+        {{ form.status }}
+        {% if form.status.help_text %}
+            <div class="help-text">{{ form.status.help_text }}</div>
+        {% endif %}
+        {% if form.status.errors %}
+            <ul class="errorlist">
+                {% for error in form.status.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </div>

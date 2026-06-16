@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from website.models.author.AuthorModel import Author
+from website.models.post.PostModel import Post
 from website.models.user.ReaderModel import Reader
 
 User = get_user_model()
@@ -70,6 +71,7 @@ class ProfileAndAuthorViewTests(TestCase):
             "text": "C",
             "url_slug": "t-unique",
             "meta_description": "md",
+            "status": Post.PUBLISHED,
         }
         r = self.client.post(url, data=data)
         self.assertEqual(r.status_code, 302)

@@ -60,8 +60,9 @@ class Post(models.Model):
         return max(1, minutes)
 
     def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+        self.status = self.PUBLISHED
+        self.published_date = timezone.now().date()
+        self.save(update_fields=["status", "published_date"])
 
     def __str__(self):
         return self.title

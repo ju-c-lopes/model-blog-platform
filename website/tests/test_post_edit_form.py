@@ -42,6 +42,7 @@ class PostEditFormTests(TestCase):
                 "meta_description": "Relato sobre Docker no dia a dia.",
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "tags": [str(self.docker_tag.pk), str(self.python_tag.pk)],
+                "status": Post.PUBLISHED,
                 "cover_image": self._make_image(),
             },
         )
@@ -69,6 +70,7 @@ class PostEditFormTests(TestCase):
                 "meta_description": "Descrição válida.",
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "tags": [str(self.python_tag.pk)],
+                "status": Post.DRAFT,
             },
         )
 
@@ -85,6 +87,7 @@ class PostEditFormTests(TestCase):
                 "meta_description": "Descrição válida.",
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "new_tag_names": ["Rust"],
+                "status": Post.PUBLISHED,
             },
         )
 
@@ -110,6 +113,7 @@ class PostEditFormTests(TestCase):
                 "meta_description": "Descrição válida.",
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "new_tag_names": ["Rust"],
+                "status": Post.DRAFT,
             },
         )
 
@@ -128,6 +132,7 @@ class PostEditFormTests(TestCase):
             title="Post teste",
             url_slug="post-teste",
             text="<p>Conteúdo inicial do post.</p>",
+            status=Post.PUBLISHED,
         )
         post.tags.add(self.docker_tag)
 
@@ -140,6 +145,7 @@ class PostEditFormTests(TestCase):
                 "meta_description": "Descrição válida.",
                 "text": "<p>Conteúdo atualizado com mais de dez caracteres.</p>",
                 "tags": [str(self.python_tag.pk)],
+                "status": Post.PUBLISHED,
             },
         )
 
@@ -153,6 +159,7 @@ class PostEditFormTests(TestCase):
             title="Post teste",
             url_slug="post-teste",
             text="<p>Conteúdo inicial do post.</p>",
+            status=Post.PUBLISHED,
         )
         post.tags.add(self.docker_tag)
 

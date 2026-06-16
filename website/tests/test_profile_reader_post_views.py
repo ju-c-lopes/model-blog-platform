@@ -64,6 +64,7 @@ class ProfileReaderPostViewsTest(TestCase):
             "url_slug": "t",
             "meta_description": "m",
             "text": "content",
+            "status": Post.PUBLISHED,
         }
         resp = self.client.post(url, data)
         # should redirect to post detail on success
