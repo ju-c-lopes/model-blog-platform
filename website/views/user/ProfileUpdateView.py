@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from website.forms.user.ProfileUpdateForm import ProfileUpdateForm
 from website.models.author.AuthorModel import Author
 from website.models.user.ReaderModel import Reader
-from website.views.user.SignUpView import treat_accentuation
+from website.services.user.user_registration import treat_accentuation
 
 
 @login_required

@@ -1,0 +1,58 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+{% block head-css %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'css/user/sign-up.css' %}"
+    media="all"
+/>
+{% endblock %}
+
+{% block content %}
+<div class="row text-center">
+    <h1>Solicitar perfil de autor</h1>
+</div>
+
+<div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="message-{{ message.tags }}" {% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="main-div">
+    <div class="sign-up-wrapper">
+        <form action="" method="post">
+            {% csrf_token %}
+            <fieldset>
+                {% include "components/forms/admin_approval_modal.html" %}
+
+                <div class="form-field">
+                    <label for="author_name">Nome de autor</label>
+                    <input
+                        type="text"
+                        name="author_name"
+                        id="author_name"
+                        value="{{ author_name }}"
+                        placeholder="Nome exibido no blog"
+                        {% if aprovar %}readonly{% else %}required{% endif %}
+                    />
+                </div>
+
+                {% if not aprovar %}
+                <div class="form-field form-field--button pt-4">
+                    <button type="submit" class="btn btn-primary mt-4">
+                        Continuar
+                    </button>
+                </div>
+                {% endif %}
+            </fieldset>
+        </form>
+        <p class="mt-4">
+            <a href="{% url 'reader-edit' %}">Voltar à edição do perfil</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -11,6 +11,7 @@ This project is a content platform built with Django to publish blog posts, mana
 The current project baseline includes:
 - Django application with layered refactoring in progress
 - Post editor with rich content features (including YouTube support)
+- Authentication: email/username login, dynamic credential recovery, Google Sign-In (GIS + django-allauth)
 - Test automation with Pytest + coverage gate
 - Formatting and quality checks with pre-commit
 
@@ -19,6 +20,7 @@ The current project baseline includes:
 ## Tech Stack
 
 - Python / Django
+- django-allauth (Google OAuth)
 - SQLite
 - JavaScript
 - Docker + Poetry
@@ -30,10 +32,35 @@ The current project baseline includes:
 ## Current Highlights
 
 - Refactored author and reader profile editing into service-oriented flows
+- **Authentication:** login with email or username, dynamic «forgot email/username» recovery, Google Sign-In via GIS + allauth
+- **Author onboarding:** new Google users are Readers; becoming an Author requires Django superuser approval (sign-up or `/solicitar-autor/`)
 - **Author and reader edit pages** share reusable form partials (`website/templates/components/forms/`) and a common CSS layer (`website/static/css/shared/edit-profile.css`); author-specific formsets (social, jobs, graduation) live in `website/static/css/author/edit-formsets.css`
 - Improved post editor modules (`website/static/scripts/editor`) with media and YouTube embedding
 - Organized static assets by domain (`css/shared`, `css/author`, `css/reader`, `css/post`, `css/user`, etc.)
 - CI-ready test suite with required coverage threshold
+
+---
+
+## Authentication
+
+| Flow | URL | Notes |
+|------|-----|-------|
+| Login (email/username + password) | `/login/` | Dynamic recovery when account not found |
+| Sign up | `/cadastre-se/` | Reader by default; Author requires admin approval |
+| Google Sign-In | GIS button on login/sign-up | OAuth via allauth; new users → Reader |
+| Request Author profile | `/solicitar-autor/` | Logged-in Reader; superuser approval required |
+
+**Environment variables** (see `.env.example`):
+
+```bash
+GOOGLE_OAUTH_CLIENT_ID=....apps.googleusercontent.com
+GOOGLE_OAUTH_CLIENT_SECRET=GOCSPX-...
+DJANGO_SITE_DOMAIN=localhost:8000   # dev
+```
+
+**Google Cloud Console** (OAuth 2.0 Web client):
+
+Copy `.env.example` to `.env` and fill in secrets before testing Google login locally.
 
 ---
 
@@ -80,9 +107,7 @@ flowchart TD
 
 ## Project Structure
 
-The complete and updated project tree is documented in `tree.txt`.
-
-You can regenerate it with:
+You can regenerate the `tree.txt` file with:
 
 ```bash
 ./generate_tree.sh
@@ -118,6 +143,14 @@ sudo chown -R "$(id -u):$(id -g)" .
 docker compose exec python-app poetry run pytest website/tests/
 ```
 
+On the host (with Poetry venv):
+
+```bash
+export DJANGO_SECRET_KEY='your-secret-key-with-at-least-fifty-characters-long'
+export DJANGO_DEBUG=True
+poetry run python manage.py test website/tests/
+```
+
 ### Run pre-commit checks
 
 On the host (recommended) or inside the container (same UID as host when `user:` is set):
@@ -141,9 +174,10 @@ The following milestones are intentionally preserved to keep historical context:
 - Made author edit profile with inline formsets (social media, jobs, graduation) and shared form/CSS components
 - Made edit social media profile functionality with messages return
 - Rewrite the user custom model which has been used to create author and reader profiles
+- Made login page with email/username, dynamic recovery, and Google Sign-In (django-allauth + GIS)
+- Author sign-up and Reader→Author upgrade require Django superuser approval
 - Made Sign Up page with reader and author type register
 - Made reader edit profile reusing the same edit-profile CSS and form partials as the author page
-- Made login page
 - Made Password validation with JavaScript
 - Setting show hide password on Login Page
 - Made Password validation in a view Django

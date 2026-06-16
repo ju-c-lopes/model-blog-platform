@@ -1,3 +1,30 @@
+.google-signin-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem auto;
+    max-width: 320px;
+    color: #b9b9b9;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+}
+
+.google-signin-divider::before,
+.google-signin-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.google-signin-divider span {
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+}
+
+.google-signin-container {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
 @media screen and (max-width: 768px) {
     .login-div {
         margin-top: 3vh;
@@ -111,6 +138,15 @@
     .show-hide-btn img {
         background: none;
         width: 30px;
+    }
+    .google-signin-divider {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 1.5rem 0 !important;
+    }
+    .google-signin-divider span {
+        color: #b9b9b9;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
     }
 }
 

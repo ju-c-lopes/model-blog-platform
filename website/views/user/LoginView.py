@@ -85,7 +85,12 @@ def login_user(request):
             else:
                 authenticated = authenticate(request, email=user.email, password=password)
                 if authenticated is not None:
-                    login(request, authenticated)
+                    backend = getattr(
+                        authenticated,
+                        "backend",
+                        "django.contrib.auth.backends.ModelBackend",
+                    )
+                    login(request, authenticated, backend=backend)
                     return redirect("/")
                 messages.error(request, "Senha inválida.")
         else:

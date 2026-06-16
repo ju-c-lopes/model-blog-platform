@@ -1,3 +1,46 @@
+.google-signin-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem auto;
+    max-width: 320px;
+    color: #b9b9b9;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+}
+
+.google-signin-divider::before,
+.google-signin-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.google-signin-divider span {
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+}
+
+.google-signin-container {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    width: auto;
+    height: auto;
+}
+
+.approval-hint {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.reader-author-upgrade {
+    margin-top: 1.5rem;
+}
+
+
+.screen-size {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     .register {
         position: relative;
@@ -6,13 +49,21 @@
         position: absolute;
         right: 0;
     }
+    .d-flex {
+        justify-content: space-between;
+    }
+    .d-flex .row {
+        margin-top: 1rem;
+    }
     h1 {
+        color: #fff !important;
         position: relative;
         margin: 20px auto 0 auto;
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
         text-align: center;
         font-weight: 600;
-        font-size: 36px;
+        font-size: 2rem;
+        z-index: 20;
     }
     .main-div {
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
@@ -38,7 +89,7 @@
         width: 100%;
         height: auto;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
     }
     form {
@@ -59,18 +110,34 @@
         left: 0;
         right: 0;
         margin: 0;
-        padding: 0;
+        padding: 8em 0;
         width: 100%;
         height: 100%;
         z-index: 1;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    .approval,
+    .approval-hint {
+        color: #fff !important;
+    }
+    .approval {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .approval .approval-hint {
+        margin: 0 1rem;
+    }
+    fieldset div.form-field  {
+        margin-top: 2vh;
     }
     .form-field {
         padding: 1vh 0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center;
         margin: 1.2em auto;
         width: 90%;
         gap: 1vh;
@@ -153,9 +220,24 @@
         height: 24px;
         list-style: none;
     }
+    fieldset .btn {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 20vw;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+    }
     .btn-disabled {
         background-color: #808080 !important;
         border-color: #808080 !important;
+    }
+    .google-signin-divider {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 1.5rem 0 !important;
     }
 }
 
@@ -165,21 +247,38 @@
         background: none;
         text-align: center;
         box-shadow: none;
-        z-index: 0;
     }
     h1 {
+        position: inherit;
+        color: #fff !important;
         background: none;
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
         text-align: center;
         font-weight: 600;
         font-size: 36px;
-        z-index: 0;
+        z-index: 20;
+    }
+    .aux-screen {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        top: 4em;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 6em 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 10;
     }
     .main-div {
         position: relative;
         background: none;
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
-        width: 400px;
+        width: 100% !important;
         box-shadow: none;
         z-index: 0;
     }
@@ -202,19 +301,40 @@
     fieldset {
         background: none;
         border: none;
-        width: 400px;
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center;
         gap: 5vh;
+    }
+    fieldset div.form-field {
+        margin-top: 2vh;
+        padding: 1vh 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1vh;
+    }
+    .approval,
+    .approval-hint {
+        color: #fff !important;
+    }
+    .approval {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 40vh;
+        gap: 2vh;
     }
     .form-field {
         padding: 1vh 0;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center;
         width: 100%;
         gap: 1vh;
     }
@@ -292,6 +412,16 @@
         border: none;
         box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
     }
+    fieldset .btn {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 20vw;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+    }
     .btn-disabled {
         background-color: #808080 !important;
         border-color: #808080 !important;
@@ -304,15 +434,16 @@
         background: none;
         text-align: center;
         box-shadow: none;
-        z-index: 0;
     }
     h1 {
+        position: inherit;
+        color: #fff !important;
         background: none;
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
         text-align: center;
         font-weight: 600;
         font-size: 36px;
-        z-index: 0;
+        z-index: 20;
     }
     .main-div {
         position: relative;
@@ -341,20 +472,48 @@
     fieldset {
         background: none;
         border: none;
-        width: 1000px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center;
         gap: 5vh;
     }
-    .form-field {
+    .aux-screen {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        top: 4em;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 6em 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 10;
+    }
+    .approval,
+    .approval-hint {
+        color: #fff !important;
+    }
+    .approval,
+    .approval .form-field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2vh;
+        width: 40vw;
+        margin: 0 auto;
+    }
+    fieldset div.form-field {
+        margin-top: 2vh;
         padding: 1vh 0;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: stretch;
-        width: 40%;
+        flex-direction: column;
+        align-items: center;
         gap: 1vh;
     }
     input[type="text"],
@@ -428,6 +587,16 @@
         padding: 4px;
         width: 50%;
         text-align: center;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    fieldset .btn {
+        background: rgb(36, 111, 224);
+        color: white;
+        padding: 4px;
+        width: 10vw;
         border-radius: 10px;
         outline: none;
         border: none;

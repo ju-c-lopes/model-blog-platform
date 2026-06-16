@@ -44,6 +44,43 @@ if SECRET_KEY:
 _raw_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS", "example.com")
 ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(" ") if h.strip()]
 
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "")
+DJANGO_SITE_DOMAIN = os.environ.get("DJANGO_SITE_DOMAIN", "localhost:8000")
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGOUT_ON_GET = True
+
+SOCIALACCOUNT_ADAPTER = "website.adapters.social_account.CustomSocialAccountAdapter"
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": GOOGLE_OAUTH_CLIENT_ID,
+            "secret": GOOGLE_OAUTH_CLIENT_SECRET,
+            "key": "",
+        },
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
+
+LOGIN_REDIRECT_URL = "/"
+
+_GOOGLE_CSP_HOSTS = ("https://accounts.google.com",)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +90,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "bootstrap",
     "phonenumber_field",
     "csp",
@@ -66,6 +108,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "website.middleware.Custom404Middleware",
@@ -86,6 +129,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "website.context_processors.google_oauth.google_oauth",
             ],
         },
     },
@@ -191,15 +235,17 @@ if DEBUG:
     CONTENT_SECURITY_POLICY = {
         "DIRECTIVES": {
             "default-src": ("'self'",),
-            "script-src": ("'self'", "'unsafe-inline'"),
-            "style-src": ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com"),
+            "script-src": ("'self'", "'unsafe-inline'", *_GOOGLE_CSP_HOSTS),
+            "style-src": ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com", *_GOOGLE_CSP_HOSTS),
             "font-src": ("'self'", "https://fonts.gstatic.com"),
-            "img-src": ("'self'", "data:", "blob:"),
+            "img-src": ("'self'", "data:", "blob:", "https://lh3.googleusercontent.com"),
             "frame-src": (
                 "'self'",
                 "https://www.youtube.com",
                 "https://www.youtube-nocookie.com",
+                *_GOOGLE_CSP_HOSTS,
             ),
+            "connect-src": ("'self'", *_GOOGLE_CSP_HOSTS, "https://www.googleapis.com"),
             "media-src": (
                 "'self'",
                 "blob:",
@@ -211,15 +257,16 @@ else:
     CONTENT_SECURITY_POLICY = {
         "DIRECTIVES": {
             "default-src": ("'self'",),
-            "style-src": ("'self'", "https://fonts.googleapis.com"),
+            "style-src": ("'self'", "https://fonts.googleapis.com", *_GOOGLE_CSP_HOSTS),
             "font-src": ("'self'", "https://fonts.gstatic.com"),
-            "script-src": ("'self'",),
+            "script-src": ("'self'", *_GOOGLE_CSP_HOSTS),
             "img-src": (
                 "'self'",
                 "data:",
                 "https://i.ytimg.com",
                 "https://img.youtube.com",
                 "https://ytimg.googleusercontent.com",
+                "https://lh3.googleusercontent.com",
             ),
             "frame-src": (
                 "'self'",
@@ -227,7 +274,9 @@ else:
                 "https://youtube.com",
                 "https://www.youtube-nocookie.com",
                 "https://player.vimeo.com",
+                *_GOOGLE_CSP_HOSTS,
             ),
+            "connect-src": ("'self'", *_GOOGLE_CSP_HOSTS, "https://www.googleapis.com"),
             "media-src": (
                 "'self'",
                 "blob:",
