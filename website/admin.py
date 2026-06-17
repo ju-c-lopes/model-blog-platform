@@ -13,6 +13,7 @@ from website.models.post.PostReactionModel import PostReaction
 from website.models.post.PostViewModel import PostView
 from website.models.post.SeriesModel import Series
 from website.models.post.TagModel import Tag
+from website.models.seo.SitemapEntryModel import SitemapEntry, SitemapHealthCheck
 from website.models.user.ReaderModel import Reader
 
 
@@ -143,6 +144,18 @@ class SeriesAdmin(admin.ModelAdmin):
     search_fields = ("title",)
 
 
+class SitemapEntryAdmin(admin.ModelAdmin):
+    list_display = ("path", "entry_type", "is_active", "lastmod", "updated_at")
+    list_filter = ("entry_type", "is_active")
+    search_fields = ("path", "notes")
+
+
+class SitemapHealthCheckAdmin(admin.ModelAdmin):
+    list_display = ("path", "status_code", "checked_at")
+    search_fields = ("path",)
+    readonly_fields = ("path", "status_code", "checked_at")
+
+
 class PostViewAdmin(admin.ModelAdmin):
 
     readonly_fields = (
@@ -168,4 +181,6 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(PostReaction)
 admin.site.register(PostView, PostViewAdmin)
 admin.site.register(Series, SeriesAdmin)
+admin.site.register(SitemapEntry, SitemapEntryAdmin)
+admin.site.register(SitemapHealthCheck, SitemapHealthCheckAdmin)
 admin.site.register(Reader)

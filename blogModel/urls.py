@@ -18,13 +18,24 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
+
+from website.sitemaps import UnifiedSitemap
+from website.views.seo.SitemapDashboardView import robots_txt
+
+sitemaps = {
+    "pages": UnifiedSitemap,
+}
 
 # Import error handlers
 
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
+        path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
+        path("robots.txt", robots_txt, name="robots"),
+        path("seo/", include("website.urls.seo.SitemapUrl")),
         path("", include("website.urls.HomeUrl")),
         path("nossa-equipe/", include("website.urls.author.TeamUrl")),
         path("nossa-equipe/", include("website.urls.author.AuthorUrl")),
