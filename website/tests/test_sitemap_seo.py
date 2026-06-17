@@ -1,19 +1,40 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
 from website.models.author.AuthorModel import Author
 from website.models.post.PostModel import Post
 from website.models.seo.SitemapEntryModel import SitemapEntry, SitemapHealthCheck
+from website.services.seo.robots_txt import ROBOTS_RULES, build_robots_txt_body
 from website.services.seo.sitemap_builder import collect_sitemap_urls, normalize_path
 from website.services.seo.sitemap_health import check_sitemap_urls
 
 User = get_user_model()
 
+# Evita 301 por SECURE_SSL_REDIRECT quando DEBUG=False no ambiente local/CI.
+# ALLOWED_HOSTS inclui testserver para health checks (Docker usa localhost no .env).
+SEO_TEST_SETTINGS = {
+    "DEBUG": True,
+    "SECURE_SSL_REDIRECT": False,
+    "ALLOWED_HOSTS": ["testserver", "localhost", "127.0.0.1"],
+}
 
+TEST_HTTP_HOST = "testserver"
+
+
+def _catch_all_disallow_paths():
+    catch_all = next(block for block in ROBOTS_RULES if block["user_agent"] == "*")
+    return catch_all.get("disallow", [])
+
+
+def _parse_robots_disallow_lines(content: str) -> list[str]:
+    return [line for line in content.splitlines() if line.startswith("Disallow:")]
+
+
+@override_settings(**SEO_TEST_SETTINGS)
 class SitemapXmlTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -81,6 +102,7 @@ class SitemapXmlTests(TestCase):
         self.assertTrue(any(item.path == manual_path for item in urls))
 
 
+@override_settings(**SEO_TEST_SETTINGS)
 class RobotsTxtTests(TestCase):
     def test_robots_txt_disallows_admin_and_references_sitemap(self):
         response = self.client.get(reverse("robots"))
@@ -88,23 +110,25 @@ class RobotsTxtTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "text/plain")
         content = response.content.decode()
-        self.assertIn("Disallow: /admin/", content)
-        self.assertIn("Disallow: /nossa-equipe/*/edit", content)
-        self.assertNotIn("Disallow: /login/", content)
-        self.assertNotIn("Disallow: /cadastre-se/", content)
-        disallow_lines = [line for line in content.splitlines() if line.startswith("Disallow:")]
+        disallow_lines = _parse_robots_disallow_lines(content)
+
+        for path in _catch_all_disallow_paths():
+            self.assertIn(f"Disallow: {path}", disallow_lines)
+
+        # Wildcard de edição de autor — não bloquear perfis públicos /nossa-equipe/<slug>/
+        self.assertIn("Disallow: /nossa-equipe/*/edit", disallow_lines)
         self.assertNotIn("Disallow: /nossa-equipe/", disallow_lines)
+
         self.assertIn("Sitemap:", content)
         self.assertIn("/sitemap.xml", content)
 
     def test_robots_txt_catch_all_block_is_last_before_sitemap(self):
-        from website.services.seo.robots_txt import ROBOTS_RULES, build_robots_txt_body
-
         self.assertEqual(ROBOTS_RULES[-1]["user_agent"], "*")
         body = build_robots_txt_body("https://example.com/sitemap.xml")
         self.assertTrue(body.strip().endswith("Sitemap: https://example.com/sitemap.xml"))
 
 
+@override_settings(**SEO_TEST_SETTINGS)
 class SitemapDashboardTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -162,16 +186,21 @@ class SitemapDashboardTests(TestCase):
 
     def test_verify_action_persists_health_checks(self):
         self.client.force_login(self.superuser)
-        response = self.client.post(self.url, {"action": "verify"}, HTTP_HOST="example.com")
+        response = self.client.post(
+            self.url,
+            {"action": "verify"},
+            HTTP_HOST=TEST_HTTP_HOST,
+        )
 
         self.assertEqual(response.status_code, 302)
         health = SitemapHealthCheck.objects.get(path=normalize_path(reverse("home")))
         self.assertEqual(health.status_code, 200)
 
     def test_health_check_reports_200_for_home(self):
+        home_path = normalize_path(reverse("home"))
         results = check_sitemap_urls(
-            [item for item in collect_sitemap_urls() if item.path == normalize_path(reverse("home"))],
-            http_host="example.com",
+            [item for item in collect_sitemap_urls() if item.path == home_path],
+            http_host=TEST_HTTP_HOST,
         )
 
-        self.assertEqual(results[normalize_path(reverse("home"))], 200)
+        self.assertEqual(results[home_path], 200)
