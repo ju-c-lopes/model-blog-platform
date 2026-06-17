@@ -95,6 +95,7 @@ ignore = ["E203"]
 "website/models/JobsModel.py" = ["F403", "F405"]
 "website/models/PostModel.py" = ["F403", "F405"]
 "website/models/ReaderModel.py" = ["E501"]
+"website/sitemaps.py" = ["F811"]
 
 # Additional conservative ignores for generated/intentional long strings and
 # small management scripts where line-length checks or unused local vars are

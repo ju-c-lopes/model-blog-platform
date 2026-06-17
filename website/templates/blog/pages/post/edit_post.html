@@ -1,6 +1,10 @@
 {% extends 'blog/pages/base.html' %}
 {% load static %}
 
+{% block head-meta %}
+<meta name="robots" content="noindex, nofollow" />
+{% endblock %}
+
 {% block title %}
     {% if is_creating %}Criar post{% else %}Editar post{% endif %}
 {% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="robots" content="noindex, nofollow" />
+{% endblock %}
+
+{% block title %}Painel SEO — Sitemap{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/sitemap_dashboard.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="seo-dashboard content">
+    <header class="seo-dashboard__header">
+        <h1>Painel de manutenção do sitemap</h1>
+        <p class="seo-dashboard__summary">
+            <em class="seo-dashboard__summary-count">{{ total_urls }} URL(s)</em> no sitemap. Verifique <code>status HTTP</code> e alinhamento de <code>lastmod</code> antes de publicar em produção.
+        </p>
+    </header>
+
+    <section class="seo-dashboard__actions">
+        <form method="post" class="seo-dashboard__verify-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="verify" />
+            <button type="submit" class="btn-verify">Verificar URLs</button>
+        </form>
+    </section>
+
+    <section class="seo-dashboard__forms">
+        <div class="seo-form-card">
+            <h2>Incluir URL manualmente</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="include" />
+                {{ include_form.path.label_tag }}
+                {{ include_form.path }}
+                {{ include_form.lastmod.label_tag }}
+                {{ include_form.lastmod }}
+                {{ include_form.notes.label_tag }}
+                {{ include_form.notes }}
+                {% if include_form.errors %}
+                    <ul class="errorlist">
+                        {% for error in include_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                        {% for field in include_form %}{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}{% endfor %}
+                    </ul>
+                {% endif %}
+                <button type="submit" class="btn">Incluir</button>
+            </form>
+        </div>
+
+        <div class="seo-form-card">
+            <h2>Excluir URL do sitemap</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="exclude" />
+                {{ exclude_form.path.label_tag }}
+                {{ exclude_form.path }}
+                {{ exclude_form.notes.label_tag }}
+                {{ exclude_form.notes }}
+                {% if exclude_form.errors %}
+                    <ul class="errorlist">
+                        {% for error in exclude_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                        {% for field in exclude_form %}{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}{% endfor %}
+                    </ul>
+                {% endif %}
+                <button type="submit" class="btn">Excluir</button>
+            </form>
+        </div>
+    </section>
+
+    {% if manual_entries %}
+    <section class="seo-dashboard__manual">
+        <h2>Overrides ativos</h2>
+        <ul class="manual-entry-list">
+            {% for entry in manual_entries %}
+            <li>
+                <span class="manual-entry-type">{{ entry.get_entry_type_display }}</span>
+                <code>{{ entry.path }}</code>
+                {% if entry.notes %}<span class="manual-entry-notes">{{ entry.notes }}</span>{% endif %}
+                <form method="post" class="inline-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="deactivate" />
+                    <input type="hidden" name="entry_id" value="{{ entry.pk }}" />
+                    <button type="submit" class="btn-link">Desativar</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    <section class="seo-dashboard__table-wrap">
+        <h2>URLs no sitemap</h2>
+        <table class="seo-dashboard__table">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Origem</th>
+                    <th>lastmod</th>
+                    <th>Conteúdo atualizado</th>
+                    <th>lastmod OK?</th>
+                    <th>Status</th>
+                    <th>Verificado em</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr class="{% if row.status_code and row.status_code != 200 %}row-error{% elif row.lastmod_synced == False %}row-warn{% endif %}">
+                    <td>
+                        <a href="{{ row.url.path }}" target="_blank" rel="noopener">{{ request.scheme }}://{{ request.get_host }}{{ row.url.path }}</a>
+                    </td>
+                    <td>
+                        {% if row.url.source == "post" %}Post
+                        {% elif row.url.source == "author" %}Autor
+                        {% elif row.url.source == "static" %}Estática
+                        {% else %}Manual{% endif %}
+                    </td>
+                    <td>{% if row.url.lastmod %}{{ row.url.lastmod|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                    <td>{% if row.content_updated_at %}{{ row.content_updated_at|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                    <td>
+                        {% if row.lastmod_synced == True %}<span class="badge badge-ok">OK</span>
+                        {% elif row.lastmod_synced == False %}<span class="badge badge-warn">Desatualizado</span>
+                        {% else %}<span class="badge badge-muted">N/A</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if row.status_code %}
+                            <span class="badge {% if row.status_code == 200 %}badge-ok{% else %}badge-error{% endif %}">{{ row.status_code }}</span>
+                        {% else %}—{% endif %}
+                    </td>
+                    <td>{% if row.checked_at %}{{ row.checked_at|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+{% endblock %}

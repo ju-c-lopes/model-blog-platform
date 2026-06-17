@@ -93,6 +93,9 @@
                 <a href="{% url 'reader-edit' %}" class="mobile-profile-btn">Edit Profile</a>
                 <a href="#" class="mobile-profile-btn">Saved Posts</a>
             {% endif %}
+            {% if request.user.is_superuser %}
+                <a href="{% url 'seo_sitemap_dashboard' %}" class="mobile-profile-btn">Painel SEO</a>
+            {% endif %}
             <a href="{% url 'logout' %}" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
         </div>
     </div>
@@ -155,6 +158,11 @@
                     </a>
                     <a href="#" class="dropdown-item">
                         <span>📚</span> Saved Posts
+                    </a>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'seo_sitemap_dashboard' %}" class="dropdown-item">
+                        <span>📊</span> Painel SEO
                     </a>
                 {% endif %}
                 <a href="{% url 'logout' %}" class="dropdown-item logout-item">

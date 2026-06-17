@@ -2,6 +2,10 @@
 {% load csp %}
 {% load static %}
 
+{% block head-meta %}
+<meta name="robots" content="noindex, nofollow" />
+{% endblock %}
+
 {% block head-css %}
 <link
     rel="stylesheet"
