@@ -1,0 +1,166 @@
+.viewport-debug {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1050;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    pointer-events: none;
+}
+
+.viewport-debug__toggle,
+.viewport-debug__panel {
+    pointer-events: auto;
+}
+
+.viewport-debug__toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    background: rgba(26, 58, 74, 0.92);
+    color: #e8f1f5;
+    cursor: pointer;
+    box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: width 0.2s ease, padding 0.2s ease, background 0.2s ease;
+}
+
+.viewport-debug__toggle-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.viewport-debug__toggle-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.2s ease, max-height 0.2s ease;
+}
+
+.viewport-debug__panel {
+    width: min(320px, calc(100vw - 3rem));
+    max-height: min(70vh, 420px);
+    overflow: auto;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #cbd5e1;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 0.75rem 0.85rem;
+}
+
+.viewport-debug__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.viewport-debug__title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a3a4a;
+}
+
+.viewport-debug__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0 0.25rem;
+}
+
+.viewport-debug__close:hover {
+    color: #1a3a4a;
+}
+
+.viewport-debug__content p {
+    margin: 0.35rem 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: #334155;
+    word-break: break-word;
+}
+
+.viewport-debug__content .viewport-debug__ua {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.viewport-debug.is-open .viewport-debug__toggle {
+    background: #264d60;
+}
+
+.viewport-debug.is-open .viewport-debug__toggle-label {
+    opacity: 1;
+    max-height: 6rem;
+}
+
+/* Desktop: aba fina; hover revela rótulo */
+@media screen and (min-width: 1081px) {
+    .viewport-debug__toggle {
+        width: 10px;
+        min-height: 72px;
+        padding: 0.5rem 0;
+    }
+
+    .viewport-debug:hover .viewport-debug__toggle,
+    .viewport-debug:focus-within .viewport-debug__toggle,
+    .viewport-debug.is-open .viewport-debug__toggle {
+        width: auto;
+        min-width: 2rem;
+        padding: 0.65rem 0.4rem;
+    }
+
+    .viewport-debug:hover .viewport-debug__toggle-label,
+    .viewport-debug:focus-within .viewport-debug__toggle-label {
+        opacity: 1;
+        max-height: 6rem;
+    }
+}
+
+/* Tablet / mobile: aba tipo “anúncio recolhido” */
+@media screen and (max-width: 1080px) {
+    .viewport-debug {
+        top: auto;
+        bottom: 5.5rem;
+        transform: none;
+    }
+
+    .viewport-debug__toggle {
+        width: auto;
+        min-width: 2.25rem;
+        min-height: 2.75rem;
+        padding: 0.45rem 0.35rem;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .viewport-debug__toggle-label {
+        display: none;
+    }
+
+    .viewport-debug__panel {
+        max-height: 50vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .viewport-debug {
+        bottom: 6.5rem;
+    }
+}

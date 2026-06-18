@@ -1,0 +1,34 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="description" content="Conheça o {{ SITE_BRAND_NAME }} — blog sobre tecnologia e experiências digitais." />
+{% endblock %}
+
+{% block title %}Sobre — {{ SITE_BRAND_NAME }}{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/institutional.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="institutional-page content about-page">
+    <h1>Sobre</h1>
+    <p>
+        O <strong>{{ SITE_BRAND_NAME }}</strong> é um espaço para publicar artigos sobre tecnologia,
+        desenvolvimento e experiências digitais, com foco em conteúdo claro e útil para leitores e autores.
+    </p>
+    <p>
+        Este texto é um placeholder. Antes do lançamento público, descreva aqui a missão do blog,
+        quem opera o projeto e a experiência da equipe editorial.
+    </p>
+    <p>
+        Responsável pelo site: <strong>{{ SITE_RESPONSIBLE_NAME }}</strong>.
+        Local: {{ SITE_LOCATION_CITY }}/{{ SITE_LOCATION_STATE }}.
+    </p>
+    <p>
+        <a href="{% url 'contact' %}">Entre em contato</a> ·
+        <a href="{% url 'team' %}">Nossa equipe</a>
+    </p>
+</main>
+{% endblock %}

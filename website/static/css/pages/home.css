@@ -78,13 +78,6 @@
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-    .screen-size {
-        position: relative;
-        margin-top: 2vh;
-        margin-left: 2vw;
-        top: 10px;
-        height: 100%;
-    }
     .messages {
         top: 25px;
         position: relative;
@@ -163,33 +156,6 @@
 
     .col-md-4, .col-lg-4 {
         padding: 15px;
-    }
-}
-
-@media screen and (min-width: 1081px) {
-    .screen-size {
-        position: relative;
-        margin-top: 2vh;
-        margin-left: 2vw;
-        top: 10px;
-        height: 100%;
-    }
-    .messages {
-        top: 25px;
-        position: relative;
-        margin: 0 auto 2vh auto;
-        width: 80vw;
-        height: 40px;
-    }
-    .message-error {
-        color: #ff4f4f;
-        background-color: #ff9d9d;
-        text-align: center;
-    }
-    .message-success {
-        color: olive;
-        background-color: #BBB157;
-        text-align: center;
     }
 }
 

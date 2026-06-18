@@ -38,6 +38,28 @@
             href="{% static 'css/base/header.css' %}"
             media="all"
         />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/base/footer.css' %}"
+            media="all"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/base/cookie_banner.css' %}"
+            media="all"
+        />
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/base/viewport_debug.css' %}"
+            media="all"
+        />
+            {% endif %}
+        {% endif %}
         {% block head-css %}{% endblock %}
 
         <title>{% block title %}{% endblock %}</title>
@@ -49,12 +71,25 @@
         <div class="d-flex flex-column">
             {% block content %}{% endblock %}
         </div>
-        <div class="screen-size"></div>
-        <footer>{% include "components/footer/footer.html" %}</footer>
+        {% include "components/footer/footer.html" %}
+        {% include "components/cookie_banner.html" %}
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
+        {% include "components/viewport_debug.html" %}
+            {% endif %}
+        {% endif %}
         {% block scripts %}{% endblock %}
+        <script
+            nonce="{{ request.csp_nonce }}"
+            src="{% static 'scripts/components/cookie_banner.js' %}"
+        ></script>
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
         <script
             nonce="{{ request.csp_nonce }}"
             src="{% static 'scripts/pages/tela.js' %}"
         ></script>
+            {% endif %}
+        {% endif %}
     </body>
 </html>

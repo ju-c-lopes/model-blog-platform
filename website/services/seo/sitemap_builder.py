@@ -50,6 +50,11 @@ def _collect_automatic_urls() -> list[SitemapUrl]:
         ("home", "static"),
         ("team", "static"),
         ("search_posts", "static"),
+        ("about", "static"),
+        ("contact", "static"),
+        ("privacy", "static"),
+        ("cookies", "static"),
+        ("html_sitemap", "static"),
     )
     for route_name, source in static_routes:
         urls.append(
@@ -60,7 +65,7 @@ def _collect_automatic_urls() -> list[SitemapUrl]:
             )
         )
 
-    for author in Author.objects.all().only("pk", "author_url_slug", "created_at"):
+    for author in Author.objects.all().only("pk", "author_url_slug", "author_name", "created_at"):
         urls.append(
             SitemapUrl(
                 path=normalize_path(reverse("author", kwargs={"slug": author.author_url_slug})),
@@ -70,7 +75,7 @@ def _collect_automatic_urls() -> list[SitemapUrl]:
             )
         )
 
-    for post in published_posts().only("pk", "url_slug", "updated_date"):
+    for post in published_posts().only("pk", "url_slug", "title", "updated_date"):
         urls.append(
             SitemapUrl(
                 path=normalize_path(reverse("post_detail", kwargs={"url_slug": post.url_slug})),

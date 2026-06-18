@@ -1,0 +1,35 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="description" content="Contato do {{ SITE_BRAND_NAME }} — email e localização." />
+{% endblock %}
+
+{% block title %}Contato — {{ SITE_BRAND_NAME }}{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/institutional.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="institutional-page content contact-page">
+    <h1>Contato</h1>
+    <p>Entre em contato conosco pelos canais abaixo (dados placeholder — atualize antes do go-live).</p>
+
+    <dl class="institutional-contact">
+        <dt>Email</dt>
+        <dd><a href="mailto:{{ SITE_CONTACT_EMAIL }}">{{ SITE_CONTACT_EMAIL }}</a></dd>
+
+        <dt>Local</dt>
+        <dd>{{ SITE_LOCATION_CITY }}, {{ SITE_LOCATION_STATE }}</dd>
+
+        <dt>Responsável</dt>
+        <dd>{{ SITE_RESPONSIBLE_NAME }}</dd>
+    </dl>
+
+    <p>
+        <a href="{% url 'about' %}">Sobre o blog</a> ·
+        <a href="{% url 'privacy' %}">Política de privacidade</a>
+    </p>
+</main>
+{% endblock %}

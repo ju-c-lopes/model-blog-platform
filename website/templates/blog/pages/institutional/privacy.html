@@ -1,0 +1,76 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="description" content="Política de privacidade e tratamento de dados pessoais (LGPD) do {{ SITE_BRAND_NAME }}." />
+{% endblock %}
+
+{% block title %}Política de privacidade — {{ SITE_BRAND_NAME }}{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/institutional.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="institutional-page content privacy-page">
+    <h1>Política de privacidade</h1>
+    <p class="institutional-updated">Última atualização: {% now "d/m/Y" %}</p>
+
+    <section>
+        <h2>Quem somos</h2>
+        <p>
+            O site <strong>{{ SITE_BRAND_NAME }}</strong> é operado por
+            <strong>{{ SITE_RESPONSIBLE_NAME }}</strong>, com sede em
+            {{ SITE_LOCATION_CITY }}/{{ SITE_LOCATION_STATE }}.
+            Contato: <a href="mailto:{{ SITE_CONTACT_EMAIL }}">{{ SITE_CONTACT_EMAIL }}</a>.
+        </p>
+    </section>
+
+    <section>
+        <h2>Dados que coletamos</h2>
+        <ul>
+            <li>Dados de cadastro: nome de usuário, email e senha (quando aplicável).</li>
+            <li>Dados de perfil: nome de exibição, foto e informações opcionais de autor ou leitor.</li>
+            <li>Dados de autenticação via Google (django-allauth), quando você opta por entrar com Google.</li>
+            <li>Interações no site, como reações (curtir/amar) em posts publicados.</li>
+            <li>Dados técnicos de navegação (logs, cookies de sessão) necessários ao funcionamento do site.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Finalidade do tratamento</h2>
+        <p>
+            Utilizamos os dados para autenticação, personalização de perfil, publicação de conteúdo,
+            moderação editorial, segurança da plataforma e melhoria da experiência de leitura.
+        </p>
+    </section>
+
+    <section>
+        <h2>Compartilhamento com terceiros</h2>
+        <ul>
+            <li><strong>Google</strong> — login OAuth e, em posts, embeds do YouTube.</li>
+            <li><strong>Google Fonts</strong> — tipografia carregada de servidores do Google.</li>
+        </ul>
+        <p>
+            Esses serviços possuem políticas próprias. Recomendamos consultar a documentação do Google
+            para entender como tratam dados quando você interage com login ou conteúdo incorporado.
+        </p>
+    </section>
+
+    <section>
+        <h2>Seus direitos (LGPD)</h2>
+        <p>
+            Você pode solicitar acesso, correção, exclusão ou informações sobre o tratamento dos seus dados
+            pelo email <a href="mailto:{{ SITE_CONTACT_EMAIL }}">{{ SITE_CONTACT_EMAIL }}</a>.
+        </p>
+    </section>
+
+    <section>
+        <h2>Cookies</h2>
+        <p>
+            Detalhes sobre cookies e armazenamento local estão na
+            <a href="{% url 'cookies' %}">Política de cookies</a>.
+        </p>
+    </section>
+</main>
+{% endblock %}

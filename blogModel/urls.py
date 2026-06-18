@@ -36,6 +36,7 @@ urlpatterns = (
         path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
         path("robots.txt", robots_txt, name="robots"),
         path("seo/", include("website.urls.seo.SitemapUrl")),
+        path("", include("website.urls.pages.InstitutionalUrl")),
         path("", include("website.urls.HomeUrl")),
         path("nossa-equipe/", include("website.urls.author.TeamUrl")),
         path("nossa-equipe/", include("website.urls.author.AuthorUrl")),

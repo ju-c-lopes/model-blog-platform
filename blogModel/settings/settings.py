@@ -48,6 +48,12 @@ GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
 GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "")
 DJANGO_SITE_DOMAIN = os.environ.get("DJANGO_SITE_DOMAIN", "localhost:8000")
 
+SITE_BRAND_NAME = os.environ.get("SITE_BRAND_NAME", "Juclops' TechXperience")
+SITE_CONTACT_EMAIL = os.environ.get("SITE_CONTACT_EMAIL", "contato@exemplo.com")
+SITE_LOCATION_CITY = os.environ.get("SITE_LOCATION_CITY", "Cidade")
+SITE_LOCATION_STATE = os.environ.get("SITE_LOCATION_STATE", "UF")
+SITE_RESPONSIBLE_NAME = os.environ.get("SITE_RESPONSIBLE_NAME", "Nome do responsável")
+
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
@@ -131,6 +137,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "website.context_processors.google_oauth.google_oauth",
+                "website.context_processors.site_identity.site_identity",
             ],
         },
     },

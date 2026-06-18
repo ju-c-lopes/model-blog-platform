@@ -1,5 +1,9 @@
 /* Post detail page styles */
 
+.post-title {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
 .post-draft-banner {
     margin: 0 0 1.25rem;
     padding: 0.85rem 1rem;
@@ -693,7 +697,7 @@
 /* Mobile styles */
 @media screen and (max-width: 768px) {
     .d-flex {
-        z-index: auto !important;
+        z-index: 0;
     }
     .content {
         top: 80px;
