@@ -50,6 +50,7 @@ body {
         font-size: 16px;
         line-height: 1.6;
         overflow-y: scroll;
+        padding: 0 !important;
     }
 
     .container-fluid {
@@ -77,13 +78,6 @@ body {
         padding: 2rem;
         margin-bottom: 2rem;
     }
-    .screen-size {
-        position: relative;
-        margin-top: 2vh;
-        margin-left: 2vw;
-        top: 10px;
-        height: 100%;
-    }
     .messages {
         top: 25px;
         position: relative;
@@ -110,6 +104,7 @@ body {
 @media screen and (min-width: 769px) and (max-width: 1080px) {
     body {
         overflow-y: scroll;
+        padding: 0 !important;
     }
     .d-flex {
         position: relative;
@@ -150,13 +145,6 @@ body {
         z-index: 0;
     }
 
-    .screen-size {
-        position: relative;
-        margin-top: 2vh;
-        margin-left: 2vw;
-        top: 10px;
-        height: 100%;
-    }
     .messages {
         top: 25px;
         position: relative;

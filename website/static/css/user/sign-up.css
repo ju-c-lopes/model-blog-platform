@@ -37,10 +37,6 @@
 }
 
 
-.screen-size {
-    display: none;
-}
-
 @media screen and (max-width: 768px) {
     .register {
         position: relative;

@@ -1,0 +1,71 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="description" content="Mapa do site {{ SITE_BRAND_NAME }} — páginas, autores e posts publicados." />
+{% endblock %}
+
+{% block title %}Mapa do site — {{ SITE_BRAND_NAME }}{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/institutional.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="institutional-page html-sitemap content">
+    <header class="html-sitemap__header">
+        <h1>Mapa do site</h1>
+        <p>Navegue por todas as seções publicadas.</p>
+        <div class="html-sitemap__toolbar">
+            <button type="button" class="html-sitemap__toggle-all" data-action="expand">Expandir tudo</button>
+            <button type="button" class="html-sitemap__toggle-all" data-action="collapse">Recolher tudo</button>
+        </div>
+    </header>
+
+    <details class="html-sitemap__section" open>
+        <summary>Institucionais</summary>
+        <ul>
+            {% for link in sections.institutional %}
+            <li><a href="{{ link.path }}">{{ link.label }}</a></li>
+            {% endfor %}
+        </ul>
+    </details>
+
+    <details class="html-sitemap__section">
+        <summary>Autores</summary>
+        <ul>
+            {% for link in sections.authors %}
+            <li><a href="{{ link.path }}">{{ link.label }}</a></li>
+            {% empty %}
+            <li class="html-sitemap__empty">Nenhum autor cadastrado.</li>
+            {% endfor %}
+        </ul>
+    </details>
+
+    <details class="html-sitemap__section">
+        <summary>Séries</summary>
+        <ul>
+            {% for link in sections.series %}
+            <li><a href="{{ link.path }}">{{ link.label }}</a></li>
+            {% empty %}
+            <li class="html-sitemap__empty">Em breve — séries ainda não disponíveis.</li>
+            {% endfor %}
+        </ul>
+    </details>
+
+    <details class="html-sitemap__section">
+        <summary>Posts</summary>
+        <ul>
+            {% for link in sections.posts %}
+            <li><a href="{{ link.path }}">{{ link.label }}</a></li>
+            {% empty %}
+            <li class="html-sitemap__empty">Nenhum post publicado.</li>
+            {% endfor %}
+        </ul>
+    </details>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script nonce="{{ request.csp_nonce }}" src="{% static 'scripts/components/html_sitemap.js' %}"></script>
+{% endblock %}

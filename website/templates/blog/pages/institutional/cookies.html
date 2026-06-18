@@ -1,0 +1,66 @@
+{% extends 'blog/pages/base.html' %}
+{% load static %}
+
+{% block head-meta %}
+<meta name="description" content="Política de cookies do {{ SITE_BRAND_NAME }} — sessão, preferências e serviços de terceiros." />
+{% endblock %}
+
+{% block title %}Política de cookies — {{ SITE_BRAND_NAME }}{% endblock %}
+
+{% block head-css %}
+<link rel="stylesheet" href="{% static 'css/pages/institutional.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="institutional-page content cookies-page">
+    <h1>Política de cookies</h1>
+    <p class="institutional-updated">Última atualização: {% now "d/m/Y" %}</p>
+
+    <section>
+        <h2>O que são cookies</h2>
+        <p>
+            Cookies são pequenos arquivos armazenados no seu navegador. Também usamos
+            <code>localStorage</code> para lembrar preferências simples, como o aviso de cookies já lido.
+        </p>
+    </section>
+
+    <section>
+        <h2>Cookies essenciais</h2>
+        <ul>
+            <li><strong>Sessão Django</strong> — mantém você autenticado enquanto navega.</li>
+            <li><strong>CSRF</strong> — protege formulários contra envios não autorizados.</li>
+            <li><strong>Mensagens</strong> — exibem avisos temporários após ações no site.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Preferências locais</h2>
+        <p>
+            Ao clicar em <strong>Entendi</strong> no aviso de cookies, gravamos
+            <code>cookie_notice_dismissed=1</code> no <code>localStorage</code> do navegador para não
+            exibir o banner novamente neste dispositivo.
+        </p>
+    </section>
+
+    <section>
+        <h2>Terceiros</h2>
+        <ul>
+            <li><strong>Google OAuth</strong> — ao entrar com conta Google.</li>
+            <li><strong>YouTube</strong> — players incorporados em posts podem definir cookies próprios.</li>
+            <li><strong>Google Fonts</strong> — carregamento de fontes tipográficas.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Como gerenciar</h2>
+        <p>
+            Você pode limpar cookies e dados de sites nas configurações do navegador.
+            Para revogar o aviso local, remova a chave <code>cookie_notice_dismissed</code> do
+            armazenamento local deste site.
+        </p>
+        <p>
+            Mais informações sobre dados pessoais: <a href="{% url 'privacy' %}">Política de privacidade</a>.
+        </p>
+    </section>
+</main>
+{% endblock %}
