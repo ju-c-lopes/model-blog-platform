@@ -43,12 +43,26 @@ def build_author_slug(author_name: str) -> str:
 
 
 def create_author_profile(user: User, author_name: str) -> Author:
+    reader = None
+    try:
+        reader = user.reader
+    except Reader.DoesNotExist:
+        pass
+
+    resolved_name = (author_name or "").strip()
+    if not resolved_name and reader is not None:
+        resolved_name = (reader.reader_name or user.username or "").strip()
+    if not resolved_name:
+        resolved_name = user.username or "autor"
+
     author = Author(
         user=user,
-        author_name=author_name,
-        author_url_slug=build_author_slug(author_name),
+        author_name=resolved_name,
+        author_url_slug=build_author_slug(resolved_name),
         access_level=1,
     )
+    if reader is not None and reader.image:
+        author.image = reader.image
     author.save()
     return author
 

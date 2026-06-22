@@ -98,6 +98,21 @@ Tests: `website/tests/test_post_draft_published.py`.
 | Sign up | `/cadastre-se/` | Reader by default; Author requires admin approval |
 | Google Sign-In | GIS button on login/sign-up | OAuth via allauth; new users → Reader |
 | Request Author profile | `/solicitar-autor/` | Logged-in Reader; superuser approval required |
+| Django Admin | `/admin/` | Staff/superuser; login field accepts **email only** |
+
+### Login identifiers
+
+The custom `User` model sets `USERNAME_FIELD = "email"`. Each surface resolves credentials differently:
+
+| Surface | Identifier field | Accepted values |
+|-------|------------------|-----------------|
+| Site login `/login/` | `identifier` | Email **or** username |
+| Django Admin `/admin/` | `username` (Django admin form) | **Email only** |
+| Author approval modal | `super` | Superuser **username or email** |
+
+Site login looks up the account by email (when `@` is present) or by username, then authenticates with the resolved user's email and password. Wrong-password errors do not trigger the «forgot email/username» recovery flow.
+
+Tests: `website/tests/test_login_and_search_views.py` (site login, admin login, approval identifiers).
 
 **Environment variables** (see `.env.example`):
 

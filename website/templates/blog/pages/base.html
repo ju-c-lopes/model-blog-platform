@@ -51,7 +51,7 @@
             media="all"
         />
         {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
+            {% if request.user.is_superuser or request.user.author %}
         <link
             rel="stylesheet"
             type="text/css"
@@ -74,7 +74,7 @@
         {% include "components/footer/footer.html" %}
         {% include "components/cookie_banner.html" %}
         {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
+            {% if request.user.is_superuser or request.user.author %}
         {% include "components/viewport_debug.html" %}
             {% endif %}
         {% endif %}
@@ -84,7 +84,7 @@
             src="{% static 'scripts/components/cookie_banner.js' %}"
         ></script>
         {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser or request.user.is_staff or request.user.author %}
+            {% if request.user.is_superuser or request.user.author %}
         <script
             nonce="{{ request.csp_nonce }}"
             src="{% static 'scripts/pages/tela.js' %}"

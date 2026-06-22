@@ -4,17 +4,24 @@ from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.backends.db import SessionStore
-from django.test import RequestFactory, TestCase
+from django.test import Client, RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
 from website.models.author.AuthorModel import Author
 from website.models.post.PostModel import Post
 from website.models.post.TagModel import Tag
 from website.services.post.post_search import search_posts_queryset
+from website.services.user.admin_approval import verify_superuser_credentials
 from website.views.post.SearchView import search_posts
 from website.views.user.LoginView import login_user
 
 User = get_user_model()
+
+LOGIN_TEST_SETTINGS = {
+    "DEBUG": True,
+    "SECURE_SSL_REDIRECT": False,
+    "ALLOWED_HOSTS": ["testserver", "localhost", "127.0.0.1"],
+}
 
 
 class LoginViewTests(TestCase):
@@ -202,6 +209,82 @@ class LoginViewTests(TestCase):
         storage = req._messages
         messages_list = list(storage)
         assert any("nobody" in str(m.message) and "não encontrado" in str(m.message) for m in messages_list)
+
+
+@override_settings(**LOGIN_TEST_SETTINGS)
+class SiteLoginIntegrationTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        User.objects.create_user(
+            email="site@example.com",
+            username="siteuser",
+            password="Site$Pass1",
+        )
+
+    def test_site_login_with_email_redirects_home(self):
+        response = self.client.post(
+            reverse("login"),
+            {"identifier": "site@example.com", "password": "Site$Pass1"},
+        )
+
+        self.assertRedirects(response, "/", fetch_redirect_response=False)
+
+    def test_site_login_with_username_redirects_home(self):
+        response = self.client.post(
+            reverse("login"),
+            {"identifier": "siteuser", "password": "Site$Pass1"},
+        )
+
+        self.assertRedirects(response, "/", fetch_redirect_response=False)
+
+
+@override_settings(**LOGIN_TEST_SETTINGS)
+class AdminLoginIntegrationTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        User.objects.create_superuser(
+            email="admin@example.com",
+            password="Admin$Pass1",
+            username="admin",
+        )
+
+    def test_admin_login_with_email_succeeds(self):
+        response = self.client.post(
+            reverse("admin:login"),
+            {"username": "admin@example.com", "password": "Admin$Pass1"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+        self.assertEqual(self.client.get(reverse("admin:index")).status_code, 200)
+
+    def test_admin_login_with_username_stays_on_login_page(self):
+        response = self.client.post(
+            reverse("admin:login"),
+            {"username": "admin", "password": "Admin$Pass1"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "admin/login.html")
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+
+class AdminApprovalIdentifierTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(
+            email="admin@example.com",
+            password="Admin$Pass1",
+            username="admin",
+        )
+
+    def test_verify_superuser_credentials_accepts_username(self):
+        self.assertTrue(verify_superuser_credentials("admin", "Admin$Pass1"))
+
+    def test_verify_superuser_credentials_accepts_email(self):
+        self.assertTrue(verify_superuser_credentials("admin@example.com", "Admin$Pass1"))
+
+    def test_verify_superuser_credentials_rejects_wrong_password(self):
+        self.assertFalse(verify_superuser_credentials("admin", "wrong-pass"))
 
 
 class SearchViewTests(TestCase):
