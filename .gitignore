@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.python_history
 
 # =========================
 # Virtual Environment
@@ -68,6 +69,7 @@ Thumbs.db
 # Project Specific
 # =========================
 BACKLOG.txt
+backlog-golive.txt
 tree.txt
 requirements-bkp.txt
 fix_imports.py
