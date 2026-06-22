@@ -46,7 +46,6 @@
     <!-- MOBILE PROFILE SECTION AUTHENTICATED -->
     <div class="mobile-profile-section">
         <div class="mobile-profile-header">
-
             <div class="mobile-profile-image">
                 {% if request.user.author %}
                     {% if request.user.author.image %}
@@ -54,31 +53,38 @@
                     {% else %}
                         <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="{{ request.user.author.author_name }}" />
                     {% endif %}
-
-                {% else %}
+                {% elif request.user.reader %}
                     {% if request.user.reader.image %}
                         <img src="/media/{{ request.user.reader.image }}" alt="{{ request.user.reader.reader_name }}" />
                     {% else %}
                         <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="{{ request.user.reader.reader_name }}" />
                     {% endif %}
+                {% else %}
+                    <img src="{% static 'img/placeholders/no-user.jpg' %}" alt="{{ request.user.username }}" />
                 {% endif %}
             </div>
 
             <div class="mobile-profile-info">
-
                 <div class="mobile-profile-name">
                     {% if request.user.author %}
                         <a href="{% url 'edit_author' request.user.author.author_url_slug %}">{{ request.user.author.author_name }}</a>
-                    {% else %}
+                    {% elif request.user.reader %}
                         <a href="{% url 'reader-edit' %}">{{ request.user.reader.reader_name }}</a>
+                    {% else %}
+                        <span>{{ request.user.username|default:request.user.email }}</span>
                     {% endif %}
                 </div>
-
                 <div class="mobile-profile-type">
                     {% if request.user.author %}
                         Author
-                    {% else %}
+                    {% elif request.user.reader %}
                         Reader
+                    {% elif request.user.is_superuser %}
+                        Superuser
+                    {% elif request.user.is_staff %}
+                        Staff
+                    {% else %}
+                        Conta
                     {% endif %}
                 </div>
             </div>
@@ -89,11 +95,12 @@
                 <a href="{% url 'author' request.user.author.author_url_slug %}" class="mobile-profile-btn">View Profile</a>
                 <a href="{% url 'edit_author' request.user.author.author_url_slug %}" class="mobile-profile-btn">Edit Profile</a>
                 <a href="{% url 'create_post' %}" class="mobile-profile-btn mobile-profile-btn-primary">Create Post</a>
-            {% else %}
+            {% elif request.user.reader %}
                 <a href="{% url 'reader-edit' %}" class="mobile-profile-btn">Edit Profile</a>
                 <a href="#" class="mobile-profile-btn">Saved Posts</a>
             {% endif %}
             {% if request.user.is_superuser %}
+                <a href="/admin/" class="mobile-profile-btn">Django Admin</a>
                 <a href="{% url 'seo_sitemap_dashboard' %}" class="mobile-profile-btn">Painel SEO</a>
             {% endif %}
             <a href="{% url 'logout' %}" class="mobile-profile-btn mobile-profile-btn-logout">Logout</a>
@@ -121,7 +128,8 @@
 
 
     <!-- LOGIN (Desktop only) -->
-    {% if request.user.author or request.user.reader %}
+    {% if request.user.is_authenticated %}
+        {% if request.user.author or request.user.reader %}
     <div class="header-login logged desktop-only">
         <div class="profile-container">
             <div class="profile-trigger">
@@ -140,7 +148,6 @@
                 </span>
             </div>
 
-            <!-- Profile Dropdown Menu -->
             <div class="profile-dropdown">
                 {% if request.user.author %}
                     <a href="{% url 'author' request.user.author.author_url_slug %}" class="dropdown-item">
@@ -161,6 +168,9 @@
                     </a>
                 {% endif %}
                 {% if request.user.is_superuser %}
+                    <a href="/admin/" class="dropdown-item">
+                        <span>⚙️</span> Django Admin
+                    </a>
                     <a href="{% url 'seo_sitemap_dashboard' %}" class="dropdown-item">
                         <span>📊</span> Painel SEO
                     </a>
@@ -171,7 +181,51 @@
             </div>
         </div>
     </div>
+        {% elif request.user.is_superuser %}
+    <div class="header-login logged desktop-only">
+        <div class="profile-container">
+            <div class="profile-trigger">
+                <img class="header-login--img" src="{% static 'img/placeholders/no-user.jpg' %}" alt="Administrador" />
+                <span class="profile-name">
+                    <p class="profile-name-text">{{ request.user.username|default:request.user.email }}</p>
+                    <span class="dropdown-arrow">▼</span>
+                </span>
+            </div>
 
+            <div class="profile-dropdown">
+                <a href="/admin/" class="dropdown-item">
+                    <span>⚙️</span> Django Admin
+                </a>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'seo_sitemap_dashboard' %}" class="dropdown-item">
+                        <span>📊</span> Painel SEO
+                    </a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+        {% else %}
+    <div class="header-login logged desktop-only">
+        <div class="profile-container">
+            <div class="profile-trigger">
+                <img class="header-login--img" src="{% static 'img/placeholders/no-user.jpg' %}" alt="Conta" />
+                <span class="profile-name">
+                    <p class="profile-name-text">{{ request.user.username|default:request.user.email }}</p>
+                    <span class="dropdown-arrow">▼</span>
+                </span>
+            </div>
+
+            <div class="profile-dropdown">
+                <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                    <span>🚪</span> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+        {% endif %}
     {% else %}
     <div class="header-login desktop-only">
         <div class="not-logged">
@@ -183,8 +237,8 @@
                 <a class="login-link sign-up-login-link" href="{% url 'login' %}">Login</a>
             </div>
         </div>
-    {% endif %}
     </div>
+    {% endif %}
 </nav>
 {% block scripts %}
 <script src="{% static './scripts/components/buttonMobile.js' %}"></script>

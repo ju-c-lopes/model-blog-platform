@@ -56,6 +56,28 @@ class ViewportDebugTests(TestCase):
         self.assertIn("viewport_debug.css", content)
         self.assertIn("tela.js", content)
 
+    def test_author_with_staff_flag_still_gets_viewport_debug(self):
+        self.author_user.is_staff = True
+        self.author_user.save(update_fields=["is_staff"])
+        self.client.force_login(self.author_user)
+        response = self.client.get(reverse("home"))
+        content = response.content.decode()
+
+        self.assertIn('id="viewport-debug"', content)
+
+    def test_staff_without_author_or_superuser_does_not_get_viewport_debug(self):
+        staff_user = User.objects.create_user(
+            email="staff@example.com",
+            password="pw",
+            username="staff-only",
+            is_staff=True,
+        )
+        self.client.force_login(staff_user)
+        response = self.client.get(reverse("home"))
+        content = response.content.decode()
+
+        self.assertNotIn('id="viewport-debug"', content)
+
     def test_superuser_gets_viewport_debug_widget(self):
         superuser = User.objects.create_superuser(
             email="admin@example.com",
