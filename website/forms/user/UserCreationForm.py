@@ -6,9 +6,10 @@ from website.models.user.UserModel import User
 
 
 class UserCreationForm(BaseUserCreationForm):
-    phone = PhoneNumberField(
+    phone_number = PhoneNumberField(
         label="Celular",
         region="BR",
+        required=False,
     )
 
     class Meta:

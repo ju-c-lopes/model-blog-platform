@@ -7,6 +7,7 @@ DATE_BR_INPUT_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
 
 class JobForm(forms.ModelForm):
     start_date = forms.DateField(
+        label="Data de início",
         input_formats=DATE_BR_INPUT_FORMATS,
         widget=forms.DateInput(
             format="%d/%m/%Y",
@@ -14,6 +15,7 @@ class JobForm(forms.ModelForm):
         ),
     )
     end_date = forms.DateField(
+        label="Data de término",
         required=False,
         input_formats=DATE_BR_INPUT_FORMATS,
         widget=forms.DateInput(
@@ -49,3 +51,16 @@ class JobForm(forms.ModelForm):
             "location": forms.TextInput(attrs={"class": "form-control"}),
             "roles_description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        current_job = cleaned_data.get("current_job")
+        end_date = cleaned_data.get("end_date")
+
+        if current_job and end_date:
+            raise forms.ValidationError({"end_date": "Remova a data de término ou desmarque «Trabalho atual»."})
+
+        if current_job:
+            cleaned_data["end_date"] = None
+
+        return cleaned_data

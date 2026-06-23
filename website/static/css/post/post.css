@@ -328,6 +328,7 @@
     .author-card-top img {
         width: 70px;
         height: 70px;
+        object-fit: cover;
     }
     aside {
         display: flex;
@@ -784,6 +785,7 @@
     .post-detail-page .author-card-top img {
         width: 40px;
         height: 40px;
+        object-fit: cover;
         background-color: rgba(255, 255, 255, 0.2);
         border-radius: 50%;
     }

@@ -4,9 +4,9 @@
     <div class="author-card-top">
         <!-- Imagem do autor -->
         {% if not author.image %}
-        <img src="{% static 'img/placeholders/no-user.jpg' %}" width="100" height="100" alt="Author {{ request.user.username|title|default:'Usuário sem nome' }}" />
+        <img src="{% static 'img/placeholders/no-user.jpg' %}" class="author-avatar" alt="Author {{ request.user.username|title|default:'Usuário sem nome' }}" />
         {% else %}
-        <img src="{{ author.image.url }}" width="100" height="100" alt="Author {{ author.author_name }}" />
+        <img src="{{ author.image.url }}" class="author-avatar" alt="Author {{ author.author_name }}" />
         {% endif %}
         <div class="card-top-right">
             {% if link_author_name %}

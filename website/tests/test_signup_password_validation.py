@@ -45,6 +45,21 @@ class SignUpPasswordValidationTests(TestCase):
             self.assertTrue(user.check_password(strong))
             self.assertTrue(Reader.objects.filter(user=user).exists())
 
+    def test_reader_signup_without_phone_succeeds(self):
+        strong = "Strong$Pass1"
+        data = {
+            "email": "nophone@example.com",
+            "nome": "No Phone User",
+            "password1": strong,
+            "password2": strong,
+            "phone": "",
+        }
+        response = self.client.post("/cadastre-se/", data=data)
+        self.assertEqual(response.status_code, 302)
+        user = User.objects.get(email="nophone@example.com")
+        self.assertIsNone(user.phone_number)
+        self.assertTrue(Reader.objects.filter(user=user).exists())
+
 
 class SignUpAuthorApprovalTests(TestCase):
     def setUp(self):
@@ -145,7 +160,11 @@ class AuthorUpgradeTests(TestCase):
             username="reader-user1",
             password="Reader$Pass1",
         )
-        Reader.objects.create(user=self.reader_user, reader_name="Reader Name")
+        Reader.objects.create(
+            user=self.reader_user,
+            reader_name="Reader Name",
+            author_upgrade_invited=True,
+        )
 
     def test_upgrade_requires_login(self):
         response = self.client.get("/solicitar-autor/")

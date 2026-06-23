@@ -15,6 +15,7 @@
 
 <div class="container">
     <main class="content post-detail-page">
+        {% include "components/messages.html" %}
         {% if is_draft_preview %}
             <div class="post-draft-banner" role="status">
                 Rascunho — este post ainda não está publicado e só você (e administradores) podem vê-lo.

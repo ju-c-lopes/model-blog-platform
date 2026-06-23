@@ -183,4 +183,11 @@ admin.site.register(PostView, PostViewAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(SitemapEntry, SitemapEntryAdmin)
 admin.site.register(SitemapHealthCheck, SitemapHealthCheckAdmin)
-admin.site.register(Reader)
+
+
+@admin.register(Reader)
+class ReaderAdmin(admin.ModelAdmin):
+    list_display = ("reader_name", "user", "author_upgrade_invited", "created_at")
+    list_filter = ("author_upgrade_invited",)
+    search_fields = ("reader_name", "user__username", "user__email")
+    readonly_fields = ("created_at",)

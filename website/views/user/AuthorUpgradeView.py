@@ -13,9 +13,12 @@ def author_upgrade(request):
         messages.info(request, "Você já possui perfil de autor.")
         return redirect("reader-edit")
 
-    reader_name = ""
-    if hasattr(request.user, "reader"):
-        reader_name = request.user.reader.reader_name or ""
+    reader = getattr(request.user, "reader", None)
+    if reader is None or not reader.author_upgrade_invited:
+        messages.error(request, "Você não possui convite para solicitar perfil de autor.")
+        return redirect("reader-edit")
+
+    reader_name = reader.reader_name or ""
 
     if request.method == "GET":
         return render(

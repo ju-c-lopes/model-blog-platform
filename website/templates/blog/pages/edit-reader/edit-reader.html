@@ -54,7 +54,7 @@
             </button>
         </form>
 
-        {% if not request.user.is_staff %}
+        {% if request.user.reader.author_upgrade_invited %}
         <p class="reader-author-upgrade mt-4">
             <a href="{% url 'author-upgrade' %}" class="btn btn-outline-secondary w-100">
                 Solicitar perfil de autor

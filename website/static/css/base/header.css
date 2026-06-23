@@ -176,7 +176,6 @@
         transition: all 0.3s ease;
         z-index: 1000;
         margin-top: 8px;
-        margin-right: 2vw;
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
     .profile-dropdown.active {
@@ -808,7 +807,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        padding-right: 2vw;
+        justify-content: flex-end;
         width: 250px;
     }
     .profile-trigger {

@@ -52,7 +52,6 @@
         margin-top: 1rem;
     }
     h1 {
-        color: #fff !important;
         position: relative;
         margin: 20px auto 0 auto;
         text-shadow: 1px 1px rgba(0, 0, 0, .5);
@@ -129,6 +128,7 @@
         margin-top: 2vh;
     }
     .form-field {
+        position: relative;
         padding: 1vh 0;
         display: flex;
         flex-direction: column;
@@ -141,9 +141,11 @@
     input[type="text"],
     input[type="password"],
     input[type="email"],
-    input[type="tel"] {
+    input[type="tel"],
+    .form-field select {
         display: flex;
         align-items: center;
+        width: 90%;
         padding: 0.5em;
         border-radius: 1em;
         outline: none;
@@ -181,13 +183,13 @@
         box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
     }
     .show-hide-btn, .show-hide-btn:focus {
-        position: relative;
+        position: absolute;
         background: none;
         outline: none;
         border: none;
         width: 30px;
-        left: 90%;
-        top: -2.8em;
+        bottom: 3%;
+        right: 17px;
     }
     .show-hide-btn img {
         background: none;
@@ -246,9 +248,8 @@
     }
     h1 {
         position: inherit;
-        color: #fff !important;
         background: none;
-        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-shadow: 1px 2px 3px rgba(255, 255, 255, 0.3);
         text-align: center;
         font-weight: 600;
         font-size: 36px;
@@ -297,8 +298,9 @@
     fieldset {
         background: none;
         border: none;
-        width: 100%;
+        width: 600px;
         height: 100%;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -309,9 +311,12 @@
         margin-top: 2vh;
         padding: 1vh 0;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        gap: 1vh;
+    }
+    fieldset div.form-field label {
+        font-size: 1.3rem;
     }
     .approval,
     .approval-hint {
@@ -326,6 +331,7 @@
         gap: 2vh;
     }
     .form-field {
+        position: relative;
         padding: 1vh 0;
         display: flex;
         flex-direction: column;
@@ -337,13 +343,26 @@
     input[type="text"],
     input[type="password"],
     input[type="email"],
-    input[type="tel"] {
-        display: flex;
-        align-items: center;
-        padding: 0.5em;
-        border-radius: 1em;
-        outline: none;
+    input[type="tel"],
+    .form-field select {
+        width: 60%;
+        height: 44px;
+        padding: 0.5rem 1rem;
+        border-radius: 22px;
         border: none;
+        background: #fff;
+        box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
+        font-size: 0.95rem;
+        color: #222;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        box-sizing: border-box;
+    }
+    .form-field select {
+        appearance: auto;
+        -webkit-appearance: auto;
+        -moz-appearance: auto;
     }
     select {
         padding: 0.5em;
@@ -395,8 +414,7 @@
         width: 100px;
     }
     .form-field--button {
-        display: flex;
-        justify-content: center;
+        justify-content: center !important;
     }
     .finish-register {
         background: rgb(36, 111, 224);
@@ -433,12 +451,11 @@
     }
     h1 {
         position: inherit;
-        color: #fff !important;
         background: none;
-        text-shadow: 1px 1px rgba(0, 0, 0, .5);
+        text-shadow: 1px 2px 3px rgba(255, 255, 255, 0.3);
         text-align: center;
         font-weight: 600;
-        font-size: 36px;
+        font-size: 3rem;
         z-index: 20;
     }
     .main-div {
@@ -468,7 +485,8 @@
     fieldset {
         background: none;
         border: none;
-        width: 100%;
+        width: 600px;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -505,29 +523,42 @@
         margin: 0 auto;
     }
     fieldset div.form-field {
+        position: relative;
         margin-top: 2vh;
         padding: 1vh 0;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         gap: 1vh;
+        width: 100%;
+    }
+    fieldset div.form-field label {
+        font-size: 1.5rem;
     }
     input[type="text"],
     input[type="password"],
     input[type="email"],
-    input[type="tel"] {
-        display: flex;
-        align-items: center;
-        padding: 0.5em;
-        border-radius: 1em;
-        outline: none;
+    input[type="tel"],
+    .form-field select {
+        width: 60%;
+        height: 44px;
+        padding: 0.5rem 1rem;
+        border-radius: 22px;
         border: none;
+        background: #fff;
+        box-shadow: inset 2px 4px 10px rgba(0, 0, 0, 0.5);
+        font-size: 0.95rem;
+        color: #222;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        box-sizing: border-box;
     }
-    select {
-        padding: 0.5em;
-        border-radius: 1em;
-        outline: none;
-        border: none;
+    .form-field select {
+        appearance: auto;
+        -webkit-appearance: auto;
+        -moz-appearance: auto;
     }
     .show-hide-btn, .show-hide-btn:focus {
         position: absolute;
@@ -535,7 +566,8 @@
         width: 30px;
         outline: none;
         border: none;
-        left: 360px;
+        top: 25%;
+        right: 15px;
     }
     .show-hide-btn img {
         background: none;
@@ -573,9 +605,7 @@
         width: 100px;
     }
     .form-field--button {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+        justify-content: center !important;
     }
     .finish-register {
         background: rgb(36, 111, 224);
@@ -592,6 +622,7 @@
         background: rgb(36, 111, 224);
         color: white;
         padding: 4px;
+        margin: 0 auto;
         width: 10vw;
         border-radius: 10px;
         outline: none;

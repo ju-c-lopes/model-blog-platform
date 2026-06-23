@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class UserChangeForm(BaseUserChangeForm):
-    username = forms.CharField(label="Nome do Usuário", widget=forms.TextInput(attrs={"class": "form-control"}))
+    username = forms.CharField(label="Username", widget=forms.TextInput(attrs={"class": "form-control"}))
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"class": "form-control"}))
     password = forms.CharField(
         label="Senha",
