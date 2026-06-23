@@ -8,7 +8,7 @@ from website.manager import UserManager
 class User(AbstractUser):
     username = models.TextField(max_length=45, unique=True)
     email = models.EmailField("Email Address", unique=True)
-    phone_number = PhoneNumberField(blank=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

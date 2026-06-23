@@ -88,6 +88,65 @@ class AuthorEditViewTests(TestCase):
         self.assertEqual(job.occupation, "Developer")
         self.assertEqual(job.company, "Example Co")
 
+    def test_edit_author_rejects_end_date_when_current_job(self):
+        self.client.force_login(self.owner)
+        url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
+        response = self.client.post(
+            url,
+            {
+                **self._author_edit_post_data(),
+                "job-TOTAL_FORMS": "1",
+                "job-INITIAL_FORMS": "0",
+                "job-MIN_NUM_FORMS": "0",
+                "job-MAX_NUM_FORMS": "1000",
+                "job-0-occupation": "Developer",
+                "job-0-company": "Example Co",
+                "job-0-start_date": "2020-01-15",
+                "job-0-end_date": "2024-01-15",
+                "job-0-current_job": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.author.jobs.count(), 0)
+
+    def test_edit_author_requires_graduation_year_when_concluded(self):
+        self.client.force_login(self.owner)
+        url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
+        response = self.client.post(
+            url,
+            {
+                **self._author_edit_post_data(),
+                "graduation-TOTAL_FORMS": "1",
+                "graduation-INITIAL_FORMS": "0",
+                "graduation-MIN_NUM_FORMS": "0",
+                "graduation-MAX_NUM_FORMS": "1000",
+                "graduation-0-graduation_level": "1",
+                "graduation-0-course": "Computer Science",
+                "graduation-0-school": "Example University",
+                "graduation-0-concluded": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.author.graduations.count(), 0)
+
+    def test_edit_author_requires_graduation_school(self):
+        self.client.force_login(self.owner)
+        url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
+        response = self.client.post(
+            url,
+            {
+                **self._author_edit_post_data(),
+                "graduation-TOTAL_FORMS": "1",
+                "graduation-INITIAL_FORMS": "0",
+                "graduation-MIN_NUM_FORMS": "0",
+                "graduation-MAX_NUM_FORMS": "1000",
+                "graduation-0-graduation_level": "1",
+                "graduation-0-course": "Computer Science",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.author.graduations.count(), 0)
+
     def _author_edit_post_data(self, **overrides):
         data = {
             "username": self.owner.username,

@@ -4,15 +4,13 @@
     {% if not author.image %}
         <img
             src="{% static 'img/placeholders/no-user.jpg' %}"
-            width="100"
-            height="100"
+            class="author-avatar"
             alt="{{ author.author_name }}"
         />
     {% else %}
         <img
             src="{{ author.image.url }}"
-            width="100"
-            height="100"
+            class="author-avatar"
             alt="{{ author.author_name }}"
         />
     {% endif %}

@@ -1,4 +1,12 @@
 /* Author profile page + team listing (shared) */
+.author-avatar,
+.author-card-top img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+}
+
 .author-profile-page,
 .our-team-page {
     width: 100%;

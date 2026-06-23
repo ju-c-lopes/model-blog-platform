@@ -53,6 +53,31 @@ class PostEditFormTests(TestCase):
         self.assertEqual(post.tags.count(), 2)
         self.assertIn(self.docker_tag, post.tags.all())
 
+    def test_update_post_shows_flash_message_on_detail(self):
+        post = Post.objects.create(
+            author=self.author,
+            title="Post original",
+            url_slug="post-original",
+            text="<p>Conteúdo do post com mais de dez caracteres.</p>",
+            status=Post.DRAFT,
+        )
+        self.client.force_login(self.user)
+        response = self.client.post(
+            reverse("edit_post", kwargs={"url_slug": post.url_slug}),
+            {
+                "title": "Post atualizado",
+                "url_slug": post.url_slug,
+                "meta_description": "Descrição válida.",
+                "text": "<p>Conteúdo atualizado com mais de dez caracteres.</p>",
+                "status": Post.DRAFT,
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        detail = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}))
+        self.assertContains(detail, "Post atualizado com sucesso!")
+        home = self.client.get(reverse("home"))
+        self.assertNotContains(home, "Post atualizado com sucesso!")
+
     def test_invalid_create_post_preserves_selected_tags(self):
         Post.objects.create(
             author=self.author,

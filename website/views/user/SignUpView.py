@@ -20,7 +20,7 @@ def sign_up_user(request):
 
     nome = (request.POST.get("nome") or "").strip()
     email = (request.POST.get("email") or "").strip()
-    phone = request.POST.get("phone") or ""
+    phone = _normalize_phone(request.POST.get("phone"))
     password1 = request.POST.get("password1") or ""
     password2 = request.POST.get("password2") or ""
     tipo_user = request.POST.get("tipo-user", "reader")
@@ -62,6 +62,11 @@ def sign_up_user(request):
     return _register_user(request, nome, email, phone, password2, is_author=False)
 
 
+def _normalize_phone(raw_phone):
+    phone = (raw_phone or "").strip()
+    return phone or None
+
+
 def _signup_data(nome, email, phone, password1, password2, tipo_user):
     return {
         "nome": nome,
@@ -78,7 +83,7 @@ def _register_user(request, nome, email, phone, password, is_author):
     user = User.objects.create_user(
         username=username,
         email=email,
-        phone_number=phone or None,
+        phone_number=phone,
         password=password,
         is_staff=is_author,
     )

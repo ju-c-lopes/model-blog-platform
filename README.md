@@ -97,7 +97,7 @@ Tests: `website/tests/test_post_draft_published.py`.
 | Login (email/username + password) | `/login/` | Dynamic recovery when account not found |
 | Sign up | `/cadastre-se/` | Reader by default; Author requires admin approval |
 | Google Sign-In | GIS button on login/sign-up | OAuth via allauth; new users → Reader |
-| Request Author profile | `/solicitar-autor/` | Logged-in Reader; superuser approval required |
+| Request Author profile | `/solicitar-autor/` | Logged-in Reader with admin invitation flag; superuser approval required |
 | Django Admin | `/admin/` | Staff/superuser; login field accepts **email only** |
 
 ### Login identifiers
@@ -113,6 +113,8 @@ The custom `User` model sets `USERNAME_FIELD = "email"`. Each surface resolves c
 Site login looks up the account by email (when `@` is present) or by username, then authenticates with the resolved user's email and password. Wrong-password errors do not trigger the «forgot email/username» recovery flow.
 
 Tests: `website/tests/test_login_and_search_views.py` (site login, admin login, approval identifiers).
+
+**Reader → Author upgrade:** superusers enable `author_upgrade_invited` on a Reader in Django Admin. Only invited readers see the link on edit profile and can access `/solicitar-autor/`.
 
 **Environment variables** (see `.env.example`):
 
