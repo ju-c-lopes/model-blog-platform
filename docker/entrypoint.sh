@@ -10,6 +10,7 @@ cd /app
 
 poetry config virtualenvs.in-project true
 
+# if [ "$APP_ENV" = "development" ]; then
 if [ "${SKIP_POETRY_INSTALL:-0}" != "1" ]; then
     if [ -f pyproject.toml ]; then
         echo "Installing Poetry dependencies into /app/.venv (bind-mounted project)..."
@@ -18,6 +19,7 @@ if [ "${SKIP_POETRY_INSTALL:-0}" != "1" ]; then
         echo "Warning: pyproject.toml not found; skipping poetry install."
     fi
 fi
+# fi
 
 export PATH="/app/.venv/bin:${PATH}"
 

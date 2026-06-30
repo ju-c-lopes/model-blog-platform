@@ -30,6 +30,7 @@ phonenumberslite = "^9.0.25"
 pillow = "^12.1.1"
 platformdirs = "^4.9.2"
 pluggy = "^1.6.0"
+psycopg = {extras = ["binary"], version = "^3.2"}
 pycodestyle = "^2.14.0"
 pyflakes = "^3.4.0"
 pygments = "^2.19.2"
@@ -43,6 +44,8 @@ bleach = {version = "^6.3.0", extras = ["css"]}
 argon2-cffi = "^25.1.0"
 dotenv = "^0.9.9"
 cryptography = "^49.0.0"
+gunicorn = "^26.0.0"
+whitenoise = "^6.12.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^9.0.2"

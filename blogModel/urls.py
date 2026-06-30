@@ -22,6 +22,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
 from website.sitemaps import UnifiedSitemap
+from website.views.health import health
 from website.views.seo.SitemapDashboardView import robots_txt
 
 sitemaps = {
@@ -51,6 +52,7 @@ urlpatterns = (
         path("post/", include("website.urls.post.PostUrl")),
         path("error/", include("website.urls.exception.ErrorUrl")),
         path("search/", include("website.urls.post.SearchUrl")),
+        path("health/", health, name="health"),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
