@@ -20,14 +20,14 @@ class AuthorEditViewTests(TestCase):
 
     def test_edit_requires_login(self):
         url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
-        response = self.client.get(url)
+        response = self.client.get(url, secure=True)
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login", response["Location"])
 
     def test_edit_forbidden_for_non_owner(self):
         self.client.force_login(self.other)
         url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
-        response = self.client.get(url)
+        response = self.client.get(url, secure=True)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response["Location"],
@@ -37,7 +37,7 @@ class AuthorEditViewTests(TestCase):
     def test_edit_get_ok_for_owner(self):
         self.client.force_login(self.owner)
         url = reverse("edit_author", kwargs={"slug": self.author.author_url_slug})
-        response = self.client.get(url)
+        response = self.client.get(url, secure=True)
         self.assertEqual(response.status_code, 200)
         content = response.content.decode()
         self.assertIn("job-empty-template", content)
@@ -78,6 +78,7 @@ class AuthorEditViewTests(TestCase):
                 "job-0-current_job": "on",
                 "job-0-roles_description": "Build web apps",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         self.author.refresh_from_db()
@@ -105,6 +106,7 @@ class AuthorEditViewTests(TestCase):
                 "job-0-end_date": "2024-01-15",
                 "job-0-current_job": "on",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.author.jobs.count(), 0)
@@ -125,6 +127,7 @@ class AuthorEditViewTests(TestCase):
                 "graduation-0-school": "Example University",
                 "graduation-0-concluded": "on",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.author.graduations.count(), 0)
@@ -143,6 +146,7 @@ class AuthorEditViewTests(TestCase):
                 "graduation-0-graduation_level": "1",
                 "graduation-0-course": "Computer Science",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.author.graduations.count(), 0)
@@ -186,6 +190,7 @@ class AuthorEditViewTests(TestCase):
                 ),
                 "gender": str(author.gender),
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(

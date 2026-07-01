@@ -68,7 +68,7 @@ class AuthorViewTests(TestCase):
 
     def test_author_page_renders_profile_content(self):
         url = reverse("author", kwargs={"slug": self.author.author_url_slug})
-        response = self.client.get(url)
+        response = self.client.get(url, secure=True)
 
         self.assertEqual(response.status_code, 200)
         content = response.content.decode()
@@ -82,11 +82,11 @@ class AuthorViewTests(TestCase):
     def test_author_page_edit_link_for_owner_only(self):
         url = reverse("author", kwargs={"slug": self.author.author_url_slug})
 
-        response_visitor = self.client.get(url)
+        response_visitor = self.client.get(url, secure=True)
         self.assertNotContains(response_visitor, "Editar perfil")
 
         self.client.force_login(self.owner)
-        response_owner = self.client.get(url)
+        response_owner = self.client.get(url, secure=True)
         self.assertContains(response_owner, "Editar perfil")
         self.assertContains(
             response_owner,
@@ -94,7 +94,7 @@ class AuthorViewTests(TestCase):
         )
 
     def test_team_page_lists_authors(self):
-        response = self.client.get(reverse("team"))
+        response = self.client.get(reverse("team"), secure=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Nossa equipe")

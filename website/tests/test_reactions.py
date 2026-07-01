@@ -31,7 +31,10 @@ class ReactionToggleTests(TestCase):
 
         # like the post
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
-        r1 = self.client.post(url_like)
+        r1 = self.client.post(
+            url_like,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(r1.status_code, 200)
         data1 = r1.json()
@@ -42,7 +45,10 @@ class ReactionToggleTests(TestCase):
 
         # now switch to love
         url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
-        r2 = self.client.post(url_love)
+        r2 = self.client.post(
+            url_love,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(r2.status_code, 200)
         data2 = r2.json()
@@ -57,13 +63,19 @@ class ReactionToggleTests(TestCase):
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
 
         # like
-        r1 = self.client.post(url_like)
+        r1 = self.client.post(
+            url_like,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(r1.status_code, 200)
         self.assertEqual(self.post.likes.count(), 1)
 
         # unlike (toggle)
-        r2 = self.client.post(url_like)
+        r2 = self.client.post(
+            url_like,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(r2.status_code, 200)
         data2 = r2.json()
@@ -77,19 +89,28 @@ class ReactionToggleTests(TestCase):
         url_love = reverse("post_toggle_love", kwargs={"url_slug": self.post.url_slug})
         # user1 likes
         self.client.force_login(self.user)
-        self.client.post(url_like)
+        self.client.post(
+            url_like,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(self.post.likes.count(), 1)
 
         # user2 likes
         self.client.force_login(user2)
-        self.client.post(url_like)
+        self.client.post(
+            url_like,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(self.post.likes.count(), 2)
 
         # user1 switches to love
         self.client.force_login(self.user)
-        r3 = self.client.post(url_love)
+        r3 = self.client.post(
+            url_love,
+            secure=True,
+        )
         self.post.refresh_from_db()
         self.assertEqual(r3.status_code, 200)
         data3 = r3.json()
@@ -101,5 +122,8 @@ class ReactionToggleTests(TestCase):
     def test_guest_cannot_toggle_reaction(self):
         self.client.logout()
         url_like = reverse("post_toggle_like", kwargs={"url_slug": self.post.url_slug})
-        r = self.client.post(url_like)
+        r = self.client.post(
+            url_like,
+            secure=True,
+        )
         self.assertEqual(r.status_code, 403)

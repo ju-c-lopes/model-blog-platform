@@ -1,0 +1,13 @@
+services:
+  python-app:
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env.dev
+    user: "${UID:-1000}:${GID:-1000}"
+    command:
+      - tail
+      - -f
+      - /dev/null

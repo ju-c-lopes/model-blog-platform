@@ -27,6 +27,10 @@ jobs:
                   pip install -r requirements.txt
                   pip install -r requirements-dev.txt
 
+            - name: Build static files
+              run: |
+                  python manage.py collectstatic --noinput
+
             - name: Run tests and collect coverage
               run: pytest website/tests --cov=website
 

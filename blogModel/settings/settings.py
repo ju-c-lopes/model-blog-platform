@@ -41,6 +41,8 @@ if SECRET_KEY:
             "DJANGO_SECRET_KEY is too weak for production. Generate a secure, random value (>=50 chars)."
         )
 
+APP_ENV = os.environ.get("APP_ENV", "development")
+
 _raw_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS", "example.com")
 ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(" ") if h.strip()]
 
@@ -110,6 +112,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -149,7 +152,18 @@ WSGI_APPLICATION = "blogModel.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if "test" in sys.argv:
+if APP_ENV == "production":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB", "blogModel"),
+            "USER": os.environ.get("POSTGRES_USER", "blogModel"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+            "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
+            "PORT": os.environ.get("POSTGRES_PORT", 5432),
+        }
+    }
+elif "test" in sys.argv:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -164,6 +178,14 @@ else:
         }
     }
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -225,8 +247,8 @@ DATE_INPUT_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "website/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "website/static"),)
 
 MEDIA_URL = "/media/"
@@ -239,7 +261,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 if DEBUG:
-
     CONTENT_SECURITY_POLICY = {
         "DIRECTIVES": {
             "default-src": ("'self'",),
@@ -298,8 +319,14 @@ CSP_INCLUDE_NONCE_IN = ("script-src",)
 if not DEBUG:
     # Cookies
     SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SAMESITE = "Lax"
     SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "Lax"
+    CSRF_TRUSTED_ORIGINS = [
+        "https://techxperience.blog",
+        "https://www.techxperience.blog",
+    ]
 
     # HSTS
     SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", 31536000))
@@ -307,8 +334,12 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
     # SSL redirect (only if you terminate SSL at Django or trust proxy)
-    SECURE_SSL_REDIRECT = False if DEBUG else True  # os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+    # os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_REDIRECT_EXEMPT = [
+        r"^health/$",
+    ]
 
     # XSS / clickjacking
     SECURE_BROWSER_XSS_FILTER = True

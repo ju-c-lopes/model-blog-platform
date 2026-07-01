@@ -20,18 +20,27 @@ class ReaderEditViewTests(TestCase):
 
     def test_edit_requires_login(self):
         url = reverse("reader-edit")
-        response = self.client.get(url)
+        response = self.client.get(
+            url,
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login", response["Location"])
 
     def test_edit_get_ok_for_reader(self):
         self.client.force_login(self.user)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_edit_redirects_without_reader_profile(self):
         self.client.force_login(self.other)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], reverse("home"))
 

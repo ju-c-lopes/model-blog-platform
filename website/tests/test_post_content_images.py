@@ -97,6 +97,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "upload_session_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
                 "image": _make_image(),
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -109,7 +110,10 @@ class PostContentImageUploadViewTests(TestCase):
         Path(settings.MEDIA_ROOT).mkdir(parents=True, exist_ok=True)
         self.client.force_login(self.user)
 
-        create_page = self.client.get(reverse("create_post"))
+        create_page = self.client.get(
+            reverse("create_post"),
+            secure=True,
+        )
         session_id = create_page.context["upload_session_id"]
 
         upload_client = Client()
@@ -121,6 +125,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "upload_session_id": session_id,
                 "image": _make_image(),
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -146,6 +151,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "url_slug": post.url_slug,
                 "image": _make_image(),
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -157,7 +163,10 @@ class PostContentImageUploadViewTests(TestCase):
         Path(settings.MEDIA_ROOT).mkdir(parents=True, exist_ok=True)
         self.client.force_login(self.user)
 
-        create_page = self.client.get(reverse("create_post"))
+        create_page = self.client.get(
+            reverse("create_post"),
+            secure=True,
+        )
         session_id = create_page.context["upload_session_id"]
 
         upload_response = self.client.post(
@@ -166,6 +175,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "upload_session_id": session_id,
                 "image": _make_image(),
             },
+            secure=True,
         )
         image_url = upload_response.json()["url"]
 
@@ -179,6 +189,7 @@ class PostContentImageUploadViewTests(TestCase):
                 "upload_session_id": session_id,
                 "status": Post.PUBLISHED,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)

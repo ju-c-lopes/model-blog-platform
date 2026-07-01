@@ -29,7 +29,7 @@ class ViewSmokeTests(TestCase):
 
     def test_home_pagination_first_page(self):
         url = reverse("home")
-        r = self.client.get(url)
+        r = self.client.get(url, secure=True)
         self.assertEqual(r.status_code, 200)
         # context posts should be paginated (6 per page)
         posts = r.context["posts"]
@@ -38,16 +38,16 @@ class ViewSmokeTests(TestCase):
     def test_login_view_get_and_post_invalid(self):
         url = reverse("login")
         # GET should return 200
-        r = self.client.get(url)
+        r = self.client.get(url, secure=True)
         self.assertEqual(r.status_code, 200)
         # POST with invalid data should not redirect
-        r2 = self.client.post(url, data={"identifier": "nope", "password": ""})
+        r2 = self.client.post(url, data={"identifier": "nope", "password": ""}, secure=True)
         self.assertEqual(r2.status_code, 200)
 
     def test_create_post_requires_author_profile(self):
         # login as reader (not an author), try to create
         self.client.force_login(self.reader_user)
         url = reverse("create_post")
-        r = self.client.get(url)
+        r = self.client.get(url, secure=True)
         # should redirect to home because reader has no author
         self.assertEqual(r.status_code, 302)

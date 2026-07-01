@@ -28,12 +28,22 @@ class ReaderAuthorInvitationTests(TestCase):
 
     def test_reader_without_invitation_cannot_access_upgrade_page(self):
         self.client.force_login(self.reader_user)
-        response = self.client.get(reverse("author-upgrade"))
-        self.assertRedirects(response, reverse("reader-edit"))
+        response = self.client.get(
+            reverse("author-upgrade"),
+            secure=True,
+        )
+        self.assertRedirects(
+            response,
+            reverse("reader-edit"),
+            fetch_redirect_response=False,
+        )
 
     def test_reader_without_invitation_does_not_see_upgrade_link(self):
         self.client.force_login(self.reader_user)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         content = response.content.decode()
         self.assertNotIn("Solicitar perfil de autor", content)
         self.assertNotIn(reverse("author-upgrade"), content)
@@ -42,7 +52,10 @@ class ReaderAuthorInvitationTests(TestCase):
         self.reader.author_upgrade_invited = True
         self.reader.save(update_fields=["author_upgrade_invited"])
         self.client.force_login(self.reader_user)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         content = response.content.decode()
         self.assertIn("Solicitar perfil de autor", content)
         self.assertIn(reverse("author-upgrade"), content)
@@ -51,6 +64,9 @@ class ReaderAuthorInvitationTests(TestCase):
         self.reader.author_upgrade_invited = True
         self.reader.save(update_fields=["author_upgrade_invited"])
         self.client.force_login(self.reader_user)
-        response = self.client.get(reverse("author-upgrade"))
+        response = self.client.get(
+            reverse("author-upgrade"),
+            secure=True,
+        )
         self.assertEqual(response.status_code, 200)
         self.assertIn("Solicitar perfil de autor", response.content.decode())
