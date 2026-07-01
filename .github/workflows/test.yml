@@ -27,6 +27,23 @@ jobs:
                   pip install -r requirements.txt
                   pip install -r requirements-dev.txt
 
+            - name: Debug static settings
+              run: |
+                  python manage.py shell -c "
+                  from django.conf import settings
+                  from django.contrib.staticfiles.storage import staticfiles_storage
+
+                  print('DEBUG=', settings.DEBUG)
+                  print('STATIC_ROOT=', settings.STATIC_ROOT)
+                  print('STORAGES=', settings.STORAGES)
+                  print('Storage=', type(staticfiles_storage))
+                  print('Manifest entry=', staticfiles_storage.hashed_files.get('img/brand/favicon.ico'))
+                  "
+
+            - name: Build static files
+              run: |
+                  python manage.py collectstatic --noinput
+
             - name: Run tests and collect coverage
               run: pytest website/tests --cov=website
 
