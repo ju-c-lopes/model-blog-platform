@@ -26,7 +26,11 @@ class SignUpPasswordValidationTests(TestCase):
             "password2": "short",
             "phone": "+5511999999999",
         }
-        self.client.post("/cadastre-se/", data=data)
+        self.client.post(
+            "/cadastre-se/",
+            data=data,
+            secure=True,
+        )
         self.assertFalse(User.objects.filter(email="weak@example.com").exists())
 
     def test_accepts_strong_password(self):
@@ -38,7 +42,11 @@ class SignUpPasswordValidationTests(TestCase):
             "password2": strong,
             "phone": "+5511999999999",
         }
-        self.client.post("/cadastre-se/", data=data)
+        self.client.post(
+            "/cadastre-se/",
+            data=data,
+            secure=True,
+        )
         user = User.objects.filter(email="strong@example.com").first()
         self.assertIsNotNone(user)
         if user:
@@ -54,7 +62,11 @@ class SignUpPasswordValidationTests(TestCase):
             "password2": strong,
             "phone": "",
         }
-        response = self.client.post("/cadastre-se/", data=data)
+        response = self.client.post(
+            "/cadastre-se/",
+            data=data,
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
         user = User.objects.get(email="nophone@example.com")
         self.assertIsNone(user.phone_number)
@@ -80,7 +92,11 @@ class SignUpAuthorApprovalTests(TestCase):
             "password2": self.strong,
             "phone": "+5511999999999",
         }
-        response = self.client.post("/cadastre-se/", data=data)
+        response = self.client.post(
+            "/cadastre-se/",
+            data=data,
+            secure=True,
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["aprovar"])
         self.assertFalse(User.objects.filter(email="author@example.com").exists())
@@ -94,14 +110,22 @@ class SignUpAuthorApprovalTests(TestCase):
             "password2": self.strong,
             "phone": "+5511999999999",
         }
-        self.client.post("/cadastre-se/", data=step1)
+        self.client.post(
+            "/cadastre-se/",
+            data=step1,
+            secure=True,
+        )
         step2 = {
             **step1,
             "approval": "1",
             "super": "admin",
             "pass-super": "wrong",
         }
-        self.client.post("/cadastre-se/", data=step2)
+        self.client.post(
+            "/cadastre-se/",
+            data=step2,
+            secure=True,
+        )
         self.assertFalse(User.objects.filter(email="author2@example.com").exists())
 
     def test_author_signup_with_admin_approval_creates_author(self):
@@ -113,14 +137,22 @@ class SignUpAuthorApprovalTests(TestCase):
             "password2": self.strong,
             "phone": "+5511999999999",
         }
-        self.client.post("/cadastre-se/", data=step1)
+        self.client.post(
+            "/cadastre-se/",
+            data=step1,
+            secure=True,
+        )
         step2 = {
             **step1,
             "approval": "1",
             "super": "admin",
             "pass-super": "Admin$Pass1",
         }
-        response = self.client.post("/cadastre-se/", data=step2)
+        response = self.client.post(
+            "/cadastre-se/",
+            data=step2,
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
         user = User.objects.get(email="author3@example.com")
         self.assertTrue(user.is_staff)
@@ -135,14 +167,22 @@ class SignUpAuthorApprovalTests(TestCase):
             "password2": self.strong,
             "phone": "+5511999999999",
         }
-        self.client.post("/cadastre-se/", data=step1)
+        self.client.post(
+            "/cadastre-se/",
+            data=step1,
+            secure=True,
+        )
         step2 = {
             **step1,
             "approval": "1",
             "super": "admin@example.com",
             "pass-super": "Admin$Pass1",
         }
-        response = self.client.post("/cadastre-se/", data=step2)
+        response = self.client.post(
+            "/cadastre-se/",
+            data=step2,
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Author.objects.filter(user__email="author4@example.com").exists())
 
@@ -167,12 +207,19 @@ class AuthorUpgradeTests(TestCase):
         )
 
     def test_upgrade_requires_login(self):
-        response = self.client.get("/solicitar-autor/")
+        response = self.client.get(
+            "/solicitar-autor/",
+            secure=True,
+        )
         self.assertEqual(response.status_code, 302)
 
     def test_upgrade_with_admin_creates_author(self):
         self.client.force_login(self.reader_user)
-        self.client.post("/solicitar-autor/", {"author_name": "Blog Author"})
+        self.client.post(
+            "/solicitar-autor/",
+            {"author_name": "Blog Author"},
+            secure=True,
+        )
         response = self.client.post(
             "/solicitar-autor/",
             {
@@ -181,6 +228,7 @@ class AuthorUpgradeTests(TestCase):
                 "super": "admin",
                 "pass-super": "Admin$Pass1",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         self.reader_user.refresh_from_db()
@@ -189,7 +237,11 @@ class AuthorUpgradeTests(TestCase):
 
     def test_upgrade_with_admin_email_creates_author(self):
         self.client.force_login(self.reader_user)
-        self.client.post("/solicitar-autor/", {"author_name": "Blog Author"})
+        self.client.post(
+            "/solicitar-autor/",
+            {"author_name": "Blog Author"},
+            secure=True,
+        )
         response = self.client.post(
             "/solicitar-autor/",
             {
@@ -198,6 +250,7 @@ class AuthorUpgradeTests(TestCase):
                 "super": "admin@example.com",
                 "pass-super": "Admin$Pass1",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Author.objects.filter(user=self.reader_user).exists())
@@ -208,7 +261,11 @@ class AuthorUpgradeTests(TestCase):
         reader.save()
 
         self.client.force_login(self.reader_user)
-        self.client.post("/solicitar-autor/", {"author_name": "Blog Author"})
+        self.client.post(
+            "/solicitar-autor/",
+            {"author_name": "Blog Author"},
+            secure=True,
+        )
         self.client.post(
             "/solicitar-autor/",
             {
@@ -217,6 +274,7 @@ class AuthorUpgradeTests(TestCase):
                 "super": "admin",
                 "pass-super": "Admin$Pass1",
             },
+            secure=True,
         )
 
         author = Author.objects.get(user=self.reader_user)
@@ -225,7 +283,11 @@ class AuthorUpgradeTests(TestCase):
 
     def test_upgrade_uses_reader_name_when_author_name_empty_on_approval(self):
         self.client.force_login(self.reader_user)
-        self.client.post("/solicitar-autor/", {"author_name": "Reader Name"})
+        self.client.post(
+            "/solicitar-autor/",
+            {"author_name": "Reader Name"},
+            secure=True,
+        )
         self.client.post(
             "/solicitar-autor/",
             {
@@ -234,6 +296,7 @@ class AuthorUpgradeTests(TestCase):
                 "super": "admin",
                 "pass-super": "Admin$Pass1",
             },
+            secure=True,
         )
 
         author = Author.objects.get(user=self.reader_user)

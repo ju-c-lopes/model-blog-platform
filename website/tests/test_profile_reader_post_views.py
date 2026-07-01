@@ -19,7 +19,11 @@ class ProfileReaderPostViewsTest(TestCase):
 
         url = reverse("update-profile")
         data = {"profile_type": "author", "name": "New Author"}
-        resp = self.client.post(url, data)
+        resp = self.client.post(
+            url,
+            data,
+            secure=True,
+        )
         # redirect on success
         self.assertEqual(resp.status_code, 302)
         user.refresh_from_db()
@@ -31,7 +35,11 @@ class ProfileReaderPostViewsTest(TestCase):
 
         url = reverse("update-profile")
         data = {"profile_type": "reader", "name": "New Reader"}
-        resp = self.client.post(url, data)
+        resp = self.client.post(
+            url,
+            data,
+            secure=True,
+        )
         self.assertEqual(resp.status_code, 302)
         user.refresh_from_db()
         self.assertTrue(hasattr(user, "reader"))
@@ -40,7 +48,10 @@ class ProfileReaderPostViewsTest(TestCase):
         user = User.objects.create_user(username="r1", email="r1@test.com", password="p")
         Reader.objects.create(user=user)
         self.client.force_login(user)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_requires_author_profile(self):
@@ -48,7 +59,10 @@ class ProfileReaderPostViewsTest(TestCase):
         self.client.force_login(user)
 
         url = reverse("create_post")
-        resp = self.client.get(url)
+        resp = self.client.get(
+            url,
+            secure=True,
+        )
         # should redirect because no author profile
         self.assertEqual(resp.status_code, 302)
 
@@ -66,7 +80,11 @@ class ProfileReaderPostViewsTest(TestCase):
             "text": "content",
             "status": Post.PUBLISHED,
         }
-        resp = self.client.post(url, data)
+        resp = self.client.post(
+            url,
+            data,
+            secure=True,
+        )
         # should redirect to post detail on success
         self.assertEqual(resp.status_code, 302)
         self.assertTrue(Post.objects.filter(url_slug="t").exists())

@@ -59,13 +59,13 @@ class CustomSocialAccountAdapterTests(TestCase):
 class GoogleOAuthTemplateTests(TestCase):
     @override_settings(GOOGLE_OAUTH_CLIENT_ID="")
     def test_login_hides_google_button_without_client_id(self):
-        response = self.client.get("/login/")
+        response = self.client.get("/login/", secure=True)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "g_id_signin")
 
     def test_login_shows_google_button_with_client_id(self):
         with self.settings(GOOGLE_OAUTH_CLIENT_ID="test-id.apps.googleusercontent.com"):
-            response = self.client.get("/login/")
+            response = self.client.get("/login/", secure=True)
             self.assertContains(response, "g_id_signin")
             self.assertContains(response, "test-id.apps.googleusercontent.com")
             self.assertContains(response, 'data-ux_mode="redirect"')

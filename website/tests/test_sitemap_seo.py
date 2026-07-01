@@ -68,14 +68,20 @@ class SitemapXmlTests(TestCase):
         self.assertNotIn("/post/post-rascunho/", content)
 
     def test_sitemap_lastmod_reflects_post_updated_date(self):
-        updated = timezone.now() - timedelta(days=2)
+        # Usa meio-dia para evitar mudança de data entre UTC e timezone local.
+        SAFE_TEST_HOUR = 12
+        updated = timezone.now().replace(hour=SAFE_TEST_HOUR, minute=0, second=0, microsecond=0) - timedelta(days=2)
         Post.objects.filter(pk=self.published.pk).update(updated_date=updated)
         self.published.refresh_from_db()
 
-        response = self.client.get(reverse("sitemap"))
+        response = self.client.get(
+            reverse("sitemap"),
+            secure=True,
+        )
         content = response.content.decode()
+        expected_date = timezone.localtime(self.published.updated_date).strftime("%Y-%m-%d")
 
-        self.assertIn(self.published.updated_date.strftime("%Y-%m-%d"), content)
+        self.assertIn(expected_date, content)
 
     def test_exclude_override_removes_url_from_sitemap(self):
         post_path = normalize_path(reverse("post_detail", kwargs={"url_slug": self.published.url_slug}))
@@ -145,20 +151,20 @@ class SitemapDashboardTests(TestCase):
         self.url = reverse("seo_sitemap_dashboard")
 
     def test_anonymous_redirects_to_login(self):
-        response = self.client.get(self.url)
+        response = self.client.get(self.url, secure=True)
 
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login/", response.url)
 
     def test_regular_user_gets_forbidden(self):
         self.client.force_login(self.user)
-        response = self.client.get(self.url)
+        response = self.client.get(self.url, secure=True)
 
         self.assertEqual(response.status_code, 403)
 
     def test_superuser_can_access_dashboard(self):
         self.client.force_login(self.superuser)
-        response = self.client.get(self.url)
+        response = self.client.get(self.url, secure=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Painel de manutenção do sitemap")
@@ -179,6 +185,7 @@ class SitemapDashboardTests(TestCase):
         response = self.client.post(
             self.url,
             {"action": "exclude", "path": post_path, "notes": "teste"},
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)

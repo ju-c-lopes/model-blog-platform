@@ -51,7 +51,10 @@ class PostDraftPublishedTests(TestCase):
         )
 
     def test_home_lists_only_published_posts(self):
-        response = self.client.get(reverse("home"))
+        response = self.client.get(
+            reverse("home"),
+            secure=True,
+        )
 
         self.assertEqual(response.status_code, 200)
         slugs = [post.url_slug for post in response.context["posts"]]
@@ -67,6 +70,7 @@ class PostDraftPublishedTests(TestCase):
     def test_anonymous_cannot_view_draft_detail(self):
         response = self.client.get(
             reverse("post_detail", kwargs={"url_slug": self.draft_post.url_slug}),
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 404)
@@ -75,6 +79,7 @@ class PostDraftPublishedTests(TestCase):
         self.client.force_login(self.author_user)
         response = self.client.get(
             reverse("post_detail", kwargs={"url_slug": self.draft_post.url_slug}),
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -85,6 +90,7 @@ class PostDraftPublishedTests(TestCase):
         self.client.force_login(self.staff_user)
         response = self.client.get(
             reverse("post_detail", kwargs={"url_slug": self.draft_post.url_slug}),
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -94,6 +100,7 @@ class PostDraftPublishedTests(TestCase):
         self.client.force_login(self.other_user)
         response = self.client.get(
             reverse("post_detail", kwargs={"url_slug": self.draft_post.url_slug}),
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 404)
@@ -109,6 +116,7 @@ class PostDraftPublishedTests(TestCase):
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "status": Post.DRAFT,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -126,6 +134,7 @@ class PostDraftPublishedTests(TestCase):
                 "text": "<p>Conteúdo do post com mais de dez caracteres.</p>",
                 "status": Post.PUBLISHED,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -144,19 +153,26 @@ class PostDraftPublishedTests(TestCase):
                 "text": self.draft_post.text,
                 "status": Post.PUBLISHED,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
         self.draft_post.refresh_from_db()
         self.assertEqual(self.draft_post.status, Post.PUBLISHED)
 
-        home = self.client.get(reverse("home"))
+        home = self.client.get(
+            reverse("home"),
+            secure=True,
+        )
         slugs = [post.url_slug for post in home.context["posts"]]
         self.assertIn(self.draft_post.url_slug, slugs)
 
     def test_edit_form_shows_status_field(self):
         self.client.force_login(self.author_user)
-        response = self.client.get(reverse("edit_post", kwargs={"url_slug": self.draft_post.url_slug}))
+        response = self.client.get(
+            reverse("edit_post", kwargs={"url_slug": self.draft_post.url_slug}),
+            secure=True,
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Rascunho")

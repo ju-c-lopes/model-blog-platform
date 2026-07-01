@@ -12,7 +12,7 @@ class ProfileUpdateTests(TestCase):
     def test_create_author_profile_via_view(self):
         self.client.force_login(self.user)
         url = reverse("update-profile")
-        response = self.client.post(url, data={"profile_type": "author", "name": "New Author"})
+        response = self.client.post(url, data={"profile_type": "author", "name": "New Author"}, secure=True)
         self.assertEqual(response.status_code, 302)
         self.user.refresh_from_db()
         self.assertTrue(hasattr(self.user, "author"))

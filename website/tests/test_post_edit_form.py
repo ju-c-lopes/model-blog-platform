@@ -45,6 +45,7 @@ class PostEditFormTests(TestCase):
                 "status": Post.PUBLISHED,
                 "cover_image": self._make_image(),
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -71,11 +72,18 @@ class PostEditFormTests(TestCase):
                 "text": "<p>Conteúdo atualizado com mais de dez caracteres.</p>",
                 "status": Post.DRAFT,
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
-        detail = self.client.get(reverse("post_detail", kwargs={"url_slug": post.url_slug}))
+        detail = self.client.get(
+            reverse("post_detail", kwargs={"url_slug": post.url_slug}),
+            secure=True,
+        )
         self.assertContains(detail, "Post atualizado com sucesso!")
-        home = self.client.get(reverse("home"))
+        home = self.client.get(
+            reverse("home"),
+            secure=True,
+        )
         self.assertNotContains(home, "Post atualizado com sucesso!")
 
     def test_invalid_create_post_preserves_selected_tags(self):
@@ -97,6 +105,7 @@ class PostEditFormTests(TestCase):
                 "tags": [str(self.python_tag.pk)],
                 "status": Post.DRAFT,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -114,6 +123,7 @@ class PostEditFormTests(TestCase):
                 "new_tag_names": ["Rust"],
                 "status": Post.PUBLISHED,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
@@ -140,6 +150,7 @@ class PostEditFormTests(TestCase):
                 "new_tag_names": ["Rust"],
                 "status": Post.DRAFT,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -172,6 +183,7 @@ class PostEditFormTests(TestCase):
                 "tags": [str(self.python_tag.pk)],
                 "status": Post.PUBLISHED,
             },
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -189,7 +201,7 @@ class PostEditFormTests(TestCase):
         post.tags.add(self.docker_tag)
 
         self.client.force_login(self.user)
-        response = self.client.get(reverse("edit_post", kwargs={"url_slug": post.url_slug}))
+        response = self.client.get(reverse("edit_post", kwargs={"url_slug": post.url_slug}), secure=True)
 
         self.assertEqual(response.status_code, 200)
         content = response.content.decode()

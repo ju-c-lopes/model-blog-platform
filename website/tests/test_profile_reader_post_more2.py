@@ -19,7 +19,11 @@ class ProfileReaderPostMore2Test(TestCase):
         self.client.force_login(user)
 
         url = reverse("update-profile")
-        resp = self.client.post(url, {"profile_type": "author", "name": "NewName"})
+        resp = self.client.post(
+            url,
+            {"profile_type": "author", "name": "NewName"},
+            secure=True,
+        )
         self.assertEqual(resp.status_code, 302)
         user.refresh_from_db()
         self.assertEqual(user.author.author_name, "NewName")
@@ -37,6 +41,7 @@ class ProfileReaderPostMore2Test(TestCase):
                 "confirm_pass": "",
                 "reader_name": "NewR",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         user.refresh_from_db()
@@ -56,6 +61,7 @@ class ProfileReaderPostMore2Test(TestCase):
                 "confirm_pass": "",
                 "reader_name": "NewR",
             },
+            secure=True,
         )
         self.assertEqual(response.status_code, 302)
         user.reader.refresh_from_db()
@@ -78,10 +84,16 @@ class ProfileReaderPostMore2Test(TestCase):
         ub = User.objects.create_user(username="userB", email="b@test.com", password="p")
         self.client.force_login(ub)
         url = reverse("edit_post", kwargs={"url_slug": post.url_slug})
-        resp = self.client.get(url)
+        resp = self.client.get(
+            url,
+            secure=True,
+        )
         self.assertEqual(resp.status_code, 302)
 
         # owner can access
         self.client.force_login(ua)
-        resp2 = self.client.get(url)
+        resp2 = self.client.get(
+            url,
+            secure=True,
+        )
         self.assertEqual(resp2.status_code, 200)

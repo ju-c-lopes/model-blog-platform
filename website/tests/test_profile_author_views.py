@@ -16,7 +16,11 @@ class ProfileAndAuthorViewTests(TestCase):
         user = User.objects.create_user(username="ruser", email="r@test.com", password="p")
         self.client.force_login(user)
         url = reverse("update-profile")
-        r = self.client.post(url, data={"profile_type": "reader", "name": "Reader Name"})
+        r = self.client.post(
+            url,
+            data={"profile_type": "reader", "name": "Reader Name"},
+            secure=True,
+        )
         self.assertEqual(r.status_code, 302)
         user.refresh_from_db()
         self.assertTrue(hasattr(user, "reader"))
@@ -29,7 +33,11 @@ class ProfileAndAuthorViewTests(TestCase):
 
         self.client.force_login(user)
         url = reverse("update-profile")
-        r = self.client.post(url, data={"profile_type": "reader", "name": "Now Reader"})
+        r = self.client.post(
+            url,
+            data={"profile_type": "reader", "name": "Now Reader"},
+            secure=True,
+        )
         self.assertEqual(r.status_code, 302)
         user.refresh_from_db()
         self.assertFalse(hasattr(user, "author"))
@@ -40,7 +48,11 @@ class ProfileAndAuthorViewTests(TestCase):
         author = Author.objects.create(user=user, author_name="Old Name", author_url_slug="old")
         self.client.force_login(user)
         url = reverse("update-profile")
-        r = self.client.post(url, data={"profile_type": "author", "name": "New Name"})
+        r = self.client.post(
+            url,
+            data={"profile_type": "author", "name": "New Name"},
+            secure=True,
+        )
         self.assertEqual(r.status_code, 302)
         author.refresh_from_db()
         self.assertEqual(author.author_name, "New Name")
@@ -58,7 +70,10 @@ class ProfileAndAuthorViewTests(TestCase):
         user = User.objects.create_user(username="pu", email="pu@test.com", password="p")
         self.client.force_login(user)
         url = reverse("create_post")
-        r = self.client.get(url)
+        r = self.client.get(
+            url,
+            secure=True,
+        )
         self.assertEqual(r.status_code, 302)
 
     def test_post_create_success_when_author(self):
@@ -73,12 +88,19 @@ class ProfileAndAuthorViewTests(TestCase):
             "meta_description": "md",
             "status": Post.PUBLISHED,
         }
-        r = self.client.post(url, data=data)
+        r = self.client.post(
+            url,
+            data=data,
+            secure=True,
+        )
         self.assertEqual(r.status_code, 302)
 
     def test_reader_edit_helpers(self):
         user = User.objects.create_user(username="read", email="r@test.com", password="p")
         Reader.objects.create(user=user)
         self.client.force_login(user)
-        response = self.client.get(reverse("reader-edit"))
+        response = self.client.get(
+            reverse("reader-edit"),
+            secure=True,
+        )
         self.assertEqual(response.status_code, 200)

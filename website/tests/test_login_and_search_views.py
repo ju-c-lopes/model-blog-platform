@@ -18,8 +18,8 @@ from website.views.user.LoginView import login_user
 User = get_user_model()
 
 LOGIN_TEST_SETTINGS = {
-    "DEBUG": True,
-    "SECURE_SSL_REDIRECT": False,
+    "DEBUG": False,
+    "SECURE_SSL_REDIRECT": True,
     "ALLOWED_HOSTS": ["testserver", "localhost", "127.0.0.1"],
 }
 
@@ -225,6 +225,7 @@ class SiteLoginIntegrationTests(TestCase):
         response = self.client.post(
             reverse("login"),
             {"identifier": "site@example.com", "password": "Site$Pass1"},
+            secure=True,
         )
 
         self.assertRedirects(response, "/", fetch_redirect_response=False)
@@ -233,6 +234,7 @@ class SiteLoginIntegrationTests(TestCase):
         response = self.client.post(
             reverse("login"),
             {"identifier": "siteuser", "password": "Site$Pass1"},
+            secure=True,
         )
 
         self.assertRedirects(response, "/", fetch_redirect_response=False)
@@ -252,16 +254,18 @@ class AdminLoginIntegrationTests(TestCase):
         response = self.client.post(
             reverse("admin:login"),
             {"username": "admin@example.com", "password": "Admin$Pass1"},
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.wsgi_request.user.is_authenticated)
-        self.assertEqual(self.client.get(reverse("admin:index")).status_code, 200)
+        self.assertEqual(self.client.get(reverse("admin:index"), secure=True).status_code, 200)
 
     def test_admin_login_with_username_stays_on_login_page(self):
         response = self.client.post(
             reverse("admin:login"),
             {"username": "admin", "password": "Admin$Pass1"},
+            secure=True,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -405,7 +409,7 @@ class SearchViewTests(TestCase):
             status=Post.PUBLISHED,
         )
 
-        response = self.client.get(reverse("search_posts"), {"query": "FindMe"})
+        response = self.client.get(reverse("search_posts"), {"query": "FindMe"}, secure=True)
         content = response.content.decode()
 
         self.assertIn("from_query=FindMe", content)
